@@ -6,6 +6,9 @@ import { FileGrid } from '@/components/blocks/shared/FileGrid';
 import { countFiles, resolvePath, type FileManagerProps } from './types';
 import styles from './FileManager.module.scss';
 
+/** Стабильная ссылка на пустой путь — чтобы не пересоздавать её каждый рендер. */
+const EMPTY_PATH: readonly number[] = [];
+
 // Файловый менеджер: рубрики-табы, папки, файлы со скачиванием
 // (Figma 300:5940 и 300:7061). Внутри папки табы уступают место крошкам —
 // это одно и то же место в разметке, поэтому переключение состояния
@@ -23,7 +26,12 @@ export function FileManager({
   const [ownPath, setOwnPath] = useState<readonly number[]>([]);
 
   const activeTab = controlled ? viewTab : ownTab;
-  const path = controlled ? viewPath ?? [] : ownPath;
+  // Через useMemo, а не выражением: `viewPath ?? []` создавал бы новый массив
+  // на каждый рендер, и мемоизация спуска по дереву ниже теряла бы смысл.
+  const path = useMemo(
+    () => (controlled ? viewPath ?? EMPTY_PATH : ownPath),
+    [controlled, viewPath, ownPath],
+  );
 
   const setView = (nextTab: number, nextPath: readonly number[]) => {
     if (controlled) {

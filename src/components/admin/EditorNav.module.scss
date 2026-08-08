@@ -1,0 +1,38 @@
+// Панель редактора (Figma node 300:7376): белая полоса во всю ширину рабочей
+// области, логотип слева, выход справа.
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--bb-spacing-m);
+  border-radius: var(--bb-radius-20);
+  background: var(--bb-bg-white-solid);
+}
+
+.logo {
+  display: block;
+  // Коробка логотипа в макете 48px высотой при глифе 36 — отступ сверху и
+  // снизу задаётся ею, а не собственным паддингом кнопки.
+  margin: var(--bb-spacing-xs) var(--bb-spacing-xs) var(--bb-spacing-xs) 5px;
+}
+
+.exit {
+  display: flex;
+  gap: var(--bb-spacing-s);
+  align-items: center;
+  padding: var(--bb-spacing-m);
+  border: none;
+  border-radius: var(--bb-radius-12);
+  background: var(--bb-bg-secondary);
+  color: var(--bb-text-secondary);
+  font-family: var(--bb-fontfamily-label);
+  font-size: var(--bb-fontsize-label-l3);
+  font-weight: 500;
+  line-height: var(--bb-lineheight-label-l3);
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+
+  &:hover {
+    background: var(--bb-bg-secondary-hover);
+  }
+}

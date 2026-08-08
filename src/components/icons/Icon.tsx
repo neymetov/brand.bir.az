@@ -52,7 +52,9 @@ export type DashboardIconName =
   // Типы файлов в файловом менеджере (остальные уже есть выше)
   | 'jpg-02'
   | 'mp4-02'
-  | 'file-02';
+  | 'file-02'
+  // Панель редактора
+  | 'floppy-disk';
 
 interface IconProps {
   readonly name: DashboardIconName;

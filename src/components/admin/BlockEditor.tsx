@@ -2,6 +2,7 @@
 
 import { Editor, Frame, Element } from '@craftjs/core';
 import { craftResolver } from '@/lib/craft/registry';
+import { EditorNav } from './EditorNav';
 import { Toolbox } from './Toolbox';
 import { SettingsPanel } from './SettingsPanel';
 import { EditorCanvas } from './EditorCanvas';
@@ -22,20 +23,26 @@ const resolver = { ...craftResolver, EditorCanvas };
 export function BlockEditor() {
   return (
     <Editor resolver={resolver}>
-      <div className={styles.layout}>
-        <aside className={styles.side}>
-          <Toolbox />
-        </aside>
+      {/* Панель вне сетки из трёх колонок: она тянется на всю ширину, а
+          колонки под ней — тулбокс, холст, настройки. */}
+      <div className={styles.shell}>
+        <EditorNav />
 
-        <div className={styles.canvasArea}>
-          <Frame>
-            <Element is={EditorCanvas} canvas />
-          </Frame>
+        <div className={styles.layout}>
+          <aside className={styles.side}>
+            <Toolbox />
+          </aside>
+
+          <div className={styles.canvasArea}>
+            <Frame>
+              <Element is={EditorCanvas} canvas />
+            </Frame>
+          </div>
+
+          <aside className={styles.side}>
+            <SettingsPanel />
+          </aside>
         </div>
-
-        <aside className={styles.side}>
-          <SettingsPanel />
-        </aside>
       </div>
     </Editor>
   );

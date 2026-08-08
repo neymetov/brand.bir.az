@@ -1,13 +1,21 @@
+.shell {
+  display: flex;
+  flex-direction: column;
+  gap: var(--bb-spacing-l);
+  min-height: 100vh;
+  padding: var(--bb-spacing-xl);
+  background: var(--bb-bg-primary);
+}
+
 .layout {
   display: grid;
   grid-template-columns: 240px minmax(0, 1fr) 280px;
   gap: var(--bb-spacing-l);
   align-items: start;
-  padding: var(--bb-spacing-xl);
-  min-height: 100vh;
-  background: var(--bb-bg-primary);
 }
 
+// Липнут не к верху экрана, а к нижнему краю панели — иначе тулбокс и
+// настройки уезжали бы под неё при прокрутке.
 .side {
   position: sticky;
   top: var(--bb-spacing-xl);
