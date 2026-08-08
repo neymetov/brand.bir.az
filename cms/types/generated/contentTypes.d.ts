@@ -457,7 +457,18 @@ export interface ApiGuidelinePageGuidelinePage
   };
   attributes: {
     brand: Schema.Attribute.Enumeration<
-      ['ecosystem', 'retail', 'business', 'invest', 'private']
+      [
+        'kapital-bank',
+        'ecosystem',
+        'birmarket',
+        'birbonus',
+        'retail',
+        'business',
+        'invest',
+        'private',
+        'm10',
+        'million',
+      ]
     > &
       Schema.Attribute.Required;
     content: Schema.Attribute.DynamicZone<

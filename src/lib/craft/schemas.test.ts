@@ -172,11 +172,18 @@ describe('Dynamic Zone страницы гайдлайна', () => {
     );
   });
 
-  it('бренды совпадают с publishedGuidelineBrands', () => {
-    const source = readFileSync(path.join(ROOT, 'src/lib/brands.ts'), 'utf-8');
-    const list = /publishedGuidelineBrands: FintechBrand\[\] = \[([\s\S]*?)\];/.exec(source);
-    const brands = [...(list?.[1] ?? '').matchAll(/'(\w+)'/g)].map((match) => match[1] ?? '');
+  it('бренды совпадают со списком в сайдбаре', () => {
+    // Источник — тот же дропдаун, что видит пользователь: если в CMS список
+    // короче, редактор не сможет завести страницу для бренда, который в
+    // интерфейсе присутствует.
+    const source = readFileSync(
+      path.join(ROOT, 'src/components/dashboard/Sidebar/brandDropdown.data.ts'),
+      'utf-8',
+    );
+    const list = source.split('brandDropdownEntries: readonly DropdownEntry[] = [')[1] ?? '';
+    const brands = [...list.matchAll(/id: '([\w-]+)'/g)].map((match) => match[1] ?? '');
 
+    expect(brands.length).toBeGreaterThan(0);
     expect(new Set(page.attributes.brand?.enum ?? [])).toEqual(new Set(brands));
   });
 });

@@ -15,11 +15,16 @@
     "brand": {
       "type": "enumeration",
       "enum": [
+        "kapital-bank",
         "ecosystem",
+        "birmarket",
+        "birbonus",
         "retail",
         "business",
         "invest",
-        "private"
+        "private",
+        "m10",
+        "million"
       ],
       "required": true
     },
