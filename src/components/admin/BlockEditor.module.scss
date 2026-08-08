@@ -1,0 +1,18 @@
+.layout {
+  display: grid;
+  grid-template-columns: 240px minmax(0, 1fr) 280px;
+  gap: var(--bb-spacing-l);
+  align-items: start;
+  padding: var(--bb-spacing-xl);
+  min-height: 100vh;
+  background: var(--bb-bg-primary);
+}
+
+.side {
+  position: sticky;
+  top: var(--bb-spacing-xl);
+}
+
+.canvasArea {
+  min-width: 0;
+}

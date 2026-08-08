@@ -1,0 +1,38 @@
+// Карточка из макета разводной (Figma node 275:2146): белая, крупное
+// скругление, отступ снизу больше верхнего — под подпись.
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--bb-spacing-l);
+  padding: var(--bb-spacing-m) var(--bb-spacing-m) var(--bb-spacing-xl);
+  border-radius: var(--bb-radius-20);
+  background: var(--bb-bg-white-solid);
+  text-decoration: none;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgb(205 208 213 / 35%);
+  }
+}
+
+.thumb {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  // Квадрат, а не фиксированная высота: в макете обложка 1:1, и карточка
+  // должна одинаково выглядеть и в колонке сетки, и в полосе карусели.
+  aspect-ratio: 1 / 1;
+  border-radius: var(--bb-radius-12);
+  background: var(--bb-bg-primary);
+  color: var(--bb-text-tertiary);
+}
+
+.title {
+  color: var(--bb-text-primary);
+  font-family: var(--bb-fontfamily-heading);
+  font-size: var(--bb-fontsize-heading-h5);
+  line-height: var(--bb-lineheight-heading-h5);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}

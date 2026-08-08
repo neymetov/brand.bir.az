@@ -1,0 +1,18 @@
+// ============================================================================
+// BirDS Core — Radius
+// Source: Figma "DEMO | BirDS Core" → collection "Radius" (см. radius-spacing-raw.json)
+// ---
+// Один режим (не отзывчивый, не меняется по брейкпоинтам/модам) — в отличие
+// от Spacing/Typography, здесь нет 4 вариантов на моду.
+// ============================================================================
+
+:root {
+  --bb-radius-none: 0px;
+  --bb-radius-4: 4px;
+  --bb-radius-8: 8px;
+  --bb-radius-12: 12px;
+  --bb-radius-20: 20px;
+  --bb-radius-32: 32px;
+  --bb-radius-48: 48px;
+  --bb-radius-full: 999px;
+}

@@ -1,0 +1,55 @@
+{
+  "extends": [
+    "airbnb",
+    "airbnb-typescript",
+    "next/core-web-vitals",
+    "plugin:jsx-a11y/recommended",
+    "plugin:risxss/recommended"
+  ],
+  "plugins": ["xss", "no-unsanitized"],
+  "parserOptions": {
+    "project": "./tsconfig.json"
+  },
+  "rules": {
+    "xss/no-mixed-html": "error",
+    "no-unsanitized/method": "error",
+    "no-unsanitized/property": "error",
+    "react/react-in-jsx-scope": "off",
+    "import/prefer-default-export": "off",
+    // risxss/recommended включает и react-, и vue-правило безусловно —
+    // проект чисто React, vue-правило здесь ложно срабатывает на каждый файл.
+    "risxss/catch-potential-xss-vue": "off",
+    // defaultProps для функциональных компонентов — deprecated API в
+    // современном React; дефолты задаём деструктуризацией параметров.
+    "react/require-default-props": "off"
+  },
+  "overrides": [
+    {
+      // Тесты: враждебный ввод и HTML-строки здесь — это фикстуры, а не код,
+      // который что-то рендерит.
+      //
+      // xss/no-mixed-html — тот же дожсовский плагин, что отключён для .tsx
+      // выше: он видит любую строку с угловыми скобками как «HTML в коде».
+      // В тестах санитизации такие строки — предмет проверки.
+      //
+      // no-script-url — `javascript:alert(1)` в наборе опасных схем: правило
+      // защищает от такой ссылки в продакшн-коде, а тут она обязана быть.
+      "files": ["*.test.ts", "*.test.tsx"],
+      "rules": {
+        "xss/no-mixed-html": "off",
+        "no-script-url": "off",
+        "import/no-extraneous-dependencies": "off"
+      }
+    },
+    {
+      // eslint-plugin-xss (no-mixed-html) — дожсовский инструмент под
+      // строковую конкатенацию HTML (jQuery-эра), не понимает JSX/TSX и
+      // массово ложно срабатывает на обычных компонентах-функциях. XSS в
+      // JSX уже покрыт react/no-danger + risxss/catch-potential-xss-react.
+      "files": ["*.tsx", "*.jsx"],
+      "rules": {
+        "xss/no-mixed-html": "off"
+      }
+    }
+  ]
+}

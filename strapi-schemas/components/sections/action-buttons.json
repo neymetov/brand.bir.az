@@ -1,0 +1,22 @@
+{
+  "collectionName": "components_sections_action_buttons",
+  "info": {
+    "displayName": "Action buttons",
+    "description": "Панель кнопок действия: скачивание файла, переход по ссылке, копирование текста. Соответствует блоку ActionButtons (src/components/blocks/ActionButtons)."
+  },
+  "options": {},
+  "attributes": {
+    "align": {
+      "type": "enumeration",
+      "enum": ["left", "right"],
+      "default": "left",
+      "required": true
+    },
+    "buttons": {
+      "type": "component",
+      "repeatable": true,
+      "component": "shared.action-button",
+      "required": false
+    }
+  }
+}

@@ -1,0 +1,177 @@
+// Только позиционирующий контейнер для выпадающего списка — рамку/фон/
+// падинги несёт сама кнопка (.trigger), иначе hover ловился бы и при
+// наведении на раскрытый список, который лежит внутри этой же обёртки.
+.wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  // Рамки больше нет (Figma node 287:4898): три состояния различаются только
+  // фоном и тенью — белый, серый на hover, белый с тенью у раскрытого.
+  border: none;
+  border-radius: var(--bb-radius-12);
+  padding: var(--bb-spacing-m);
+  background: var(--bb-bg-white-solid);
+  cursor: pointer;
+  color: var(--bb-text-secondary);
+  transition: background-color 0.15s ease, box-shadow 0.15s ease;
+
+  &:hover {
+    background: var(--bb-bg-secondary);
+  }
+}
+
+// Раскрытый список: та же тень, что у активного пункта меню (Figma effect
+// "dynamic_menu_item"). Правило ниже :hover — у раскрытой шапки курсор обычно
+// как раз над ней, и серый фон гасил бы признак «открыто».
+.triggerOpen {
+  background: var(--bb-bg-white-solid);
+  box-shadow: 0 2px 4px rgb(205 208 213 / 35%);
+
+  &:hover {
+    background: var(--bb-bg-white-solid);
+  }
+}
+
+.title {
+  display: flex;
+  align-items: center;
+  // 8px, а не 12: в новом макете подпись стала двухстрочной и придвинулась
+  // к знаку.
+  gap: var(--bb-spacing-s);
+  min-width: 0;
+}
+
+.text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  text-align: left;
+}
+
+.markSlot {
+  position: relative;
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  width: 32px;
+  height: 32px;
+
+  // 8px — как у знаков в списке (BrandDropdownMark), это один и тот же
+  // логотип, скругление не должно различаться между шапкой и дропдауном.
+  border-radius: var(--bb-radius-8);
+}
+
+.markGlyph {
+  // 60%, как у знаков в самом дропдауне (BrandDropdownMark) — в шапке и в
+  // списке это один и тот же логотип, масштаб не должен различаться.
+  height: 60%;
+  width: auto;
+}
+
+.name,
+.direction {
+  overflow: hidden;
+  font-family: var(--bb-fontfamily-caption);
+  font-size: var(--bb-fontsize-caption-c1);
+  line-height: var(--bb-lineheight-caption-c1);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.name {
+  color: var(--bb-text-primary);
+  font-weight: 600;
+}
+
+.direction {
+  color: var(--bb-text-secondary);
+  font-weight: 400;
+}
+
+// Коробка 32×32 вокруг иконки 20×20 — из макета. Нужна, чтобы кликабельная
+// область справа не схлопывалась до размера глифа.
+.iconSlot {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+}
+
+.list {
+  position: absolute;
+  z-index: 10;
+  top: calc(100% + var(--bb-spacing-s));
+  left: 0;
+  width: 100%;
+  margin: 0;
+  padding: var(--bb-spacing-s);
+  list-style: none;
+  background: var(--bb-bg-white-solid);
+  border-radius: var(--bb-radius-12);
+  box-shadow: 0 14px 30px rgb(229 231 235 / 50%); // Figma "dynamic_banner_usp"
+  max-height: 60vh;
+  overflow-y: auto;
+  transform-origin: top center;
+  animation: dropdown-in 0.16s ease-out;
+}
+
+.listItem {
+  display: flex;
+  align-items: center;
+  gap: var(--bb-spacing-m);
+  width: 100%;
+  border: none;
+  background: transparent;
+  padding: var(--bb-spacing-m);
+  border-radius: var(--bb-radius-8);
+  color: var(--bb-text-secondary);
+  text-align: left;
+  font-family: var(--bb-fontfamily-label);
+  font-size: var(--bb-fontsize-label-l3);
+  line-height: var(--bb-lineheight-label-l3);
+  cursor: pointer;
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+
+  &:hover:not(:disabled) {
+    background: var(--bb-bg-secondary-hover);
+  }
+}
+
+.listItemActive {
+  background: var(--bb-bg-primary);
+}
+
+// Лёгкое появление сверху вниз. Сделано на CSS, а не framer-motion (§1
+// стека): анимация только на монтировании, без exit-фазы — AnimatePresence
+// и лишний рантайм здесь не нужны.
+@keyframes dropdown-in {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .list {
+    animation: none;
+  }
+}

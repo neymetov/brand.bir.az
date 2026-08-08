@@ -1,0 +1,22 @@
+.icon {
+  display: inline-block;
+  flex-shrink: 0;
+  background-color: currentcolor;
+  transition: transform 0.15s ease;
+  mask-repeat: no-repeat;
+  mask-position: center;
+
+  // `auto`, а НЕ `contain`: ассеты экспортированы из Figma обрезанными по
+  // глифу (у chevron это 9.25×5.08 при коробке 16×16), поэтому `contain`
+  // растягивал бы глиф на всю коробку и ломал заложенные в макет пропорции —
+  // сильнее всего на мелких/широких иконках. `auto` берёт натуральные
+  // размеры из самого SVG и центрирует в коробке size×size, как в Figma.
+  mask-size: auto;
+
+  /* stylelint-disable property-no-vendor-prefix -- Safari до 15.4 знает
+     только -webkit-mask-*, без префиксов иконки там не отрисуются вовсе */
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  -webkit-mask-size: auto;
+  /* stylelint-enable property-no-vendor-prefix */
+}

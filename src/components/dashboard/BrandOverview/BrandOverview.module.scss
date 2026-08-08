@@ -1,0 +1,28 @@
+.overview {
+  display: flex;
+  flex-direction: column;
+  gap: var(--bb-spacing-3xl);
+  width: 100%;
+}
+
+.group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--bb-spacing-l);
+}
+
+.groupTitle {
+  margin: 0;
+  color: var(--bb-text-primary);
+  font-family: var(--bb-fontfamily-heading);
+  font-size: var(--bb-fontsize-heading-h1);
+  line-height: var(--bb-lineheight-heading-h1);
+  letter-spacing: -0.02em;
+  font-weight: 500;
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--bb-spacing-l);
+}

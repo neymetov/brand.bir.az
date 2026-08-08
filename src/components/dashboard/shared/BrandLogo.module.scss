@@ -1,0 +1,20 @@
+.logo {
+  position: relative;
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  width: 32px;
+  height: 32px;
+
+  // 8px у всех брендовых знаков в приложении — см. BrandDropdownMark.
+  border-radius: var(--bb-radius-8);
+  background: var(--bb-brand-default);
+}
+
+.mark {
+  // 60%, как у знаков в дропдауне и шапке сайдбара — один и тот же логотип.
+  height: 60%;
+  width: auto;
+}

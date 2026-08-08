@@ -1,0 +1,173 @@
+// ============================================================================
+// BirDS Core — Semantic colors + brand themes
+// Source: Figma "DEMO | BirDS Core" → collections "UI Colors" и "Brand colors"
+// Generated: 2026-07-02 via Figma Variables API
+// ---
+// Семантика отдаётся как CSS custom properties, чтобы брендовые режимы
+// (Retail / Business / Invest / Private / Ecosystem) переключались в рантайме
+// атрибутом data-brand без пересборки. В компонентах использовать только
+// var(--bb-*) — прямые hex и примитивы запрещены (stylelint это ловит).
+// ============================================================================
+
+@use 'primitives' as p;
+
+:root {
+  // --------------------------------------------------------------------------
+  // Text & icon
+  // --------------------------------------------------------------------------
+  --bb-text-primary: #{p.primitive('gray', 800)};
+  --bb-text-secondary: #{p.primitive('gray', 500)};
+  --bb-text-tertiary: #{p.primitive('gray', 600)};
+  --bb-text-quaternary: #{p.primitive('gray', 300)}; // Figma: Text_and_Icon/default/quartiary
+  --bb-text-white: #{p.bw('white')};
+  --bb-text-success: #{p.primitive('green', 500)};
+  --bb-text-error: #{p.primitive('red', 500)};
+  --bb-text-warning: #{p.primitive('amber', 500)};
+  --bb-text-info: #{p.primitive('sky', 500)};
+
+  // states
+  --bb-text-disabled: #{p.primitive('gray', 400)};
+  --bb-text-secondary-hover: #{p.primitive('gray', 600)};
+  --bb-text-secondary-pressed: #{p.primitive('gray', 700)};
+
+  // dark
+  --bb-text-dark-primary: #{p.brand-primitive('dark-private', 900)};
+
+  // --------------------------------------------------------------------------
+  // Background
+  // --------------------------------------------------------------------------
+  --bb-bg-white-solid: #{p.bw('white')};
+  --bb-bg-black-solid: #{p.bw('black')};
+  --bb-bg-primary: #{p.primitive('gray', 100)};
+  --bb-bg-secondary: #{p.primitive('gray', 200)};
+  --bb-bg-tertiary: #{p.primitive('slate', 100)};
+  --bb-bg-quaternary: #000; // Figma: Background/default/quartiary (сырое значение, проверить у дизайнеров)
+  --bb-bg-primary-inverse: #{p.primitive('gray', 800)};
+  --bb-bg-success-primary: #{p.primitive('green', 50)};
+  --bb-bg-error-primary: #{p.primitive('red', 50)};
+  --bb-bg-warning-primary: #{p.primitive('amber', 50)};
+  --bb-bg-info-primary: #{p.primitive('blue', 50)};
+
+  // states
+  --bb-bg-disabled: #{p.primitive('zinc', 300)};
+  --bb-bg-secondary-hover: #{p.primitive('gray', 300)};
+  --bb-bg-secondary-pressed: #{p.primitive('gray', 400)};
+
+  // dark
+  --bb-bg-dark-primary: #{p.brand-primitive('dark-private', 900)};
+  --bb-bg-dark-secondary: #{p.brand-primitive('dark-private', 700)};
+  --bb-bg-dark-tertiary: #{p.brand-primitive('dark-private', 500)};
+  --bb-bg-dark-ecosystem-primary: #{p.primitive('slate', 950)};
+  --bb-bg-dark-ecosystem-secondary: #{p.primitive('slate', 800)};
+
+  // --------------------------------------------------------------------------
+  // Border
+  // --------------------------------------------------------------------------
+  --bb-border-primary: #{p.primitive('gray', 200)};
+  --bb-border-secondary: #{p.primitive('gray', 500)};
+  --bb-border-tertiary: #{p.primitive('gray', 400)};
+  --bb-border-quaternary: #{p.primitive('gray', 300)}; // Figma: Border/neutral/quartiary
+  --bb-border-white-solid: #{p.bw('white')};
+  --bb-border-black-solid: #{p.bw('black')};
+  --bb-border-primary-inverse: #{p.primitive('gray', 800)};
+  --bb-border-dark-ecosystem-secondary: #{p.primitive('slate', 800)};
+  --bb-border-success: #{p.primitive('green', 500)};
+  --bb-border-success-soft: #{p.primitive('green', 200)};
+  --bb-border-error: #{p.primitive('red', 500)};
+  --bb-border-error-soft: #{p.primitive('red', 200)};
+  --bb-border-warning: #{p.primitive('amber', 500)};
+  --bb-border-warning-soft: #{p.primitive('amber', 200)};
+  --bb-border-info: #{p.primitive('blue', 500)};
+  --bb-border-info-soft: #{p.primitive('blue', 200)};
+
+  // states
+  --bb-border-disabled: #{p.primitive('zinc', 300)};
+  --bb-border-secondary-hover: #{p.primitive('gray', 300)};
+  --bb-border-secondary-pressed: #{p.primitive('gray', 400)};
+
+  // --------------------------------------------------------------------------
+  // Partner brands
+  // --------------------------------------------------------------------------
+  --bb-partner-birbonus-black: #000;
+  --bb-partner-birbonus-bright-red: #e81d2b;
+  --bb-partner-birbonus-bright-blue: #4d8ef1;
+  --bb-partner-birbonus-lavender: #7d62e3;
+  --bb-partner-birbonus-mint: #19d2c3;
+  --bb-partner-birmarket-base-gray: #f1f2f3;
+  --bb-partner-birmarket-royal-purple: #9c21a6;
+  --bb-partner-birmarket-neon-pink: #ea207e;
+  --bb-partner-m10-dark-indigo: #14234b;
+  --bb-partner-m10-bright-cyan: #00f0ca;
+  --bb-partner-million-accent-red: #ea3325;
+  --bb-partner-million-white: #fff;
+}
+
+// ============================================================================
+// Brand modes — коллекция "Brand colors" (5 режимов Figma → data-brand)
+// default → шаг 500, hover → 600, pressed → 800, disabled → 100.
+// Исключения из Figma: Private hover → 400, Ecosystem hover → 400.
+// Дефолтный бренд — Retail (задан на :root, чтобы токены работали без атрибута).
+// ============================================================================
+
+@mixin -brand($family, $hover-step: 600) {
+  --bb-brand-default: #{p.brand-primitive($family, 500)};
+  --bb-brand-hover: #{p.brand-primitive($family, $hover-step)};
+  --bb-brand-pressed: #{p.brand-primitive($family, 800)};
+  --bb-brand-disabled: #{p.brand-primitive($family, 100)};
+}
+
+:root,
+[data-brand='retail'] {
+  @include -brand('birbank-retail');
+}
+
+[data-brand='business'] {
+  @include -brand('birbank-business');
+}
+
+[data-brand='invest'] {
+  @include -brand('birbank-invest');
+}
+
+[data-brand='private'] {
+  @include -brand('birbank-private', $hover-step: 400);
+}
+
+[data-brand='ecosystem'] {
+  @include -brand('bir', $hover-step: 400);
+}
+
+// ============================================================================
+// ⏸ HR TECH — ЧЕРНОВИК, НА ПАУЗЕ (2026-07-09)
+// ----------------------------------------------------------------------------
+// [data-brand="hr-tech"] шестого бренда/грани. Не активируется автоматически —
+// сработает только если кто-то физически поставит data-brand="hr-tech" на
+// элемент, чего в текущих apps никто не делает. Держится здесь для полноты
+// картины "все бренды в одном месте"; НЕ вноситься в Brand union contract.ts,
+// пока пауза на дизайне не снята.
+// ============================================================================
+
+[data-brand='hr-tech'] {
+  // CTA — см. открытый вопрос в _primitives.scss про #000000 vs #2B2929 и
+  // про то, должен ли CTA вообще стать бежевым (аналогично Private).
+  --bb-brand-default: #{p.hr-brand-default()};
+  --bb-brand-hover: #{p.hr-base(9)}; // ⚠ интерполяция
+  --bb-brand-pressed: #{p.hr-base(10)};
+  --bb-brand-disabled: #{p.hr-base(3)};
+  --bb-text-primary: #{p.hr-base(10)};
+  --bb-text-secondary: #{p.hr-text-muted()};
+  --bb-text-tertiary: #{p.hr-base(6)};
+  --bb-text-white: #{p.hr-base(1)};
+  --bb-text-link: #{p.hr-text-link()};
+  --bb-text-disabled: #{p.hr-base(6)};
+  --bb-bg-white-solid: #{p.hr-base(1)};
+  --bb-bg-primary: #{p.hr-base(2)};
+  --bb-bg-secondary: #{p.hr-base(3)};
+  --bb-bg-tag: #{p.hr-base(2)};
+  --bb-border-primary: #{p.hr-base(3)};
+  --bb-border-dashed: #{p.hr-base(3)};
+
+  // Бежевый акцент — фон карточек преимуществ, НЕ CTA (см. вопрос выше)
+  --bb-bg-accent-gradient: #{p.hr-accent-gradient()};
+  --bb-bg-accent-gradient-hover: #{p.hr-accent-gradient-hover()};
+}

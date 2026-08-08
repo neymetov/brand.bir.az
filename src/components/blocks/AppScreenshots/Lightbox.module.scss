@@ -1,0 +1,153 @@
+@use '../../../styles/tokens/primitives' as p;
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--bb-spacing-3xl);
+
+  // Значения из макета (Figma node 270:2485): затемнение 65% + размытие
+  // подложки. Сырая rgba здесь осознанно — полупрозрачного чёрного нужной
+  // плотности в шкале токенов нет, а альфа-примитивы дают другой цвет.
+  /* stylelint-disable-next-line declaration-property-value-disallowed-list */
+  background: rgb(0 0 0 / 65%);
+  backdrop-filter: blur(12px);
+}
+
+// Подложка лежит под содержимым и ловит клик мимо изображения.
+.backdrop {
+  position: absolute;
+  inset: 0;
+  border: none;
+  padding: 0;
+  background: transparent;
+  cursor: zoom-out;
+}
+
+// Содержимое: карточка и кнопка закрытия справа от неё — как в макете,
+// где закрытие стоит рядом с изображением, а не в углу экрана.
+.content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: flex-start;
+  gap: var(--bb-spacing-l);
+  max-height: 100%;
+}
+
+.item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--bb-spacing-l);
+  max-height: 100%;
+
+  // Ширина — по изображению: строка под ним должна совпадать с ним по
+  // краям, поэтому колонка сжимается до содержимого.
+  width: fit-content;
+}
+
+.frame {
+  display: flex;
+  flex: 1 1 auto;
+  min-height: 0;
+  justify-content: center;
+}
+
+.image {
+  max-width: 100%;
+  max-height: 100%;
+  border-radius: var(--bb-radius-12);
+  object-fit: contain;
+}
+
+.placeholder {
+  // Пропорции экрана телефона из макета (375×812).
+  aspect-ratio: 375 / 812;
+  height: 100%;
+  border-radius: var(--bb-radius-12);
+  background: repeating-conic-gradient(
+      var(--bb-bg-secondary) 0% 25%,
+      var(--bb-bg-tertiary) 0% 50%
+    )
+    0 0 / 24px 24px;
+}
+
+.bar {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--bb-spacing-l);
+  height: 56px;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+}
+
+// Кнопки в макете без заливки — только белая иконка поверх затемнения.
+// Подложка появляется на наведении, чтобы цель клика была видна.
+.iconButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  border: none;
+  border-radius: var(--bb-radius-12);
+  background: transparent;
+  color: var(--bb-text-white);
+  cursor: pointer;
+  transition: background-color 0.15s ease, opacity 0.15s ease;
+
+  &:disabled {
+    cursor: default;
+    opacity: 0.4;
+  }
+
+  &:hover:not(:disabled) {
+    background: p.alpha('dark', 200);
+  }
+}
+
+.close {
+  flex-shrink: 0;
+}
+
+.download {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--bb-spacing-s);
+  height: 56px;
+  min-width: 140px;
+  border: none;
+  border-radius: var(--bb-radius-12);
+  background: transparent;
+  color: var(--bb-text-white);
+  font-family: var(--bb-fontfamily-label);
+  font-size: var(--bb-fontsize-label-l2);
+  line-height: var(--bb-lineheight-label-l2);
+  font-weight: 500;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+
+  &:hover {
+    background: p.alpha('dark', 200);
+  }
+}
+
+// Файла нет — кнопка на месте, но не притворяется рабочей.
+.disabled {
+  cursor: not-allowed;
+  opacity: 0.4;
+
+  &:hover {
+    background: transparent;
+  }
+}

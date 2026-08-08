@@ -1,0 +1,24 @@
+{
+  "collectionName": "components_shared_color_swatches",
+  "info": {
+    "displayName": "Color swatch",
+    "description": "Один цвет палитры: название, заливка и произвольный набор форматов значения."
+  },
+  "options": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": false
+    },
+    "color": {
+      "type": "string",
+      "required": false
+    },
+    "formats": {
+      "type": "component",
+      "repeatable": true,
+      "component": "shared.color-format",
+      "required": false
+    }
+  }
+}

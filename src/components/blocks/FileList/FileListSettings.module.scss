@@ -1,0 +1,186 @@
+// Панель настроек файлового менеджера. Базовые правила полей общие с
+// остальными панелями блоков.
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--bb-spacing-l);
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--bb-spacing-s);
+}
+
+.legend {
+  color: var(--bb-text-tertiary);
+  font-family: var(--bb-fontfamily-caption);
+  font-size: var(--bb-fontsize-caption-c1);
+  line-height: var(--bb-lineheight-caption-c1);
+}
+
+.input,
+.textarea {
+  width: 100%;
+  min-width: 0;
+  border: 1px solid var(--bb-border-quaternary);
+  border-radius: var(--bb-radius-8);
+  padding: var(--bb-spacing-s);
+  background: var(--bb-bg-white-solid);
+  color: var(--bb-text-primary);
+  font-family: var(--bb-fontfamily-paragraph);
+  font-size: var(--bb-fontsize-paragraph-p4);
+  line-height: var(--bb-lineheight-paragraph-p4);
+}
+
+.textarea {
+  resize: vertical;
+}
+
+.add {
+  border: 1px dashed var(--bb-border-tertiary);
+  border-radius: var(--bb-radius-8);
+  padding: var(--bb-spacing-s);
+  background: transparent;
+  color: var(--bb-text-secondary);
+  font-family: var(--bb-fontfamily-label);
+  font-size: var(--bb-fontsize-label-l4);
+  line-height: var(--bb-lineheight-label-l4);
+  cursor: pointer;
+
+  &:hover {
+    background: var(--bb-bg-secondary);
+  }
+}
+
+.row,
+.fileRow {
+  display: flex;
+  gap: var(--bb-spacing-xs);
+  align-items: center;
+}
+
+// Файл — это имя, пикер и удаление: в строку они не помещаются.
+.fileRow {
+  flex-direction: column;
+  align-items: stretch;
+  padding: var(--bb-spacing-s);
+  border: 1px solid var(--bb-border-quaternary);
+  border-radius: var(--bb-radius-8);
+}
+
+.open {
+  flex-shrink: 0;
+  padding: var(--bb-spacing-xs) var(--bb-spacing-s);
+  border: 1px solid var(--bb-border-quaternary);
+  border-radius: var(--bb-radius-8);
+  background: transparent;
+  color: var(--bb-text-secondary);
+  font-family: var(--bb-fontfamily-label);
+  font-size: var(--bb-fontsize-label-l4);
+  cursor: pointer;
+
+  &:hover {
+    background: var(--bb-bg-secondary);
+  }
+}
+
+// Путь внутри дерева — где именно правятся папки и файлы.
+.crumbs {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.crumb {
+  padding: var(--bb-spacing-xxs) var(--bb-spacing-xs);
+  border: none;
+  background: transparent;
+  color: var(--bb-text-secondary);
+  font-family: var(--bb-fontfamily-label);
+  font-size: var(--bb-fontsize-label-l4);
+  cursor: pointer;
+
+  &:hover {
+    color: var(--bb-text-primary);
+  }
+}
+
+// Чипы рубрик и кнопка «+ рубрика». Совпадают с выбором размера в панели
+// палитры — это один и тот же жест «выбрать из нескольких вариантов».
+.choices {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--bb-spacing-s);
+}
+
+.choice {
+  padding: var(--bb-spacing-s);
+  border: 1px solid var(--bb-border-quaternary);
+  border-radius: var(--bb-radius-8);
+  background: var(--bb-bg-white-solid);
+  color: var(--bb-text-secondary);
+  font-family: var(--bb-fontfamily-label);
+  font-size: var(--bb-fontsize-caption-c1);
+  line-height: var(--bb-lineheight-caption-c1);
+  cursor: pointer;
+
+  &:hover {
+    background: var(--bb-bg-secondary);
+  }
+}
+
+.choiceActive {
+  border-color: var(--bb-brand-default);
+  color: var(--bb-text-primary);
+}
+
+.addSmall {
+  align-self: flex-start;
+  padding: var(--bb-spacing-xs) var(--bb-spacing-s);
+  border: 1px dashed var(--bb-border-tertiary);
+  border-radius: var(--bb-radius-8);
+  background: transparent;
+  color: var(--bb-text-secondary);
+  font-family: var(--bb-fontfamily-label);
+  font-size: var(--bb-fontsize-caption-c1);
+  line-height: var(--bb-lineheight-caption-c1);
+  cursor: pointer;
+
+  &:hover {
+    background: var(--bb-bg-secondary);
+  }
+}
+
+// Подпись «Содержимое: рубрика / папка» — чтобы было видно, куда именно
+// добавляются папки и файлы ниже.
+.scope {
+  margin: 0;
+  padding: var(--bb-spacing-xs) var(--bb-spacing-s);
+  border-radius: var(--bb-radius-8);
+  background: var(--bb-bg-secondary);
+  color: var(--bb-text-secondary);
+  font-family: var(--bb-fontfamily-label);
+  font-size: var(--bb-fontsize-caption-c1);
+  line-height: var(--bb-lineheight-caption-c1);
+}
+
+// Удаление рубрики — словами, а не крестиком: голый «×» рядом с полем
+// названия читается как «очистить поле», а не «удалить рубрику».
+.removeTab {
+  flex-shrink: 0;
+  padding: var(--bb-spacing-xs) var(--bb-spacing-s);
+  border: 1px solid var(--bb-border-quaternary);
+  border-radius: var(--bb-radius-8);
+  background: transparent;
+  color: var(--bb-text-error);
+  font-family: var(--bb-fontfamily-label);
+  font-size: var(--bb-fontsize-caption-c1);
+  line-height: var(--bb-lineheight-caption-c1);
+  white-space: nowrap;
+  cursor: pointer;
+
+  &:hover {
+    background: var(--bb-bg-error-primary);
+  }
+}

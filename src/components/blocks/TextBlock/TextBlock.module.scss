@@ -1,0 +1,78 @@
+.block {
+  display: flex;
+  flex-direction: column;
+  gap: var(--bb-spacing-xl);
+  width: 100%;
+}
+
+// Заголовок и описание идут вплотную — в макете между ними нет отступа.
+.header {
+  display: flex;
+  flex-direction: column;
+}
+
+.title {
+  margin: 0;
+  color: var(--bb-text-primary);
+  font-family: var(--bb-fontfamily-heading);
+  font-size: var(--bb-fontsize-heading-h1);
+  line-height: var(--bb-lineheight-heading-h1);
+  letter-spacing: -0.02em;
+  font-weight: 500;
+}
+
+.description {
+  margin: 0;
+  color: var(--bb-text-primary);
+  font-family: var(--bb-fontfamily-paragraph);
+  font-size: var(--bb-fontsize-paragraph-p1);
+  line-height: var(--bb-lineheight-paragraph-p1);
+}
+
+.body {
+  // Обычный поток, а не flex: форматированный текст содержит инлайновые
+  // куски (<strong>, <em>, голый текст), и во flex-колонке каждый из них
+  // становился бы отдельной строкой.
+  color: var(--bb-text-secondary);
+  font-family: var(--bb-fontfamily-paragraph);
+  font-size: var(--bb-fontsize-paragraph-p2);
+  line-height: var(--bb-lineheight-paragraph-p2);
+
+  // Отступ между абзацами — margin, а не gap контейнера.
+  p {
+    margin: 0 0 var(--bb-spacing-s);
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  // Форматирование, которое даёт редактор. Собрано здесь, потому что теги
+  // приходят из контента и классов на них нет (все атрибуты отбрасываются
+  // при рендере — см. lib/richText.tsx).
+  strong {
+    font-weight: 600;
+  }
+
+  a {
+    color: var(--bb-text-info);
+    text-decoration: underline;
+
+    &:hover {
+      color: var(--bb-text-primary);
+    }
+  }
+
+  code {
+    padding: 0 var(--bb-spacing-xxs);
+    border-radius: var(--bb-radius-4);
+    background: var(--bb-bg-secondary);
+    font-size: 0.9em;
+  }
+
+  ul,
+  ol {
+    margin: 0;
+    padding-left: var(--bb-spacing-xl);
+  }
+}

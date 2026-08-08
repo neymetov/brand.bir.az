@@ -1,0 +1,150 @@
+.picker {
+  display: flex;
+  flex-direction: column;
+  gap: var(--bb-spacing-s);
+  border: 1px solid var(--bb-border-quaternary);
+  border-radius: var(--bb-radius-8);
+  padding: var(--bb-spacing-s);
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: var(--bb-spacing-s);
+}
+
+.preview {
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+  overflow: hidden;
+  border: 1px dashed var(--bb-border-tertiary);
+  border-radius: var(--bb-radius-8);
+  padding: 0;
+  background: var(--bb-bg-primary);
+  cursor: pointer;
+}
+
+.previewImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.previewEmpty {
+  display: block;
+  // Кнопка всего 48×48: подпись «Выбрать» на c1 в неё не влезала и
+  // обрезалась по горизонтали.
+  padding: 0 var(--bb-spacing-xxs);
+  color: var(--bb-text-tertiary);
+  font-family: var(--bb-fontfamily-caption);
+  font-size: var(--bb-fontsize-caption-c2);
+  line-height: var(--bb-lineheight-caption-c2);
+  overflow-wrap: anywhere;
+}
+
+.meta {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 0;
+  min-width: 0;
+  gap: 2px;
+}
+
+.name {
+  overflow: hidden;
+  color: var(--bb-text-primary);
+  font-family: var(--bb-fontfamily-label);
+  font-size: var(--bb-fontsize-label-l4);
+  line-height: var(--bb-lineheight-label-l4);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.id {
+  color: var(--bb-text-tertiary);
+  font-family: var(--bb-fontfamily-caption);
+  font-size: var(--bb-fontsize-caption-c2);
+  line-height: var(--bb-lineheight-caption-c2);
+}
+
+.remove {
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  border: none;
+  border-radius: var(--bb-radius-8);
+  background: var(--bb-bg-secondary);
+  color: var(--bb-text-secondary);
+  line-height: 1;
+  cursor: pointer;
+
+  &:hover {
+    background: var(--bb-bg-secondary-hover);
+  }
+}
+
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--bb-spacing-s);
+  border-top: 1px solid var(--bb-border-quaternary);
+  padding-top: var(--bb-spacing-s);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--bb-spacing-xs);
+  max-height: 220px;
+  overflow-y: auto;
+}
+
+.tile {
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  border: 1px solid var(--bb-border-quaternary);
+  border-radius: var(--bb-radius-8);
+  padding: 0;
+  background: var(--bb-bg-primary);
+  cursor: pointer;
+
+  &:hover {
+    border-color: var(--bb-brand-default);
+  }
+}
+
+.tileImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.hint {
+  margin: 0;
+  color: var(--bb-text-tertiary);
+  font-family: var(--bb-fontfamily-caption);
+  font-size: var(--bb-fontsize-caption-c1);
+  line-height: var(--bb-lineheight-caption-c1);
+}
+
+.manual {
+  display: flex;
+  flex-direction: column;
+  gap: var(--bb-spacing-xs);
+  color: var(--bb-text-tertiary);
+  font-family: var(--bb-fontfamily-caption);
+  font-size: var(--bb-fontsize-caption-c1);
+  line-height: var(--bb-lineheight-caption-c1);
+}
+
+.input {
+  border: 1px solid var(--bb-border-quaternary);
+  border-radius: var(--bb-radius-8);
+  padding: var(--bb-spacing-s);
+  background: var(--bb-bg-white-solid);
+  color: var(--bb-text-primary);
+  font-family: var(--bb-fontfamily-paragraph);
+  font-size: var(--bb-fontsize-paragraph-p4);
+  line-height: var(--bb-lineheight-paragraph-p4);
+}

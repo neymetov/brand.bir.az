@@ -1,0 +1,19 @@
+.anchorList {
+  position: sticky;
+  top: var(--bb-spacing-xl);
+  flex: 1 1 0;
+  min-width: 200px;
+  align-self: flex-start;
+  display: flex;
+  flex-direction: column;
+}
+
+// На узком экране якорного списка нет (решение пользователя, 2026-08-08):
+// он занимал бы половину ширины ради дублирования заголовков, которые и так
+// видны при прокрутке. Скрытие через display: none заодно убирает его из
+// дерева доступности — фантомной навигации для скринридера не остаётся.
+@media (width <= 767px) {
+  .anchorList {
+    display: none;
+  }
+}

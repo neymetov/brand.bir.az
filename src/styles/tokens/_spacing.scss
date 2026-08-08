@@ -1,0 +1,49 @@
+// ============================================================================
+// BirDS Core — Spacing
+// Source: Figma "DEMO | BirDS Core" → collection "Spacing" (см. radius-spacing-raw.json)
+// ---
+// 4 РЕЖИМА (Mobile/Tablet/Desktop/Desktop+, см. docs/PROMPT.md §5). Точные
+// пиксельные брейкпоинты для переключения режимов НЕ подтверждены
+// пользователем (docs/OPEN_QUESTIONS.md #7) — поэтому здесь пока только
+// значения режима Desktop (совпадает с шириной макета brand.bir.az, 1440px).
+// XL/2XL/3XL/4XL реально отличаются между режимами в сырых данных — когда
+// брейкпоинты подтвердятся, раскомментировать и заполнить media-блоки ниже.
+// ============================================================================
+
+:root {
+  --bb-spacing-0: 0px;
+  --bb-spacing-xxs: 2px;
+  --bb-spacing-xs: 4px;
+  --bb-spacing-s: 8px;
+  --bb-spacing-m: 12px;
+  --bb-spacing-l: 16px;
+  --bb-spacing-xl: 24px;
+  --bb-spacing-2xl: 32px;
+  --bb-spacing-3xl: 48px;
+  --bb-spacing-4xl: 80px;
+
+  // ⚠️ "Spacing/margin" (16 → 189 → 341 между режимами) НЕ включён в общую
+  // шкалу — смысл токена не подтверждён у дизайнеров (docs/OPEN_QUESTIONS.md
+  // #4), вероятно это боковой отступ страницы, а не spacing-шаг.
+}
+
+// Режим Mobile. Включён по макету «Login / mobile» (Figma node 282:3324):
+// заложенные в него отступы — 20 / 24 / 32 — это ровно строки XL / 2XL / 3XL
+// режима Mobile из radius-spacing-raw.json, то есть макет нарисован в этом
+// режиме, а не произвольными числами.
+// ---
+// Граница 767px — НАША, у дизайнеров не подтверждена (docs/OPEN_QUESTIONS.md
+// #7): сам фрейм нарисован в 375px, а с какой ширины режим начинается — в
+// переменных Figma не хранится. 767px выбран как общепринятая граница
+// «телефон / планшет» и как раз ниже 768px, где обычно начинается Tablet.
+@media (width <= 767px) {
+  :root {
+    --bb-spacing-xl: 20px;
+    --bb-spacing-2xl: 24px;
+    --bb-spacing-3xl: 32px;
+    --bb-spacing-4xl: 48px;
+  }
+}
+
+// @media (min-width: ???px) { :root { --bb-spacing-xl: 24px; ... } } // Tablet
+// @media (min-width: ???px) { :root { --bb-spacing-xl: 32px; ... } } // Desktop+

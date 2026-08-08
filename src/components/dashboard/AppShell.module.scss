@@ -1,0 +1,22 @@
+.shell {
+  min-height: 100vh;
+  background: var(--bb-bg-primary);
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  gap: var(--bb-spacing-xl);
+  margin-left: 280px;
+  padding: var(--bb-spacing-xl);
+}
+
+// На узком экране сайдбара нет — отступ под него убирается, а снизу
+// освобождается место под плавающую панель (62px + отступы), иначе она
+// накрывала бы конец страницы.
+@media (width <= 767px) {
+  .main {
+    margin-left: 0;
+    padding: var(--bb-spacing-l) var(--bb-spacing-l) 110px;
+  }
+}

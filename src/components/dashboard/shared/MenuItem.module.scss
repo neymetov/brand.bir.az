@@ -1,0 +1,65 @@
+.item {
+  display: flex;
+  align-items: center;
+  gap: var(--bb-spacing-s);
+  width: 100%;
+  color: var(--bb-text-primary);
+  text-decoration: none;
+  font-family: var(--bb-fontfamily-label);
+  font-weight: 500;
+  transition: background-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.nav {
+  padding: var(--bb-spacing-m) var(--bb-spacing-s);
+  font-size: var(--bb-fontsize-label-l4);
+  line-height: var(--bb-lineheight-label-l4);
+  // Подтверждено пользователем 2026-08 — 8px, не radius-full.
+  border-radius: var(--bb-radius-8);
+
+  &:hover {
+    background: var(--bb-bg-secondary);
+  }
+
+  // Текущая открытая страница — белый фон + мягкая тень (Figma node 284:3469,
+  // effect "dynamic_menu_item": 0px 2px 4px rgba(205,208,213,0.35)).
+  // Активность определяет Sidebar по текущему адресу.
+  // ---
+  // Тень остаётся и на hover: иначе активный пункт под курсором терял бы
+  // отличие от соседей — ровно ту подсказку, ради которой он белый.
+  &.active {
+    background: var(--bb-bg-white-solid);
+    box-shadow: 0 2px 4px rgb(205 208 213 / 35%);
+  }
+}
+
+.anchor {
+  padding: var(--bb-spacing-m) var(--bb-spacing-l);
+  font-size: var(--bb-fontsize-label-l4);
+  line-height: var(--bb-lineheight-label-l4);
+  color: var(--bb-text-tertiary);
+  border-radius: var(--bb-radius-full);
+
+  &:hover {
+    background: var(--bb-bg-secondary);
+  }
+
+  &.active {
+    color: var(--bb-text-primary);
+  }
+}
+
+.label {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.arrow {
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+
+.arrowVisible {
+  opacity: 1;
+}

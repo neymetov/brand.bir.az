@@ -1,0 +1,42 @@
+.divider,
+.gap {
+  width: 100%;
+  border: none;
+}
+
+.divider {
+  height: 1px;
+  margin: 0;
+  background: var(--bb-border-quaternary);
+
+  // Отступы — внешние (margin), а не padding: у линии высота 1px, и
+  // «воздух» вокруг неё должен раздвигать соседние блоки, а не растягивать
+  // сам разделитель.
+  &.compact {
+    margin-block: var(--bb-spacing-s);
+  }
+
+  &.regular {
+    margin-block: var(--bb-spacing-l);
+  }
+
+  &.roomy {
+    margin-block: var(--bb-spacing-2xl);
+  }
+}
+
+// Вариант без линии: только промежуток. Высота = удвоенный отступ, чтобы
+// пустой разделитель занимал столько же места, сколько с линией.
+.gap {
+  &.compact {
+    height: calc(var(--bb-spacing-s) * 2);
+  }
+
+  &.regular {
+    height: calc(var(--bb-spacing-l) * 2);
+  }
+
+  &.roomy {
+    height: calc(var(--bb-spacing-2xl) * 2);
+  }
+}

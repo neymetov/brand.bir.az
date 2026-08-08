@@ -1,0 +1,10 @@
+.drawer {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--bb-spacing-l);
+  width: 100%;
+  // 32px, а не 24px (xl) как в Figma — решение пользователя, 2026-08.
+  padding: var(--bb-spacing-2xl);
+  border-radius: var(--bb-radius-20);
+  background: var(--bb-bg-white-solid);
+}

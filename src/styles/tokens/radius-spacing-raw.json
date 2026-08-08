@@ -1,0 +1,38 @@
+{
+  "_source": "Figma file YeBRG0Jc6jKPdCh8BE98L1 (BirDS Core), collections \"Radius\" и \"Spacing\", extracted 2026-08-05 via figma.variables API",
+
+  "radius": {
+    "_note": "Один режим (Mode 1) — радиус не отзывчивый, не меняется по брейкпоинтам. Подтверждает память: Radius/6 и Radius/80 отсутствуют (видимо, уже удалены), Radius/32 присутствует (добавлен).",
+    "None": 0,
+    "4": 4,
+    "8": 8,
+    "12": 12,
+    "20": 20,
+    "32": 32,
+    "48": 48,
+    "Full": 999
+  },
+
+  "spacing": {
+    "_note": "4 режима, как и Typography — то же расхождение с 3 брейкпоинтами из CLAUDE.md, см. openQuestions в typography-raw.json. Spacing/margin сильно скачет между режимами (16 → 189 → 341) — похоже на боковой отступ контейнера страницы, а не обычный spacing-токен; стоит подтвердить его смысл.",
+    "modeMapping": {
+      "Desktop": "7:1",
+      "Mobile": "108:0",
+      "Tablet": "1761:2",
+      "Desktop+": "1761:1"
+    },
+    "values": {
+      "0": { "Desktop": 0, "Mobile": 0, "Tablet": 0, "Desktop+": 0 },
+      "XXS": { "Desktop": 2, "Mobile": 2, "Tablet": 2, "Desktop+": 2 },
+      "XS": { "Desktop": 4, "Mobile": 4, "Tablet": 4, "Desktop+": 4 },
+      "S": { "Desktop": 8, "Mobile": 8, "Tablet": 8, "Desktop+": 8 },
+      "M": { "Desktop": 12, "Mobile": 12, "Tablet": 12, "Desktop+": 12 },
+      "L": { "Desktop": 16, "Mobile": 16, "Tablet": 16, "Desktop+": 16 },
+      "XL": { "Desktop": 24, "Mobile": 20, "Tablet": 24, "Desktop+": 32 },
+      "2XL": { "Desktop": 32, "Mobile": 24, "Tablet": 28, "Desktop+": 40 },
+      "3XL": { "Desktop": 48, "Mobile": 32, "Tablet": 36, "Desktop+": 60 },
+      "4XL": { "Desktop": 80, "Mobile": 48, "Tablet": 48, "Desktop+": 100 },
+      "margin": { "Desktop": 189, "Mobile": 16, "Tablet": 24, "Desktop+": 341 }
+    }
+  }
+}

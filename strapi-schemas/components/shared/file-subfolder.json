@@ -1,0 +1,20 @@
+{
+  "collectionName": "components_shared_file_subfolders",
+  "info": {
+    "displayName": "File subfolder",
+    "description": "Вложенная папка второго уровня. Существует отдельным компонентом, а НЕ ссылкой на file-folder, потому что компонент Strapi не может содержать сам себя — рекурсию в CMS не выразить (см. docs/OPEN_QUESTIONS.md #68)."
+  },
+  "options": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": false
+    },
+    "files": {
+      "type": "component",
+      "repeatable": true,
+      "component": "shared.file-entry",
+      "required": false
+    }
+  }
+}

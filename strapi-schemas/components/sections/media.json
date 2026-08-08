@@ -1,0 +1,27 @@
+{
+  "collectionName": "components_sections_media",
+  "info": {
+    "displayName": "Media",
+    "description": "Изображения: одно 16:9, пара 1:1, либо карусель того и другого. Соответствует блоку MediaBlock (src/components/blocks/MediaBlock)."
+  },
+  "options": {},
+  "attributes": {
+    "layout": {
+      "type": "enumeration",
+      "enum": ["wide", "pair"],
+      "default": "wide",
+      "required": true
+    },
+    "carousel": {
+      "type": "boolean",
+      "default": false,
+      "required": true
+    },
+    "images": {
+      "type": "media",
+      "multiple": true,
+      "required": false,
+      "allowedTypes": ["images"]
+    }
+  }
+}

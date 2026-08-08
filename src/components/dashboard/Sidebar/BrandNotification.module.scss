@@ -1,0 +1,20 @@
+.notification {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--bb-spacing-s);
+  width: 100%;
+  padding: var(--bb-spacing-s);
+  border-radius: var(--bb-radius-12);
+  background: var(--bb-bg-secondary);
+}
+
+.message {
+  margin: 0;
+  width: 100%;
+  color: var(--bb-text-primary);
+  font-family: var(--bb-fontfamily-paragraph);
+  font-weight: 500;
+  font-size: var(--bb-fontsize-paragraph-p5);
+  line-height: var(--bb-lineheight-paragraph-p5);
+}

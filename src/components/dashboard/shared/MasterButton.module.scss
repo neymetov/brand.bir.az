@@ -1,0 +1,47 @@
+.button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--bb-spacing-s);
+  width: 100%;
+  border: none;
+  border-radius: var(--bb-radius-12);
+  padding: var(--bb-spacing-m);
+  font-family: var(--bb-fontfamily-label);
+  font-size: var(--bb-fontsize-label-l3);
+  line-height: var(--bb-lineheight-label-l3);
+  font-weight: 500;
+  color: var(--bb-text-secondary);
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.label {
+  white-space: nowrap;
+}
+
+.tertiary {
+  background: var(--bb-bg-tertiary);
+  box-shadow: 0 2px 2px rgb(205 208 213 / 35%); // Figma "dynamic_menu_item" effect
+
+  &:hover {
+    background: var(--bb-bg-secondary-hover);
+  }
+}
+
+.secondary {
+  background: var(--bb-bg-secondary);
+
+  &:hover {
+    background: var(--bb-bg-secondary-hover);
+  }
+}
+
+.ghost {
+  background: transparent;
+  justify-content: flex-start;
+
+  &:hover {
+    background: var(--bb-bg-secondary-hover);
+  }
+}

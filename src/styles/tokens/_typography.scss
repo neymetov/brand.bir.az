@@ -1,0 +1,66 @@
+// ============================================================================
+// BirDS Core — Typography
+// Source: Figma "DEMO | BirDS Core" → collection "Typography" (см.
+// typography-raw.json). Значения режима Desktop (см. §5/_spacing.scss —
+// тот же открытый вопрос по брейкпоинтам).
+// ---
+// Label/L1-L4 и Caption/C1-C2 одинаковы во всех 4 режимах в сырых данных —
+// не ошибка переноса, это так в источнике (docs/OPEN_QUESTIONS.md #5).
+// ============================================================================
+
+:root {
+  // Families
+  --bb-fontfamily-display: 'HAL Matex Variable', sans-serif;
+  --bb-fontfamily-heading: 'HAL Matex Variable', sans-serif;
+  --bb-fontfamily-paragraph: 'Inter', sans-serif;
+  --bb-fontfamily-label: 'Inter', sans-serif;
+  --bb-fontfamily-caption: 'Inter', sans-serif;
+
+  // Display
+  --bb-fontsize-display-d1: 96px;
+  --bb-lineheight-display-d1: 104px;
+  --bb-fontsize-display-d2: 56px;
+  --bb-lineheight-display-d2: 64px;
+
+  // Heading
+  --bb-fontsize-heading-h1: 40px;
+  --bb-lineheight-heading-h1: 44px;
+  --bb-fontsize-heading-h2: 32px;
+  --bb-lineheight-heading-h2: 36px;
+  --bb-fontsize-heading-h3: 28px;
+  --bb-lineheight-heading-h3: 32px;
+  --bb-fontsize-heading-h4: 24px;
+  --bb-lineheight-heading-h4: 28px;
+  --bb-fontsize-heading-h5: 20px;
+  --bb-lineheight-heading-h5: 24px;
+  --bb-fontsize-heading-h6: 18px;
+  --bb-lineheight-heading-h6: 22px;
+
+  // Paragraph
+  --bb-fontsize-paragraph-p1: 20px;
+  --bb-lineheight-paragraph-p1: 26px;
+  --bb-fontsize-paragraph-p2: 18px;
+  --bb-lineheight-paragraph-p2: 24px;
+  --bb-fontsize-paragraph-p3: 16px;
+  --bb-lineheight-paragraph-p3: 22px;
+  --bb-fontsize-paragraph-p4: 14px;
+  --bb-lineheight-paragraph-p4: 20px;
+  --bb-fontsize-paragraph-p5: 12px;
+  --bb-lineheight-paragraph-p5: 16px;
+
+  // Label
+  --bb-fontsize-label-l1: 20px;
+  --bb-lineheight-label-l1: 22px;
+  --bb-fontsize-label-l2: 18px;
+  --bb-lineheight-label-l2: 20px;
+  --bb-fontsize-label-l3: 16px;
+  --bb-lineheight-label-l3: 20px;
+  --bb-fontsize-label-l4: 14px;
+  --bb-lineheight-label-l4: 18px;
+
+  // Caption
+  --bb-fontsize-caption-c1: 12px;
+  --bb-lineheight-caption-c1: 14px;
+  --bb-fontsize-caption-c2: 10px;
+  --bb-lineheight-caption-c2: 12px;
+}

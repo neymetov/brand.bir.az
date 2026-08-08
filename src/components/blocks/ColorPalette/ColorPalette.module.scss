@@ -1,0 +1,105 @@
+.palette {
+  display: flex;
+  flex-direction: column;
+  gap: var(--bb-spacing-xl);
+  width: 100%;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+}
+
+.title {
+  margin: 0;
+  color: var(--bb-text-primary);
+  font-family: var(--bb-fontfamily-heading);
+  font-size: var(--bb-fontsize-heading-h1);
+  line-height: var(--bb-lineheight-heading-h1);
+  letter-spacing: -0.02em;
+  font-weight: 500;
+}
+
+.description {
+  margin: 0;
+  color: var(--bb-text-secondary);
+  font-family: var(--bb-fontfamily-paragraph);
+  font-size: var(--bb-fontsize-paragraph-p2);
+  line-height: var(--bb-lineheight-paragraph-p2);
+}
+
+.grid {
+  display: grid;
+  gap: var(--bb-spacing-l);
+}
+
+// Из макета: крупные карточки идут по 3 в ряд, мелкие — по 4.
+.big {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.small {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: var(--bb-spacing-l);
+  aspect-ratio: 1 / 1;
+  padding: var(--bb-spacing-l);
+  border: 1px solid var(--bb-border-quaternary);
+  border-radius: var(--bb-radius-12);
+
+  // Подписи читаются поверх произвольного цвета образца, поэтому их тон
+  // выбирается по яркости фона (см. readableTextColor в types.ts), а не
+  // задаётся жёстко белым, как в макете.
+  color: var(--bb-text-white);
+
+  &[data-tone='dark'] {
+    color: var(--bb-text-primary);
+  }
+}
+
+.name {
+  margin: 0;
+  overflow: hidden;
+  font-family: var(--bb-fontfamily-paragraph);
+  font-size: var(--bb-fontsize-paragraph-p3);
+  line-height: var(--bb-lineheight-paragraph-p3);
+  font-weight: 400;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.formats {
+  display: flex;
+  flex-direction: column;
+  gap: var(--bb-spacing-xs);
+  margin: 0;
+}
+
+.format {
+  display: flex;
+  align-items: center;
+  gap: var(--bb-spacing-s);
+  min-width: 0;
+}
+
+.formatLabel {
+  flex-shrink: 0;
+  font-family: var(--bb-fontfamily-paragraph);
+  font-size: var(--bb-fontsize-paragraph-p4);
+  line-height: var(--bb-lineheight-paragraph-p4);
+}
+
+.formatValue {
+  margin: 0;
+  overflow: hidden;
+  font-family: var(--bb-fontfamily-paragraph);
+  font-size: var(--bb-fontsize-paragraph-p4);
+  line-height: var(--bb-lineheight-paragraph-p4);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

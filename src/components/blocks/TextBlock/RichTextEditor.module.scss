@@ -1,0 +1,95 @@
+.editor {
+  display: flex;
+  flex-direction: column;
+  gap: var(--bb-spacing-xs);
+}
+
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--bb-spacing-xxs);
+  padding: var(--bb-spacing-xs);
+  border: 1px solid var(--bb-border-quaternary);
+  border-radius: var(--bb-radius-8);
+  background: var(--bb-bg-primary);
+}
+
+.tool {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 26px;
+  height: 26px;
+  padding: 0 var(--bb-spacing-xxs);
+  border: none;
+  border-radius: var(--bb-radius-4);
+  background: transparent;
+  color: var(--bb-text-secondary);
+  font-family: var(--bb-fontfamily-label);
+  font-size: var(--bb-fontsize-label-l4);
+  line-height: 1;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+
+  &:hover {
+    background: var(--bb-bg-secondary);
+  }
+}
+
+.separator {
+  width: 1px;
+  height: 18px;
+  background: var(--bb-border-quaternary);
+}
+
+.bold {
+  font-weight: 700;
+}
+
+.italic {
+  font-style: italic;
+}
+
+.underline {
+  text-decoration: underline;
+}
+
+.strike {
+  text-decoration: line-through;
+}
+
+.surface {
+  min-height: 180px;
+  max-height: 320px;
+  overflow-y: auto;
+  padding: var(--bb-spacing-s);
+  border: 1px solid var(--bb-border-quaternary);
+  border-radius: var(--bb-radius-8);
+  background: var(--bb-bg-white-solid);
+  color: var(--bb-text-primary);
+  font-family: var(--bb-fontfamily-paragraph);
+  font-size: var(--bb-fontsize-paragraph-p4);
+  line-height: var(--bb-lineheight-paragraph-p4);
+
+  &:focus {
+    outline: 2px solid var(--bb-brand-default);
+    outline-offset: -1px;
+  }
+
+  // Внутри редактора текст должен выглядеть так же, как на странице,
+  // иначе админ не поймёт, что получится.
+  p {
+    margin: 0 0 var(--bb-spacing-s);
+  }
+
+  a {
+    color: var(--bb-text-info);
+  }
+
+  code {
+    padding: 0 var(--bb-spacing-xxs);
+    border-radius: var(--bb-radius-4);
+    background: var(--bb-bg-secondary);
+  }
+}

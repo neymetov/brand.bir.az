@@ -1,0 +1,64 @@
+.gallery {
+  display: flex;
+  flex-direction: column;
+  gap: var(--bb-spacing-l);
+  width: 100%;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+}
+
+.title {
+  margin: 0;
+  color: var(--bb-text-primary);
+  font-family: var(--bb-fontfamily-heading);
+  font-size: var(--bb-fontsize-heading-h1);
+  line-height: var(--bb-lineheight-heading-h1);
+  letter-spacing: -0.02em;
+  font-weight: 500;
+}
+
+.description {
+  margin: 0;
+  color: var(--bb-text-secondary);
+  font-family: var(--bb-fontfamily-paragraph);
+  font-size: var(--bb-fontsize-paragraph-p2);
+  line-height: var(--bb-lineheight-paragraph-p2);
+}
+
+.grid {
+  display: grid;
+  // 4 в ряд, а не 3 как в макете — решение пользователя, 2026-08.
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--bb-spacing-l);
+}
+
+// Карточка — кнопка: клик открывает увеличенный просмотр, поэтому это
+// интерактивный элемент, а не картинка с обработчиком.
+.card {
+  position: relative;
+  aspect-ratio: 262 / 567;
+  overflow: hidden;
+  border: none;
+  border-radius: var(--bb-radius-12);
+  padding: 0;
+  background: repeating-conic-gradient(
+      var(--bb-bg-secondary) 0% 25%,
+      var(--bb-bg-tertiary) 0% 50%
+    )
+    0 0 / 24px 24px;
+  cursor: zoom-in;
+  transition: opacity 0.15s ease;
+
+  &:hover {
+    opacity: 0.9;
+  }
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}

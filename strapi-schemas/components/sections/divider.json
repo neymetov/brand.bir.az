@@ -1,0 +1,21 @@
+{
+  "collectionName": "components_sections_dividers",
+  "info": {
+    "displayName": "Divider",
+    "description": "Разделитель между блоками: линия с отступами либо просто промежуток. Соответствует блоку Divider (src/components/blocks/Divider)."
+  },
+  "options": {},
+  "attributes": {
+    "spacing": {
+      "type": "enumeration",
+      "enum": ["compact", "regular", "roomy"],
+      "default": "compact",
+      "required": true
+    },
+    "line": {
+      "type": "boolean",
+      "default": true,
+      "required": true
+    }
+  }
+}

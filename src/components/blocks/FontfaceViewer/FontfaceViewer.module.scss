@@ -1,0 +1,97 @@
+.viewer {
+  display: flex;
+  flex-direction: column;
+  gap: var(--bb-spacing-2xl);
+  width: 100%;
+}
+
+.item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--bb-spacing-l);
+  width: 100%;
+}
+
+.infoBar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--bb-spacing-l);
+  min-height: 32px;
+}
+
+.group {
+  display: flex;
+  align-items: center;
+  gap: var(--bb-spacing-l);
+}
+
+.title {
+  color: var(--bb-text-secondary);
+  font-family: var(--bb-fontfamily-paragraph);
+  font-size: var(--bb-fontsize-paragraph-p2);
+  line-height: var(--bb-lineheight-paragraph-p2);
+}
+
+.divider {
+  color: var(--bb-text-quaternary);
+  font-family: var(--bb-fontfamily-paragraph);
+  font-size: var(--bb-fontsize-paragraph-p2);
+  line-height: var(--bb-lineheight-paragraph-p2);
+}
+
+.badge {
+  display: flex;
+  align-items: center;
+  gap: var(--bb-spacing-s);
+}
+
+.badgeLabel {
+  color: var(--bb-text-secondary);
+  font-family: var(--bb-fontfamily-paragraph);
+  font-size: var(--bb-fontsize-paragraph-p2);
+  line-height: var(--bb-lineheight-paragraph-p2);
+}
+
+.badgeValue {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 36px;
+  height: 32px;
+  border: none;
+  border-radius: var(--bb-radius-12);
+  padding: 0 var(--bb-spacing-xs);
+  background: var(--bb-bg-tertiary);
+  color: var(--bb-text-secondary);
+  font-family: var(--bb-fontfamily-paragraph);
+  font-size: var(--bb-fontsize-paragraph-p3);
+  line-height: var(--bb-lineheight-paragraph-p3);
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease;
+
+  &:hover {
+    background: var(--bb-bg-secondary-hover);
+  }
+
+  &[data-copied] {
+    background: var(--bb-brand-default);
+    color: var(--bb-text-white);
+  }
+}
+
+.warning {
+  color: var(--bb-text-error);
+  font-family: var(--bb-fontfamily-caption);
+  font-size: var(--bb-fontsize-caption-c1);
+  line-height: var(--bb-lineheight-caption-c1);
+}
+
+.fontface {
+  width: 100%;
+  overflow-wrap: anywhere;
+  color: var(--bb-text-primary);
+
+  // Кегль/интерлиньяж/трекинг приходят инлайном из настроек блока —
+  // это и есть предмет показа, фиксировать их в CSS нельзя.
+}

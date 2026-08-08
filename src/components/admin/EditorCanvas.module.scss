@@ -1,0 +1,9 @@
+.canvas {
+  display: flex;
+  flex-direction: column;
+  gap: var(--bb-spacing-3xl);
+  min-height: 400px;
+  padding: var(--bb-spacing-2xl);
+  border-radius: var(--bb-radius-20);
+  background: var(--bb-bg-white-solid);
+}

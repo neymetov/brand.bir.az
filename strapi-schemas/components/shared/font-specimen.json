@@ -1,0 +1,44 @@
+{
+  "collectionName": "components_shared_font_specimens",
+  "info": {
+    "displayName": "Font specimen",
+    "description": "Одно начертание: файл шрифта из медиатеки + параметры отображения."
+  },
+  "options": {},
+  "attributes": {
+    "family": {
+      "type": "string",
+      "required": false
+    },
+    "styleName": {
+      "type": "string",
+      "required": false
+    },
+    "font": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["files"]
+    },
+    "weight": {
+      "type": "integer",
+      "required": false
+    },
+    "fontSize": {
+      "type": "integer",
+      "required": false
+    },
+    "lineHeight": {
+      "type": "integer",
+      "required": false
+    },
+    "letterSpacing": {
+      "type": "decimal",
+      "required": false
+    },
+    "sample": {
+      "type": "string",
+      "required": false
+    }
+  }
+}

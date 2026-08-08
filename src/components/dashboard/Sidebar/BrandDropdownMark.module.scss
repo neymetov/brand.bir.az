@@ -1,0 +1,21 @@
+.mark {
+  position: relative;
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  width: 32px;
+  height: 32px;
+
+  // 8px у ВСЕХ знаков — по решению пользователя (2026-08). В Figma
+  // скругления различались по типу бренда (fintech 13px, партнёрские
+  // 4.741px), из-за чего список выглядел разнородным.
+  border-radius: var(--bb-radius-8);
+}
+
+.glyph {
+  width: 60%;
+  height: 60%;
+  object-fit: contain;
+}

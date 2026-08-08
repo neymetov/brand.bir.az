@@ -1,0 +1,24 @@
+{
+  "collectionName": "components_sections_app_screenshots",
+  "info": {
+    "displayName": "App screenshots",
+    "description": "Галерея скриншотов приложений: сетка, увеличение в оверлее, листание и скачивание. Соответствует блоку AppScreenshots."
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": false
+    },
+    "description": {
+      "type": "text",
+      "required": false
+    },
+    "screenshots": {
+      "type": "media",
+      "multiple": true,
+      "required": false,
+      "allowedTypes": ["images"]
+    }
+  }
+}

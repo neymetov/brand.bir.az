@@ -1,0 +1,104 @@
+// Карточка файла и её сетка — общие для файлового менеджера и блока «Файлы».
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--bb-spacing-l);
+}
+
+// Силуэт с загнутым углом — маска, а не картинка: заливка берётся из токена,
+// и вырез остаётся вырезом при любой ширине колонки.
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  aspect-ratio: 1;
+  padding: var(--bb-spacing-xl);
+  text-align: left;
+
+  &::before {
+    position: absolute;
+    z-index: 0;
+    inset: 0;
+    background: var(--bb-bg-primary);
+    content: '';
+    mask-image: url('/icons/dashboard/file-card.svg');
+    mask-repeat: no-repeat;
+    // 100% 100%, а не auto: силуэт обязан растянуться на всю карточку.
+    mask-size: 100% 100%;
+
+    /* stylelint-disable property-no-vendor-prefix -- Safari до 15.4 знает
+       только -webkit-mask-* */
+    -webkit-mask-image: url('/icons/dashboard/file-card.svg');
+    -webkit-mask-repeat: no-repeat;
+    -webkit-mask-size: 100% 100%;
+    /* stylelint-enable property-no-vendor-prefix */
+  }
+
+  > * {
+    position: relative;
+    z-index: 1;
+  }
+}
+
+.icon {
+  color: var(--bb-text-tertiary);
+}
+
+.footer {
+  display: flex;
+  flex-direction: column;
+  gap: var(--bb-spacing-l);
+}
+
+.name {
+  // Длинное имя переносится по словам и обрезается двумя строками:
+  // «Birbank-white-Logotype.pdf» в одну строку не помещается ни при какой
+  // ширине колонки.
+  display: -webkit-box;
+  overflow: hidden;
+  margin: 0;
+  color: var(--bb-text-primary);
+  font-family: var(--bb-fontfamily-heading);
+  font-size: var(--bb-fontsize-heading-h5);
+  font-weight: 500;
+  line-height: var(--bb-lineheight-heading-h5);
+  letter-spacing: -0.01em;
+  overflow-wrap: anywhere;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.download {
+  display: flex;
+  gap: var(--bb-spacing-s);
+  align-items: center;
+  justify-content: center;
+  padding: var(--bb-spacing-m);
+  border: 1px solid var(--bb-border-primary);
+  border-radius: var(--bb-radius-12);
+  color: var(--bb-text-secondary);
+  font-family: var(--bb-fontfamily-label);
+  font-size: var(--bb-fontsize-label-l3);
+  font-weight: 500;
+  line-height: var(--bb-lineheight-label-l3);
+  text-decoration: none;
+  transition: background-color 0.15s ease;
+
+  &:hover {
+    background: var(--bb-bg-secondary);
+  }
+}
+
+// Четыре колонки на телефоне превращают карточку в марку.
+@media (width <= 767px) {
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (width <= 480px) {
+  .grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

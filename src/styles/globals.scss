@@ -1,0 +1,37 @@
+// Точка входа стилей сайта brand.bir.az. Сам сайт документации стилизуется
+// теми же --bb-* токенами, что и продакшн-компоненты ДС (см. §3.5).
+@use './tokens/colors';
+@use './tokens/radius';
+@use './tokens/spacing';
+@use './tokens/typography';
+
+:root {
+  color-scheme: light;
+}
+
+body {
+  margin: 0;
+  font-family: var(--bb-fontfamily-paragraph);
+  background: var(--bb-bg-primary);
+  color: var(--bb-text-primary);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+// Убирает дефолтный синий outline браузера на клик (не в макете ни у одного
+// интерактивного элемента) — но НЕ на клавиатурной навигации (:focus-visible
+// оставлен, доступность не приносим в жертву эстетике).
+a,
+button {
+  &:focus {
+    outline: none;
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--bb-brand-default);
+    outline-offset: 2px;
+  }
+}
+

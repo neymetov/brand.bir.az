@@ -1,0 +1,26 @@
+{
+  "collectionName": "components_shared_file_tabs",
+  "info": {
+    "displayName": "File tab",
+    "description": "Рубрика файлового менеджера: то, что показывается табом на верхнем уровне и первой крошкой внутри папки."
+  },
+  "options": {},
+  "attributes": {
+    "label": {
+      "type": "string",
+      "required": false
+    },
+    "folders": {
+      "type": "component",
+      "repeatable": true,
+      "component": "shared.file-folder",
+      "required": false
+    },
+    "files": {
+      "type": "component",
+      "repeatable": true,
+      "component": "shared.file-entry",
+      "required": false
+    }
+  }
+}

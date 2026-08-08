@@ -1,0 +1,25 @@
+.groupLabel {
+  display: flex;
+  align-items: center;
+  gap: var(--bb-spacing-s);
+  width: 100%;
+  border: none;
+  background: transparent;
+  // По вертикали больше, чем в Figma (там 0 — плашка ровно 16px): просьба
+  // пользователя, 2026-08 — нужен воздух вокруг chevron/подписи рубрики.
+  padding: var(--bb-spacing-s);
+  border-radius: var(--bb-radius-8);
+  color: var(--bb-text-tertiary);
+  font-family: var(--bb-fontfamily-caption);
+  font-size: var(--bb-fontsize-caption-c1);
+  line-height: var(--bb-lineheight-caption-c1);
+  cursor: pointer;
+
+  &:hover {
+    background: var(--bb-bg-secondary);
+  }
+}
+
+.chevronClosed {
+  transform: rotate(-90deg);
+}

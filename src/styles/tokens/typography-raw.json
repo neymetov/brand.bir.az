@@ -1,0 +1,64 @@
+{
+  "_source": "Figma file YeBRG0Jc6jKPdCh8BE98L1 (BirDS Core), collection \"Typography\", extracted 2026-08-05 via figma.variables API",
+  "_note": "Сырой дамп значений по режимам. НЕ переведено в SCSS-миксины — у меня нет реального _typography.scss как образца синтаксиса/именования функций, а придумывать его я не стал, чтобы не создать конвенцию, которая разойдётся с вашей.",
+  "modeMapping": {
+    "Desktop": "7:0",
+    "Mobile": "38:0",
+    "Tablet": "1824:0",
+    "Desktop+": "1800:1"
+  },
+  "fontFamilies": {
+    "Display": "HAL Matex Variable",
+    "Heading": "HAL Matex Variable",
+    "Paragraph": "Inter",
+    "Label": "Inter",
+    "Caption": "Inter"
+  },
+  "fontSize": {
+    "Display/D1": { "Desktop": 96, "Mobile": 44, "Tablet": 56, "Desktop+": 120 },
+    "Display/D2": { "Desktop": 56, "Mobile": 36, "Tablet": 36, "Desktop+": 72 },
+    "Heading/H1": { "Desktop": 40, "Mobile": 28, "Tablet": 28, "Desktop+": 48 },
+    "Heading/H2": { "Desktop": 32, "Mobile": 24, "Tablet": 24, "Desktop+": 40 },
+    "Heading/H3": { "Desktop": 28, "Mobile": 20, "Tablet": 20, "Desktop+": 36 },
+    "Heading/H4": { "Desktop": 24, "Mobile": 18, "Tablet": 18, "Desktop+": 30 },
+    "Heading/H5": { "Desktop": 20, "Mobile": 16, "Tablet": 16, "Desktop+": 24 },
+    "Heading/H6": { "Desktop": 18, "Mobile": 14, "Tablet": 14, "Desktop+": 22 },
+    "Paragraph/P1": { "Desktop": 20, "Mobile": 18, "Tablet": 18, "Desktop+": 24 },
+    "Paragraph/P2": { "Desktop": 18, "Mobile": 16, "Tablet": 16, "Desktop+": 22 },
+    "Paragraph/P3": { "Desktop": 16, "Mobile": 15, "Tablet": 15, "Desktop+": 18 },
+    "Paragraph/P4": { "Desktop": 14, "Mobile": 14, "Tablet": 14, "Desktop+": 16 },
+    "Paragraph/P5": { "Desktop": 12, "Mobile": 12, "Tablet": 12, "Desktop+": 12 },
+    "Label/L1": { "Desktop": 20, "Mobile": 20, "Tablet": 20, "Desktop+": 20 },
+    "Label/L2": { "Desktop": 18, "Mobile": 18, "Tablet": 18, "Desktop+": 18 },
+    "Label/L3": { "Desktop": 16, "Mobile": 16, "Tablet": 16, "Desktop+": 16 },
+    "Label/L4": { "Desktop": 14, "Mobile": 14, "Tablet": 14, "Desktop+": 14 },
+    "Caption/C1": { "Desktop": 12, "Mobile": 12, "Tablet": 12, "Desktop+": 12 },
+    "Caption/C2": { "Desktop": 10, "Mobile": 10, "Tablet": 10, "Desktop+": 12 }
+  },
+  "lineHeight": {
+    "Display/D1": { "Desktop": 104, "Mobile": 48, "Tablet": 64, "Desktop+": 128 },
+    "Display/D2": { "Desktop": 64, "Mobile": 40, "Tablet": 40, "Desktop+": 80 },
+    "Heading/H1": { "Desktop": 44, "Mobile": 32, "Tablet": 32, "Desktop+": 52 },
+    "Heading/H2": { "Desktop": 36, "Mobile": 28, "Tablet": 28, "Desktop+": 44 },
+    "Heading/H3": { "Desktop": 32, "Mobile": 24, "Tablet": 24, "Desktop+": 40 },
+    "Heading/H4": { "Desktop": 28, "Mobile": 22, "Tablet": 22, "Desktop+": 34 },
+    "Heading/H5": { "Desktop": 24, "Mobile": 20, "Tablet": 20, "Desktop+": 28 },
+    "Heading/H6": { "Desktop": 22, "Mobile": 18, "Tablet": 18, "Desktop+": 26 },
+    "Paragraph/P1": { "Desktop": 26, "Mobile": 24, "Tablet": 24, "Desktop+": 30 },
+    "Paragraph/P2": { "Desktop": 24, "Mobile": 22, "Tablet": 22, "Desktop+": 28 },
+    "Paragraph/P3": { "Desktop": 22, "Mobile": 21, "Tablet": 21, "Desktop+": 24 },
+    "Paragraph/P4": { "Desktop": 20, "Mobile": 20, "Tablet": 20, "Desktop+": 22 },
+    "Paragraph/P5": { "Desktop": 16, "Mobile": 16, "Tablet": 16, "Desktop+": 16 },
+    "Label/L1": { "Desktop": 22, "Mobile": 22, "Tablet": 22, "Desktop+": 22 },
+    "Label/L2": { "Desktop": 20, "Mobile": 20, "Tablet": 20, "Desktop+": 20 },
+    "Label/L3": { "Desktop": 20, "Mobile": 20, "Tablet": 20, "Desktop+": 20 },
+    "Label/L4": { "Desktop": 18, "Mobile": 18, "Tablet": 18, "Desktop+": 18 },
+    "Caption/C1": { "Desktop": 14, "Mobile": 14, "Tablet": 14, "Desktop+": 14 },
+    "Caption/C2": { "Desktop": 12, "Mobile": 12, "Tablet": 12, "Desktop+": 12 }
+  },
+  "openQuestions": [
+    "У вас в CLAUDE.md зафиксировано 3 брейкпоинта (960/1440/1920), но здесь 4 РЕЖИМА (Mobile/Tablet/Desktop/Desktop+) — как они мапятся на 3 брейкпоинта? Есть ли отдельный 4-й брейкпоинт для Desktop+, или Desktop+ это что-то другое (например, максимальная ширина контента, не отдельный breakpoint)?",
+    "Шаг Label/L1-L4 и Caption/C1-C2 не меняется между режимами (одинаковые значения на всех 4) — это осознанно (мелкий текст не масштabируется отзывчиво) или недосмотр в самой Figma?",
+    "В памяти упоминались шаги 'd1…c1-sm' из birds-tokens/_typography.scss (сокращённые алиасы) — как эти алиасы соотносятся с полными именами Display/D1, Caption/C1 и т.д.? Нужен реальный _typography.scss, чтобы подтвердить."
+  ]
+}

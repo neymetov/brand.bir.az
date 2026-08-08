@@ -1,0 +1,174 @@
+// Экран логина (Figma node 282:3272): фотография на весь экран, белая
+// карточка формы прижата к левому краю.
+
+.page {
+  display: flex;
+  align-items: center;
+  // 100dvh, а не 100vh: на мобильных Safari/Chrome строка адреса съедает часть
+  // 100vh, и нижний край карточки уезжал бы под неё.
+  min-height: 100dvh;
+  padding: var(--bb-spacing-0) var(--bb-spacing-4xl);
+  background-image: url('/images/login-background.jpg');
+  background-position: center;
+  background-size: cover;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--bb-spacing-2xl);
+  align-items: flex-start;
+  // Ширина из макета фиксированная, но на узком экране она должна ужиматься,
+  // иначе карточка вылезает за вьюпорт вместе с горизонтальной прокруткой.
+  width: 330px;
+  max-width: 100%;
+  padding: var(--bb-spacing-2xl);
+  border-radius: var(--bb-radius-20);
+  background: var(--bb-bg-white-solid);
+}
+
+.logo {
+  display: block;
+  flex-shrink: 0;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--bb-spacing-xl);
+  align-items: flex-start;
+  width: 100%;
+}
+
+.field {
+  display: flex;
+  gap: var(--bb-spacing-s);
+  align-items: center;
+  width: 100%;
+  min-height: 56px;
+  padding: var(--bb-spacing-s) var(--bb-spacing-l);
+  border-radius: var(--bb-radius-12);
+  background: var(--bb-bg-secondary);
+}
+
+.input {
+  flex: 1 0 0;
+  min-width: 0;
+  border: none;
+  background: transparent;
+  color: var(--bb-text-primary);
+  font-family: var(--bb-fontfamily-paragraph);
+  font-size: var(--bb-fontsize-paragraph-p4);
+  line-height: var(--bb-lineheight-paragraph-p4);
+
+  &::placeholder {
+    color: var(--bb-text-secondary);
+  }
+
+  // Рамка рисуется на всём поле, а не на самом <input>: обводка вокруг
+  // текста внутри серой плашки выглядела бы как второе поле.
+  &:focus {
+    outline: none;
+  }
+}
+
+.field:focus-within {
+  outline: 2px solid var(--bb-brand-default);
+  outline-offset: -2px;
+}
+
+.reveal {
+  display: flex;
+  flex-shrink: 0;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: var(--bb-text-secondary);
+  cursor: pointer;
+  transition: color 0.15s ease;
+
+  &:hover {
+    color: var(--bb-text-primary);
+  }
+}
+
+.submit {
+  display: flex;
+  gap: var(--bb-spacing-s);
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: var(--bb-spacing-l);
+  border: none;
+  border-radius: var(--bb-radius-12);
+  background: var(--bb-brand-default);
+  color: var(--bb-text-white);
+  font-family: var(--bb-fontfamily-label);
+  font-size: var(--bb-fontsize-label-l2);
+  font-weight: 500;
+  line-height: var(--bb-lineheight-label-l2);
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+
+  // :disabled стоит первым не по важности, а по специфичности: hover/active
+  // ниже уже исключают его через :not(), поэтому порядок ничего не ломает.
+  &:disabled {
+    background: var(--bb-brand-disabled);
+    cursor: default;
+  }
+
+  &:hover:not(:disabled) {
+    background: var(--bb-brand-hover);
+  }
+
+  &:active:not(:disabled) {
+    background: var(--bb-brand-pressed);
+  }
+}
+
+// Ошибки в макете нет, но без неё «Login» на неверный пароль выглядел бы как
+// зависшая кнопка. Место занимает только когда есть текст.
+.error {
+  margin: 0;
+  color: var(--bb-text-error);
+  font-family: var(--bb-fontfamily-paragraph);
+  font-size: var(--bb-fontsize-paragraph-p4);
+  line-height: var(--bb-lineheight-paragraph-p4);
+}
+
+.note {
+  margin: 0;
+  color: var(--bb-text-secondary);
+  font-family: var(--bb-fontfamily-paragraph);
+  font-size: var(--bb-fontsize-paragraph-p4);
+  line-height: var(--bb-lineheight-paragraph-p4);
+}
+
+// Мобильный макет (Figma node 282:3324): карточка перестаёт быть карточкой и
+// становится нижним листом — во всю ширину, прижата к низу, скруглены только
+// верхние углы, содержимое по центру. Фотография при этом та же самая (файл
+// байт в байт совпал с десктопным), меняется лишь кадрирование через `cover`.
+// ---
+// Граница та же, что у режима Mobile в токенах отступов, — иначе лист начал бы
+// собираться раньше или позже, чем меняются сами отступы.
+@media (width <= 767px) {
+  .page {
+    align-items: flex-end;
+    justify-content: center;
+    padding: var(--bb-spacing-0);
+  }
+
+  .card {
+    align-items: center;
+    width: 100%;
+    // Ширина листа задаётся экраном, а не макетом: 330px из десктопа оставили
+    // бы белые поля по бокам.
+    max-width: none;
+    padding: var(--bb-spacing-3xl) var(--bb-spacing-2xl);
+    border-radius: var(--bb-radius-32) var(--bb-radius-32) 0 0;
+  }
+
+  .note {
+    text-align: center;
+  }
+}

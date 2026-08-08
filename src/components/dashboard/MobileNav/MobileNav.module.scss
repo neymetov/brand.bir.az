@@ -1,0 +1,186 @@
+// Мобильная навигация (Figma node 289:5851). Появляется на той же границе,
+// что и мобильный режим отступов (см. tokens/_spacing.scss), — иначе панель
+// возникала бы раньше или позже, чем меняется вся остальная раскладка.
+.root {
+  position: fixed;
+  z-index: 20;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--bb-spacing-s) var(--bb-spacing-l) var(--bb-spacing-xl);
+  // Клики должны доходить до контента между листом и панелью.
+  pointer-events: none;
+
+  > * {
+    pointer-events: auto;
+  }
+}
+
+.bar {
+  display: flex;
+  width: 100%;
+  max-width: 296px;
+  height: 62px;
+  padding: var(--bb-spacing-xs);
+  border-radius: var(--bb-radius-full);
+  background: var(--bb-bg-white-solid);
+  box-shadow: 0 2px 4px rgb(205 208 213 / 35%);
+}
+
+.tab {
+  display: flex;
+  flex: 1 0 0;
+  flex-direction: column;
+  gap: var(--bb-spacing-xs);
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  padding: var(--bb-spacing-xxs);
+  border: none;
+  border-radius: var(--bb-radius-full);
+  background: transparent;
+  color: var(--bb-text-secondary);
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+// Кнопка с раскрытым листом: та же серая заливка, что у наведённого пункта
+// меню, — признак «этот список сейчас открыт».
+.tabOpen {
+  background: var(--bb-bg-secondary);
+}
+
+.tabLabel,
+.tabLabelStrong {
+  overflow: hidden;
+  max-width: 100%;
+  font-family: var(--bb-fontfamily-caption);
+  font-size: var(--bb-fontsize-caption-c2);
+  font-weight: 600;
+  line-height: var(--bb-lineheight-caption-c2);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+// Название бренда — основным цветом: это не действие, а то, где пользователь
+// сейчас находится.
+.tabLabelStrong {
+  color: var(--bb-text-primary);
+}
+
+.logoutIcon {
+  opacity: 0.5;
+}
+
+.brandMark {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  width: 24px;
+  height: 24px;
+  border-radius: var(--bb-radius-8);
+  background: var(--bb-brand-default);
+}
+
+.brandGlyph {
+  width: auto;
+  // 60%, как у знаков в сайдбаре и дропдауне — один и тот же логотип не должен
+  // отличаться масштабом между экранами.
+  height: 60%;
+}
+
+.sheet {
+  display: flex;
+  flex-direction: column;
+  gap: var(--bb-spacing-l);
+  width: 100%;
+  max-width: 343px;
+  // Лист не должен перекрывать весь экран: под ним видно, к какой странице он
+  // относится, а длинный список внутри прокручивается.
+  max-height: 60vh;
+  margin-bottom: var(--bb-spacing-s);
+  overflow-y: auto;
+  padding: var(--bb-spacing-s);
+  border-radius: var(--bb-radius-20);
+  background: var(--bb-bg-white-solid);
+  box-shadow: 0 14px 30px rgb(229 231 235 / 50%);
+  animation: sheet-in 0.16s ease-out;
+}
+
+.group {
+  display: flex;
+  flex-direction: column;
+}
+
+.groupLabel {
+  margin: 0;
+  padding: var(--bb-spacing-s);
+  color: var(--bb-text-tertiary);
+  font-family: var(--bb-fontfamily-caption);
+  font-size: var(--bb-fontsize-caption-c1);
+  font-weight: 400;
+  line-height: var(--bb-lineheight-caption-c1);
+}
+
+.brandList {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.brandRow {
+  display: flex;
+  gap: var(--bb-spacing-m);
+  align-items: center;
+  width: 100%;
+  padding: var(--bb-spacing-m);
+  border: none;
+  border-radius: var(--bb-radius-8);
+  background: transparent;
+  color: var(--bb-text-secondary);
+  font-family: var(--bb-fontfamily-label);
+  font-size: var(--bb-fontsize-label-l3);
+  line-height: var(--bb-lineheight-label-l3);
+  text-align: left;
+  cursor: pointer;
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  &[aria-current='true'] {
+    background: var(--bb-bg-primary);
+  }
+}
+
+@keyframes sheet-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sheet {
+    animation: none;
+  }
+}
+
+@media (width <= 767px) {
+  .root {
+    display: flex;
+  }
+}

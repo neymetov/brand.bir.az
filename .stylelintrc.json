@@ -1,0 +1,31 @@
+{
+  "extends": ["stylelint-config-standard-scss"],
+  "rules": {
+    "comment-empty-line-before": null,
+    "scss/double-slash-comment-empty-line-before": null,
+    "scss/at-import-partial-extension": "never",
+    "selector-class-pattern": [
+      "^[a-z][a-zA-Z0-9]*$",
+      {
+        "message": "CSS Modules: класс в camelCase, чтобы обращение из TS было styles.myClass без кавычек"
+      }
+    ],
+    "declaration-property-value-disallowed-list": {
+      "/^(color|background|background-color|border-color|fill|stroke)$/": [
+        "/^#/",
+        "/^rgb/",
+        "/^hsl/"
+      ]
+    }
+  },
+  "overrides": [
+    {
+      "comment": "Токены — единственное место, где допустимы сырые значения вместо var(--bb-*)",
+      "files": ["src/styles/tokens/**/*.scss"],
+      "rules": {
+        "declaration-property-value-disallowed-list": null
+      }
+    }
+  ]
+}
+

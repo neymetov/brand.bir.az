@@ -1,0 +1,65 @@
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--bb-spacing-xl);
+  width: 280px;
+  height: 100vh;
+  padding: var(--bb-spacing-xl);
+  background: var(--bb-bg-primary);
+}
+
+.header {
+  flex-shrink: 0;
+}
+
+.footer {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--bb-spacing-xl);
+}
+
+.scrollArea {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  // 16px между группами — вдвое меньше, чем было (32px, 2xl): просьба
+  // пользователя, 2026-08.
+  gap: var(--bb-spacing-l);
+  scrollbar-width: thin;
+  scrollbar-color: var(--bb-border-quaternary) transparent;
+
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: var(--bb-border-quaternary);
+    border-radius: var(--bb-radius-full);
+  }
+}
+
+.group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--bb-spacing-xs);
+}
+
+.groupItems {
+  display: flex;
+  flex-direction: column;
+}
+
+// На узком экране боковое меню уступает место плавающей панели
+// (MobileNav, Figma node 289:5851): 280px фиксированной ширины съели бы
+// почти весь телефонный экран.
+@media (width <= 767px) {
+  .sidebar {
+    display: none;
+  }
+}

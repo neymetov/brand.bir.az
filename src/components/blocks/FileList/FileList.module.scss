@@ -1,0 +1,41 @@
+// Блок «Файлы». Карточки и сетка — в shared/FileGrid, здесь только обвязка.
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--bb-spacing-2xl);
+  width: 100%;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+}
+
+.title {
+  margin: 0;
+  color: var(--bb-text-primary);
+  font-family: var(--bb-fontfamily-heading);
+  font-size: var(--bb-fontsize-heading-h1);
+  font-weight: 500;
+  line-height: var(--bb-lineheight-heading-h1);
+  letter-spacing: -0.02em;
+}
+
+.description {
+  color: var(--bb-text-secondary);
+  font-family: var(--bb-fontfamily-paragraph);
+  font-size: var(--bb-fontsize-paragraph-p2);
+  line-height: var(--bb-lineheight-paragraph-p2);
+
+  p {
+    margin: 0;
+  }
+}
+
+.empty {
+  margin: 0;
+  color: var(--bb-text-tertiary);
+  font-family: var(--bb-fontfamily-paragraph);
+  font-size: var(--bb-fontsize-paragraph-p3);
+  line-height: var(--bb-lineheight-paragraph-p3);
+}
