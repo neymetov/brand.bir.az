@@ -1,6 +1,6 @@
 import 'server-only';
 import type { DynamicZoneItem } from '@/lib/craft/strapiMapping';
-import type { FintechBrand } from '@/lib/brands';
+import type { BrandId } from '@/lib/brands';
 import { strapiFetch } from './client';
 import { contentPopulateQuery } from './populate';
 
@@ -23,7 +23,7 @@ interface StrapiOne<T> { readonly data: T }
 // приходят пустыми, и редактор молча теряет контент.
 
 export async function getPage(
-  brand: FintechBrand,
+  brand: BrandId,
   slug: string,
   options?: { readonly draft?: boolean },
 ): Promise<GuidelinePage | null> {
@@ -45,18 +45,21 @@ export async function getPage(
 }
 
 export interface SavePageInput {
-  readonly brand: FintechBrand;
+  readonly brand: BrandId;
   readonly slug: string;
   readonly title: string;
   readonly content: readonly DynamicZoneItem[];
+  /**
+   * Показать читателям сразу.
+   *
+   * Черновик пишется в любом случае: сначала сохраняется рабочая версия, и
+   * только потом, если попросили, публикуется. Так неудачная публикация не
+   * теряет саму правку — черновик уже лежит в CMS.
+   */
+  readonly publish?: boolean;
 }
 
-/**
- * Сохраняет черновик страницы: обновляет существующую или создаёт новую.
- *
- * Publish отдельным действием и не здесь: сохранение не должно
- * автоматически показывать незаконченную правку читателям.
- */
+/** Сохраняет страницу: обновляет существующую или создаёт новую. */
 export async function savePage(input: SavePageInput): Promise<GuidelinePage> {
   const existing = await getPage(input.brand, input.slug, { draft: true });
   const body = JSON.stringify({
@@ -83,5 +86,16 @@ export async function savePage(input: SavePageInput): Promise<GuidelinePage> {
       'write',
     );
 
-  return result.data;
+  if (!input.publish) return result.data;
+
+  // Публикация — отдельный запрос той же версией данных. Strapi 5 хранит
+  // черновик и опубликованную версию раздельно, поэтому просто «сохранить»
+  // недостаточно: без этого шага читатель продолжит видеть старое.
+  const published = await strapiFetch<StrapiOne<GuidelinePage>>(
+    `/guideline-pages/${result.data.documentId}?status=published`,
+    { method: 'PUT', body },
+    'write',
+  );
+
+  return published.data;
 }

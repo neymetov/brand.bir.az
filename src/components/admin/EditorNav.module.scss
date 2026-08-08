@@ -65,3 +65,30 @@
   opacity: 0.6;
   cursor: default;
 }
+
+// Сохранить черновик — вторичное действие: тише основного, но рядом с ним.
+.draft {
+  padding: var(--bb-spacing-m);
+  border: 1px solid var(--bb-border-quaternary);
+  border-radius: var(--bb-radius-12);
+  background: transparent;
+  color: var(--bb-text-secondary);
+  font-family: var(--bb-fontfamily-label);
+  font-size: var(--bb-fontsize-label-l3);
+  font-weight: 500;
+  line-height: var(--bb-lineheight-label-l3);
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+
+  // :disabled раньше по порядку — hover ниже исключает его через :not(),
+  // так что видимый приоритет не меняется.
+  &:disabled {
+    opacity: 0.6;
+    cursor: default;
+  }
+
+  &:hover:not(:disabled) {
+    background: var(--bb-bg-secondary);
+  }
+}

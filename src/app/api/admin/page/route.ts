@@ -20,8 +20,13 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'strapi_not_writable' }, { status: 503 });
   }
 
-  const { brand, slug, tree } = (await request.json()) as {
-    brand?: string; slug?: string; tree?: CraftTree;
+  const {
+    brand, slug, tree, publish,
+  } = (await request.json()) as {
+    brand?: string;
+    slug?: string;
+    tree?: CraftTree;
+    publish?: boolean;
   };
 
   // Навигация живёт в коде, поэтому и адрес страницы проверяется по ней:
@@ -44,8 +49,9 @@ export async function POST(request: NextRequest) {
       slug: slug!,
       title: item.label,
       content: craftToDynamicZone(tree),
+      publish: publish === true,
     });
-    return NextResponse.json({ documentId: saved.documentId });
+    return NextResponse.json({ documentId: saved.documentId, published: publish === true });
   } catch (error) {
     // Текст ошибки нужен админу: без него непонятно, что именно не принял
     // Strapi. Роут admin-only, наружу это не уходит.

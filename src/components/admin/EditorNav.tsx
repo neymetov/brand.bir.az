@@ -4,25 +4,29 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useEditor } from '@craftjs/core';
 import { Icon } from '@/components/icons/Icon';
-import type { FintechBrand } from '@/lib/brands';
+import type { BrandId } from '@/lib/brands';
 import type { CraftTree } from '@/lib/craft/strapiMapping';
 import styles from './EditorNav.module.scss';
 
 // Панель редактора (Figma node 300:7376): логотип, что редактируется, выход.
 //
-// «Save and exit» сохраняет ЧЕРНОВИК: правка не должна становиться видимой
-// читателям в момент нажатия кнопки. Публикация — отдельное действие в
-// админке Strapi.
+// Два действия вместо одного (решение пользователя, 2026-08-09):
+// «Publish» показывает страницу читателям сразу, «Save draft» откладывает.
+// Раньше публиковать приходилось отдельно в админке Strapi — редактор умел
+// только сохранять черновик.
+//
+// Черновик пишется в обоих случаях: публикация идёт вторым запросом уже
+// сохранённой версией, поэтому неудачная публикация не теряет правку.
 
 interface EditorNavProps {
-  readonly brand: FintechBrand;
+  readonly brand: BrandId;
   readonly slug: string;
   readonly title: string;
 }
 
 type SaveState =
   | { readonly status: 'idle' }
-  | { readonly status: 'saving' }
+  | { readonly status: 'busy'; readonly action: 'draft' | 'publish' }
   | { readonly status: 'error'; readonly message: string };
 
 export function EditorNav({ brand, slug, title }: EditorNavProps) {
@@ -33,14 +37,16 @@ export function EditorNav({ brand, slug, title }: EditorNavProps) {
   // источник правды о том, что сейчас на холсте.
   const { query } = useEditor();
 
-  const handleSave = async () => {
-    setState({ status: 'saving' });
+  const submit = async (publish: boolean) => {
+    setState({ status: 'busy', action: publish ? 'publish' : 'draft' });
 
     const tree = JSON.parse(query.serialize()) as CraftTree;
     const response = await fetch('/api/admin/page', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ brand, slug, tree }),
+      body: JSON.stringify({
+        brand, slug, tree, publish,
+      }),
     }).catch(() => null);
 
     if (!response?.ok) {
@@ -54,6 +60,8 @@ export function EditorNav({ brand, slug, title }: EditorNavProps) {
 
     router.push(`/guidelines/${brand}/${slug}`);
   };
+
+  const busy = state.status === 'busy';
 
   return (
     <nav className={styles.nav} aria-label="Editor">
@@ -71,14 +79,25 @@ export function EditorNav({ brand, slug, title }: EditorNavProps) {
           <span className={styles.error} role="alert">{`Не сохранилось: ${state.message}`}</span>
         ) : null}
 
+        {/* Черновик — вторичное действие: он нужен, когда страница ещё не
+            готова показываться людям. */}
+        <button
+          type="button"
+          className={styles.draft}
+          onClick={() => submit(false)}
+          disabled={busy}
+        >
+          {busy && state.action === 'draft' ? 'Сохраняем…' : 'Save draft'}
+        </button>
+
         <button
           type="button"
           className={styles.exit}
-          onClick={handleSave}
-          disabled={state.status === 'saving'}
+          onClick={() => submit(true)}
+          disabled={busy}
         >
           <Icon name="floppy-disk" size={20} />
-          <span>{state.status === 'saving' ? 'Сохраняем…' : 'Save and exit'}</span>
+          <span>{busy && state.action === 'publish' ? 'Публикуем…' : 'Publish and exit'}</span>
         </button>
       </div>
     </nav>
