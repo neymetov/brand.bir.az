@@ -1,0 +1,191 @@
+// Экран правки рубрик и разделов бренда.
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--bb-spacing-l);
+  min-height: 100vh;
+  padding: var(--bb-spacing-xl);
+  background: var(--bb-bg-primary);
+}
+
+.head {
+  display: flex;
+  gap: var(--bb-spacing-l);
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: var(--bb-spacing-l);
+  border-radius: var(--bb-radius-20);
+  background: var(--bb-bg-white-solid);
+}
+
+.title {
+  margin: 0;
+  color: var(--bb-text-primary);
+  font-family: var(--bb-fontfamily-heading);
+  font-size: var(--bb-fontsize-heading-h5);
+  font-weight: 500;
+  line-height: var(--bb-lineheight-heading-h5);
+}
+
+.hint {
+  margin: var(--bb-spacing-xs) 0 0;
+  color: var(--bb-text-secondary);
+  font-family: var(--bb-fontfamily-paragraph);
+  font-size: var(--bb-fontsize-paragraph-p4);
+  line-height: var(--bb-lineheight-paragraph-p4);
+}
+
+.actions {
+  display: flex;
+  flex-shrink: 0;
+  gap: var(--bb-spacing-s);
+  align-items: center;
+}
+
+.error {
+  color: var(--bb-text-error);
+  font-family: var(--bb-fontfamily-paragraph);
+  font-size: var(--bb-fontsize-paragraph-p4);
+  line-height: var(--bb-lineheight-paragraph-p4);
+}
+
+.cancel,
+.save {
+  padding: var(--bb-spacing-m);
+  border: 1px solid var(--bb-border-quaternary);
+  border-radius: var(--bb-radius-12);
+  background: transparent;
+  color: var(--bb-text-secondary);
+  font-family: var(--bb-fontfamily-label);
+  font-size: var(--bb-fontsize-label-l4);
+  line-height: var(--bb-lineheight-label-l4);
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.save {
+  border: none;
+  background: var(--bb-brand-default);
+  color: var(--bb-text-white);
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: default;
+  }
+}
+
+.group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--bb-spacing-s);
+  padding: var(--bb-spacing-l);
+  border-radius: var(--bb-radius-20);
+  background: var(--bb-bg-white-solid);
+}
+
+.groupHead {
+  display: flex;
+  gap: var(--bb-spacing-s);
+  align-items: center;
+}
+
+.item {
+  display: flex;
+  gap: var(--bb-spacing-s);
+  align-items: center;
+  padding: var(--bb-spacing-s);
+  border: 1px solid var(--bb-border-quaternary);
+  border-radius: var(--bb-radius-8);
+}
+
+.itemIcon {
+  color: var(--bb-text-tertiary);
+}
+
+.input,
+.slug,
+.select,
+.groupInput {
+  min-width: 0;
+  padding: var(--bb-spacing-s);
+  border: 1px solid var(--bb-border-quaternary);
+  border-radius: var(--bb-radius-8);
+  background: var(--bb-bg-white-solid);
+  color: var(--bb-text-primary);
+  font-family: var(--bb-fontfamily-label);
+  font-size: var(--bb-fontsize-label-l4);
+  line-height: var(--bb-lineheight-label-l4);
+}
+
+.input {
+  flex: 2 1 0;
+}
+
+// Слаг уже поля названия: это часть адреса, а не текст для чтения.
+.slug {
+  flex: 1 1 0;
+  font-family: var(--bb-fontfamily-caption);
+}
+
+.select {
+  flex: 0 0 190px;
+}
+
+.groupInput {
+  flex: 1 1 auto;
+  font-family: var(--bb-fontfamily-heading);
+  font-size: var(--bb-fontsize-heading-h5);
+  line-height: var(--bb-lineheight-heading-h5);
+}
+
+.iconButton {
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  border: none;
+  border-radius: var(--bb-radius-8);
+  background: var(--bb-bg-secondary);
+  color: var(--bb-text-secondary);
+  line-height: 1;
+  cursor: pointer;
+
+  &:hover {
+    background: var(--bb-bg-secondary-hover);
+  }
+}
+
+.remove {
+  flex-shrink: 0;
+  padding: var(--bb-spacing-xs) var(--bb-spacing-s);
+  border: 1px solid var(--bb-border-quaternary);
+  border-radius: var(--bb-radius-8);
+  background: transparent;
+  color: var(--bb-text-error);
+  font-family: var(--bb-fontfamily-label);
+  font-size: var(--bb-fontsize-caption-c1);
+  line-height: var(--bb-lineheight-caption-c1);
+  white-space: nowrap;
+  cursor: pointer;
+
+  &:hover {
+    background: var(--bb-bg-error-primary);
+  }
+}
+
+.add {
+  align-self: flex-start;
+  padding: var(--bb-spacing-s) var(--bb-spacing-m);
+  border: 1px dashed var(--bb-border-tertiary);
+  border-radius: var(--bb-radius-8);
+  background: transparent;
+  color: var(--bb-text-secondary);
+  font-family: var(--bb-fontfamily-label);
+  font-size: var(--bb-fontsize-label-l4);
+  line-height: var(--bb-lineheight-label-l4);
+  cursor: pointer;
+
+  &:hover {
+    background: var(--bb-bg-secondary);
+  }
+}

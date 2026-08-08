@@ -23,5 +23,11 @@
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
-  "exclude": ["node_modules"]
+  "exclude": [
+    "node_modules",
+    // Файлы для переноса в Strapi и сам CMS проверяются его собственным
+    // tsconfig: они импортируют @strapi/strapi, которого у сайта нет.
+    "strapi-schemas",
+    "cms"
+  ]
 }

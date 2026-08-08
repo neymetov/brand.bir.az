@@ -443,6 +443,52 @@ export interface AdminUser extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiBrandNavigationBrandNavigation
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'brand_navigations';
+  info: {
+    description: '\u0420\u0443\u0431\u0440\u0438\u043A\u0438 \u0438 \u0440\u0430\u0437\u0434\u0435\u043B\u044B \u0441\u0430\u0439\u0434\u0431\u0430\u0440\u0430 \u0434\u043B\u044F \u043E\u0434\u043D\u043E\u0433\u043E \u0431\u0440\u0435\u043D\u0434\u0430. \u041F\u043E\u043A\u0430 \u0437\u0430\u043F\u0438\u0441\u0438 \u043D\u0435\u0442, \u0441\u0430\u0439\u0442 \u0438\u0441\u043F\u043E\u043B\u044C\u0437\u0443\u0435\u0442 \u043D\u0430\u0431\u043E\u0440 \u043F\u043E \u0443\u043C\u043E\u043B\u0447\u0430\u043D\u0438\u044E \u0438\u0437 \u043A\u043E\u0434\u0430.';
+    displayName: 'Brand navigation';
+    pluralName: 'brand-navigations';
+    singularName: 'brand-navigation';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    brand: Schema.Attribute.Enumeration<
+      [
+        'kapital-bank',
+        'ecosystem',
+        'birmarket',
+        'birbonus',
+        'retail',
+        'business',
+        'invest',
+        'private',
+        'm10',
+        'million',
+      ]
+    > &
+      Schema.Attribute.Required &
+      Schema.Attribute.Unique;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    groups: Schema.Attribute.Component<'shared.nav-group', true>;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::brand-navigation.brand-navigation'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiGuidelinePageGuidelinePage
   extends Struct.CollectionTypeSchema {
   collectionName: 'guideline_pages';
@@ -1014,6 +1060,7 @@ declare module '@strapi/strapi' {
       'admin::transfer-token': AdminTransferToken;
       'admin::transfer-token-permission': AdminTransferTokenPermission;
       'admin::user': AdminUser;
+      'api::brand-navigation.brand-navigation': ApiBrandNavigationBrandNavigation;
       'api::guideline-page.guideline-page': ApiGuidelinePageGuidelinePage;
       'plugin::content-releases.release': PluginContentReleasesRelease;
       'plugin::content-releases.release-action': PluginContentReleasesReleaseAction;

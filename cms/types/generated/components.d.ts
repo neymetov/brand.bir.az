@@ -240,6 +240,76 @@ export interface SharedFontSpecimen extends Struct.ComponentSchema {
   };
 }
 
+export interface SharedNavGroup extends Struct.ComponentSchema {
+  collectionName: 'components_shared_nav_groups';
+  info: {
+    description: '\u0420\u0443\u0431\u0440\u0438\u043A\u0430 \u0432 \u0441\u0430\u0439\u0434\u0431\u0430\u0440\u0435: \u0437\u0430\u0433\u043E\u043B\u043E\u0432\u043E\u043A \u0438 \u0441\u043F\u0438\u0441\u043E\u043A \u0440\u0430\u0437\u0434\u0435\u043B\u043E\u0432.';
+    displayName: 'Nav group';
+  };
+  attributes: {
+    items: Schema.Attribute.Component<'shared.nav-item', true>;
+    label: Schema.Attribute.String & Schema.Attribute.Required;
+  };
+}
+
+export interface SharedNavItem extends Struct.ComponentSchema {
+  collectionName: 'components_shared_nav_items';
+  info: {
+    description: '\u0420\u0430\u0437\u0434\u0435\u043B \u0432 \u043D\u0430\u0432\u0438\u0433\u0430\u0446\u0438\u0438 \u0431\u0440\u0435\u043D\u0434\u0430: \u043F\u043E\u0434\u043F\u0438\u0441\u044C, \u0441\u043B\u0430\u0433 \u0438 \u0438\u043A\u043E\u043D\u043A\u0430. \u0421\u043B\u0430\u0433 \u2014 \u0447\u0430\u0441\u0442\u044C \u0430\u0434\u0440\u0435\u0441\u0430 /guidelines/[brand]/[slug].';
+    displayName: 'Nav item';
+  };
+  attributes: {
+    icon: Schema.Attribute.Enumeration<
+      [
+        'adobe-illustrator',
+        'arrow-left-01-sharp',
+        'arrow-left-03-round',
+        'arrow-right-01-sharp',
+        'arrow-right-02-round',
+        'cancel-01',
+        'chevron-down',
+        'chevron-down-small',
+        'chevron-up',
+        'colors',
+        'copy-01',
+        'credit-card',
+        'crowdfunding',
+        'download-04',
+        'figma',
+        'file-02',
+        'floppy-disk',
+        'google-drive',
+        'image-02',
+        'java-script',
+        'jpg-02',
+        'layout-table-02',
+        'motion-02',
+        'mp4-02',
+        'nano-technology',
+        'pdf-02',
+        'pencil',
+        'pie-chart-square',
+        'png-02',
+        'ppt-02',
+        'presentation-07',
+        'screen-add-to-home',
+        'scroll-select',
+        'star-circle',
+        'star-square',
+        'svg-02',
+        'text-creation',
+        'view',
+        'view-off',
+        'voice-id',
+      ]
+    > &
+      Schema.Attribute.Required &
+      Schema.Attribute.DefaultTo<'star-circle'>;
+    label: Schema.Attribute.String & Schema.Attribute.Required;
+    slug: Schema.Attribute.String & Schema.Attribute.Required;
+  };
+}
+
 declare module '@strapi/strapi' {
   export namespace Public {
     export interface ComponentSchemas {
@@ -260,6 +330,8 @@ declare module '@strapi/strapi' {
       'shared.file-subfolder': SharedFileSubfolder;
       'shared.file-tab': SharedFileTab;
       'shared.font-specimen': SharedFontSpecimen;
+      'shared.nav-group': SharedNavGroup;
+      'shared.nav-item': SharedNavItem;
     }
   }
 }

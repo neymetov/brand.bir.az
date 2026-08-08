@@ -3,7 +3,7 @@ import { TextBlock } from '@/components/blocks/TextBlock/TextBlock';
 import { renderBlocks } from '@/components/blocks/renderBlocks';
 import { isStrapiConfigured } from '@/lib/strapi/client';
 import { getPage } from '@/lib/strapi/pages';
-import { sidebarDirectory } from '@/components/dashboard/Sidebar/sidebar.data';
+import { getNavigation } from '@/lib/strapi/navigation';
 import { CarouselRecommendations } from '@/components/dashboard/CarouselRecommendations/CarouselRecommendations';
 import { publishedGuidelineBrands, type FintechBrand } from '@/lib/brands';
 
@@ -21,7 +21,8 @@ export default async function GuidelineSectionPage({
 
   // Раздел должен существовать в реестре: адрес, которого нет в навигации,
   // — это опечатка или устаревшая ссылка, а не пустая страница.
-  const item = sidebarDirectory[brand as FintechBrand]
+  const groups = await getNavigation(brand as FintechBrand);
+  const item = groups
     .flatMap((group) => group.items)
     .find((entry) => entry.slug === slug);
 
@@ -51,7 +52,11 @@ export default async function GuidelineSectionPage({
       )}
       {/* Рекомендации именно здесь и обретают смысл «смежных»: пользователь
           стоит в разделе, и ему предлагаются соседние того же бренда. */}
-      <CarouselRecommendations brand={brand as FintechBrand} currentSlug={slug} />
+      <CarouselRecommendations
+        brand={brand as FintechBrand}
+        currentSlug={slug}
+        groups={groups}
+      />
     </>
   );
 }

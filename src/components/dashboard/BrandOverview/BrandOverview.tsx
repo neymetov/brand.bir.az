@@ -1,5 +1,5 @@
-import type { FintechBrand } from '@/lib/brands';
-import { sidebarDirectory } from '@/components/dashboard/Sidebar/sidebar.data';
+import type { BrandId } from '@/lib/brands';
+import type { SidebarGroup } from '@/components/dashboard/Sidebar/sidebar.data';
 import { SectionCard } from '@/components/dashboard/shared/SectionCard';
 import styles from './BrandOverview.module.scss';
 
@@ -10,9 +10,12 @@ import styles from './BrandOverview.module.scss';
 // разводная разошлись бы при первом же добавлении раздела, и пользователь
 // видел бы в одном месте пункт, которого нет в другом. Сама карточка — общая
 // с каруселью рекомендаций (SectionCard).
-export function BrandOverview({ brand }: { readonly brand: FintechBrand }) {
-  const groups = sidebarDirectory[brand];
-
+export function BrandOverview({
+  brand, groups,
+}: {
+  readonly brand: BrandId;
+  readonly groups: readonly SidebarGroup[];
+}) {
   return (
     <div className={styles.overview}>
       {groups.map((group) => (

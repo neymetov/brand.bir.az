@@ -6,7 +6,7 @@ import { Icon } from '@/components/icons/Icon';
 import { MenuItem } from '@/components/dashboard/shared/MenuItem';
 import { BrandDropdownMark } from '@/components/dashboard/Sidebar/BrandDropdownMark';
 import { brandDropdownEntries } from '@/components/dashboard/Sidebar/brandDropdown.data';
-import { sidebarDirectory } from '@/components/dashboard/Sidebar/sidebar.data';
+import type { SidebarGroup } from '@/components/dashboard/Sidebar/sidebar.data';
 import { brandById, brandDisplayName, type BrandId } from '@/lib/brands';
 import styles from './MobileNav.module.scss';
 
@@ -22,11 +22,14 @@ type Sheet = 'brands' | 'sections';
 
 interface MobileNavProps {
   readonly brand: BrandId;
+  readonly groups: readonly SidebarGroup[];
   readonly onSelectBrand: (brand: BrandId) => void;
   readonly onLogout: () => void;
 }
 
-export function MobileNav({ brand, onSelectBrand, onLogout }: MobileNavProps) {
+export function MobileNav({
+  brand, groups, onSelectBrand, onLogout,
+}: MobileNavProps) {
   const [sheet, setSheet] = useState<Sheet | null>(null);
   const barRef = useRef<HTMLDivElement>(null);
   const currentPath = usePathname();
@@ -36,7 +39,6 @@ export function MobileNav({ brand, onSelectBrand, onLogout }: MobileNavProps) {
     ? '/icons/dashboard/bir-sign.svg'
     : `/icons/dashboard/brand-marks/${brandEntry.mark}.svg`;
 
-  const groups = sidebarDirectory[brand];
   const currentItem = groups
     .flatMap((group) => group.items)
     .find((item) => currentPath === `/guidelines/${brand}/${item.slug}`);

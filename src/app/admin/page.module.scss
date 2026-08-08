@@ -84,3 +84,28 @@
     color: var(--bb-text-primary);
   }
 }
+
+.brandHead {
+  display: flex;
+  gap: var(--bb-spacing-m);
+  align-items: center;
+  justify-content: space-between;
+}
+
+// Вход в правку навигации бренда.
+.editNav {
+  flex-shrink: 0;
+  padding: var(--bb-spacing-xs) var(--bb-spacing-s);
+  border: 1px dashed var(--bb-border-tertiary);
+  border-radius: var(--bb-radius-8);
+  color: var(--bb-text-secondary);
+  font-family: var(--bb-fontfamily-label);
+  font-size: var(--bb-fontsize-caption-c1);
+  line-height: var(--bb-lineheight-caption-c1);
+  text-decoration: none;
+
+  &:hover {
+    background: var(--bb-bg-secondary);
+    color: var(--bb-text-primary);
+  }
+}

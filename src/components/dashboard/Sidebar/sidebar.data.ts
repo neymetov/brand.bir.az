@@ -107,9 +107,12 @@ export const sidebarDirectory = Object.fromEntries(
  * («первые шесть») был бы выдуманным правилом — реальный порядок и отбор
  * рекомендаций не определён (docs/OPEN_QUESTIONS.md #52).
  */
-export function relatedSections(brand: BrandId, currentSlug: string): readonly SidebarItem[] {
+export function relatedSections(
+  groups: readonly SidebarGroup[],
+  currentSlug: string,
+): readonly SidebarItem[] {
   const hasCurrent = (group: SidebarGroup) => group.items.some((item) => item.slug === currentSlug);
-  const currentGroup = sidebarDirectory[brand].find(hasCurrent);
+  const currentGroup = groups.find(hasCurrent);
 
   if (!currentGroup) return [];
 

@@ -101,6 +101,19 @@ const MEDIA_FIELD_ALIASES: Record<string, readonly string[]> = {
   'shared.font-specimen': ['fontUrl', 'fontId'],
 };
 
+/** Схемы контент-типов из strapi-schemas/api. */
+function contentTypes(): StrapiSchema[] {
+  const dir = path.join(SCHEMAS, 'api');
+  if (!existsSync(dir)) return [];
+
+  return readdirSync(dir, { withFileTypes: true })
+    .filter((entry) => entry.isDirectory())
+    .flatMap((api) => {
+      const file = path.join(dir, api.name, 'content-types', api.name, 'schema.json');
+      return existsSync(file) ? [readJson<StrapiSchema>(file)] : [];
+    });
+}
+
 const components = loadComponents();
 const registry = loadRegistry();
 
@@ -115,9 +128,13 @@ describe('реестр блоков ↔ схемы Strapi', () => {
 
   it('нет схем-сирот: на каждую кто-то ссылается', () => {
     const referenced = new Set(registry.map((entry) => entry.uid));
-    components.forEach((schema) => {
+
+    // Ссылаться может и компонент, и контент-тип: навигацию бренда, например,
+    // держит api/brand-navigation, а не блок редактора.
+    [...components.values(), ...contentTypes()].forEach((schema) => {
       Object.values(schema.attributes).forEach((attribute) => {
         if (attribute.component) referenced.add(attribute.component);
+        attribute.components?.forEach((uid) => referenced.add(uid));
       });
     });
 

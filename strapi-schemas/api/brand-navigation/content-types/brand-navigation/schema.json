@@ -1,0 +1,39 @@
+{
+  "kind": "collectionType",
+  "collectionName": "brand_navigations",
+  "info": {
+    "singularName": "brand-navigation",
+    "pluralName": "brand-navigations",
+    "displayName": "Brand navigation",
+    "description": "Рубрики и разделы сайдбара для одного бренда. Пока записи нет, сайт использует набор по умолчанию из кода."
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "brand": {
+      "type": "enumeration",
+      "enum": [
+        "kapital-bank",
+        "ecosystem",
+        "birmarket",
+        "birbonus",
+        "retail",
+        "business",
+        "invest",
+        "private",
+        "m10",
+        "million"
+      ],
+      "required": true,
+      "unique": true
+    },
+    "groups": {
+      "type": "component",
+      "repeatable": true,
+      "component": "shared.nav-group",
+      "required": false
+    }
+  }
+}

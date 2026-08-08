@@ -1,7 +1,8 @@
 import type { ReactNode } from 'react';
 import { notFound } from 'next/navigation';
 import { AppShell } from '@/components/dashboard/AppShell';
-import { publishedGuidelineBrands, type FintechBrand } from '@/lib/brands';
+import { publishedGuidelineBrands, type BrandId } from '@/lib/brands';
+import { getNavigation } from '@/lib/strapi/navigation';
 
 // Sidebar общий для разводной страницы бренда и страниц его разделов.
 // Лежит внутри сегмента [brand], потому что бренд для sidebar берётся из
@@ -14,7 +15,11 @@ export default async function BrandLayout({
   readonly params: Promise<{ brand: string }>;
 }) {
   const { brand } = await params;
-  if (!publishedGuidelineBrands.includes(brand as FintechBrand)) notFound();
+  if (!publishedGuidelineBrands.includes(brand as BrandId)) notFound();
 
-  return <AppShell brand={brand as FintechBrand}>{children}</AppShell>;
+  // Навигация редактируемая и лежит в CMS, поэтому её тянет серверный
+  // layout: sidebar клиентский и сам запросить её не может.
+  const groups = await getNavigation(brand as BrandId);
+
+  return <AppShell brand={brand as BrandId} groups={groups}>{children}</AppShell>;
 }

@@ -1,6 +1,6 @@
-import { relatedSections } from '@/components/dashboard/Sidebar/sidebar.data';
+import { relatedSections, type SidebarGroup } from '@/components/dashboard/Sidebar/sidebar.data';
 import { SectionCard } from '@/components/dashboard/shared/SectionCard';
-import type { FintechBrand } from '@/lib/brands';
+import type { BrandId } from '@/lib/brands';
 import styles from './CarouselRecommendations.module.scss';
 
 // Рекомендации: соседние разделы ТОЙ ЖЕ рубрики, в которой сейчас находится
@@ -21,11 +21,13 @@ import styles from './CarouselRecommendations.module.scss';
 export function CarouselRecommendations({
   brand,
   currentSlug,
+  groups,
 }: {
-  readonly brand: FintechBrand;
+  readonly brand: BrandId;
   readonly currentSlug: string;
+  readonly groups: readonly SidebarGroup[];
 }) {
-  const items = relatedSections(brand, currentSlug);
+  const items = relatedSections(groups, currentSlug);
 
   // В рубрике может не остаться других разделов (например, она состоит из
   // одного). Пустой заголовок без карточек — мусор на странице, поэтому блок

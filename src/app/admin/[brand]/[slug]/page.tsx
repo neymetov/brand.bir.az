@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation';
 import { BlockEditorClient } from '@/components/admin/BlockEditorClient';
-import { sidebarDirectory } from '@/components/dashboard/Sidebar/sidebar.data';
+import { getNavigation } from '@/lib/strapi/navigation';
 import { publishedGuidelineBrands, type FintechBrand } from '@/lib/brands';
 import { isStrapiConfigured } from '@/lib/strapi/client';
 import { getPage } from '@/lib/strapi/pages';
@@ -22,7 +22,8 @@ export default async function AdminPageEditor({
 
   if (!publishedGuidelineBrands.includes(brand as FintechBrand)) notFound();
 
-  const item = sidebarDirectory[brand as FintechBrand]
+  const groups = await getNavigation(brand as FintechBrand);
+  const item = groups
     .flatMap((group) => group.items)
     .find((entry) => entry.slug === slug);
 

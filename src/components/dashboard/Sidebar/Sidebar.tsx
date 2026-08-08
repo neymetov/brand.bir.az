@@ -2,13 +2,13 @@
 
 import { useState } from 'react';
 import { usePathname } from 'next/navigation';
-import { brandDisplayName, type FintechBrand } from '@/lib/brands';
+import { brandDisplayName, type BrandId } from '@/lib/brands';
 import { MenuItem } from '@/components/dashboard/shared/MenuItem';
 import { MasterButton } from '@/components/dashboard/shared/MasterButton';
 import { BrandMenuHeader } from './BrandMenuHeader';
 import { BrandNotification } from './BrandNotification';
 import { GroupLabel } from './GroupLabel';
-import { sidebarDirectory } from './sidebar.data';
+import type { SidebarGroup } from './sidebar.data';
 import styles from './Sidebar.module.scss';
 
 // Фиксирован относительно вьюпорта, во всю высоту. Три зоны: brands-list-menu
@@ -19,20 +19,22 @@ import styles from './Sidebar.module.scss';
 // содержимое сайдбара расходились бы — открыв ссылку на раздел Invest,
 // пользователь видел бы в сайдбаре Retail, а «назад» не возвращал бы бренд.
 interface SidebarProps {
-  readonly brand: FintechBrand;
-  readonly onSelectBrand?: (brand: FintechBrand) => void;
+  readonly brand: BrandId;
+  /** Рубрики бренда — приходят сверху: навигация редактируется и живёт в CMS. */
+  readonly groups: readonly SidebarGroup[];
+  readonly onSelectBrand?: (brand: BrandId) => void;
   readonly onLogout?: () => void;
 }
 
-export function Sidebar({ brand, onSelectBrand, onLogout }: SidebarProps) {
+export function Sidebar({
+  brand, groups, onSelectBrand, onLogout,
+}: SidebarProps) {
   const [closedGroups, setClosedGroups] = useState<Record<string, boolean>>({});
   // Активный пункт определяется по адресу, а не по клику: иначе подсветка
   // терялась бы при переходе по ссылке из карусели, по «назад» и при открытии
   // ссылки, присланной коллегой. Адрес сравнивается с href напрямую —
   // префикса локали в путях больше нет.
   const currentPath = usePathname();
-
-  const groups = sidebarDirectory[brand];
 
   const toggleGroup = (label: string) => {
     setClosedGroups((prev) => ({ ...prev, [label]: !prev[label] }));

@@ -1,4 +1,5 @@
-import type { FintechBrand } from '@/lib/brands';
+import type { BrandId } from '@/lib/brands';
+import type { SidebarGroup } from './Sidebar/sidebar.data';
 import { AppShell } from './AppShell';
 import { Drawer } from './Drawer/Drawer';
 
@@ -10,9 +11,14 @@ import { Drawer } from './Drawer/Drawer';
 // привязаны к рубрике текущего раздела, а на дашборде пользователь не внутри
 // раздела — рубрики нет. Показывать вместо этого все разделы бренда значило
 // бы дублировать разводную страницу (решение пользователя, 2026-08-07).
-export function DashboardShell({ brand }: { readonly brand: FintechBrand }) {
+export function DashboardShell({
+  brand, groups,
+}: {
+  readonly brand: BrandId;
+  readonly groups: readonly SidebarGroup[];
+}) {
   return (
-    <AppShell brand={brand}>
+    <AppShell brand={brand} groups={groups}>
       <Drawer />
     </AppShell>
   );

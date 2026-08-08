@@ -96,6 +96,9 @@ S3_PUBLIC_URL=…       # если медиа отдаётся напрямую,
 | Файл | Strapi-компонент | Блок в коде |
 | --- | --- | --- |
 | `api/guideline-page/**` | `api::guideline-page.guideline-page` | страница `/guidelines/[brand]/[slug]` |
+| `api/brand-navigation/**` | `api::brand-navigation.brand-navigation` | рубрики и разделы бренда |
+| `components/shared/nav-group.json` | `shared.nav-group` | вложен в `brand-navigation` |
+| `components/shared/nav-item.json` | `shared.nav-item` | вложен в `nav-group` |
 | `components/sections/text-block.json` | `sections.text-block` | `TextBlock` |
 | `components/sections/media.json` | `sections.media` | `MediaBlock` |
 | `components/sections/color-palette.json` | `sections.color-palette` | `ColorPalette` |
