@@ -1,0 +1,22 @@
+{
+  "collectionName": "components_sections_text_blocks",
+  "info": {
+    "displayName": "Text block",
+    "description": "Заголовок, короткое описание и текст. Соответствует блоку TextBlock (src/components/blocks/TextBlock)."
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": false
+    },
+    "description": {
+      "type": "string",
+      "required": false
+    },
+    "body": {
+      "type": "text",
+      "required": false
+    }
+  }
+}

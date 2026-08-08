@@ -1,0 +1,65 @@
+# Compose для разработки: CMS и база в контейнерах, сайт запускается нативно
+# (npm run dev) — так у Next.js остаётся быстрый hot-reload.
+#
+# CMS живёт в контейнере ещё и потому, что Strapi тянет собственную версию
+# Node: на хосте она может быть любой, включая неподдерживаемую.
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${DATABASE_NAME:-brand_cms}
+      POSTGRES_USER: ${DATABASE_USERNAME:-strapi}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD:-strapi}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    # 5433 на хосте: 5432 уже занят базой соседнего проекта (birbank private),
+    # а он работает и останавливать его нельзя. Внутри сети контейнеров порт
+    # остаётся стандартным, поэтому DATABASE_PORT менять не нужно.
+    ports:
+      - '5433:5432'
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U ${DATABASE_USERNAME:-strapi}']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  cms:
+    image: node:22-alpine
+    working_dir: /app
+    restart: unless-stopped
+    environment:
+      NODE_ENV: development
+      HOST: 0.0.0.0
+      PORT: 1337
+      DATABASE_CLIENT: postgres
+      DATABASE_HOST: postgres
+      DATABASE_PORT: 5432
+      DATABASE_NAME: ${DATABASE_NAME:-brand_cms}
+      DATABASE_USERNAME: ${DATABASE_USERNAME:-strapi}
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD:-strapi}
+      # Значения по умолчанию — только для локальной разработки. В qa/prod
+      # берутся из окружения/keystore и в репозиторий не попадают.
+      APP_KEYS: ${APP_KEYS:-devkey1,devkey2,devkey3,devkey4}
+      API_TOKEN_SALT: ${API_TOKEN_SALT:-devtokensalt}
+      ADMIN_JWT_SECRET: ${ADMIN_JWT_SECRET:-devadminjwt}
+      JWT_SECRET: ${JWT_SECRET:-devjwtsecret}
+      TRANSFER_TOKEN_SALT: ${TRANSFER_TOKEN_SALT:-devtransfersalt}
+      ENCRYPTION_KEY: ${ENCRYPTION_KEY:-devencryptionkey}
+    volumes:
+      - ./cms:/app
+      # node_modules остаются внутри контейнера: у пакетов Strapi есть
+      # нативные сборки, и хостовые (macOS) в linux-контейнере не работают.
+      - cms_node_modules:/app/node_modules
+    # 1338 по той же причине: 1337 занят CMS соседнего проекта.
+    ports:
+      - '1338:1337'
+    depends_on:
+      postgres:
+        condition: service_healthy
+    command: sh -c "npm install --no-audit --no-fund && npm run develop"
+
+volumes:
+  postgres_data:
+  cms_node_modules:

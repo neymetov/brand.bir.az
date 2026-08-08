@@ -1,0 +1,43 @@
+{
+  "collectionName": "components_shared_action_buttons",
+  "info": {
+    "displayName": "Action button",
+    "description": "Одна кнопка: подпись, поведение (download/link/copy), иконка и её позиция. Вариации кнопки НЕ перечисляются — любая складывается из этих полей."
+  },
+  "options": {},
+  "attributes": {
+    "label": {
+      "type": "string",
+      "required": false
+    },
+    "kind": {
+      "type": "enumeration",
+      "enum": ["download", "link", "copy"],
+      "default": "link",
+      "required": true
+    },
+    "icon": {
+      "type": "string",
+      "required": false
+    },
+    "iconPosition": {
+      "type": "enumeration",
+      "enum": ["leading", "trailing"],
+      "default": "leading",
+      "required": false
+    },
+    "href": {
+      "type": "string",
+      "required": false
+    },
+    "value": {
+      "type": "text",
+      "required": false
+    },
+    "newTab": {
+      "type": "boolean",
+      "default": false,
+      "required": false
+    }
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "collectionName": "components_sections_file_manager",
+  "info": {
+    "displayName": "File manager",
+    "description": "Файловый менеджер: рубрики (табы), папки и скачиваемые файлы. Внутри папки табы заменяются крошками. Соответствует блоку FileManager."
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": false
+    },
+    "description": {
+      "type": "text",
+      "required": false
+    },
+    "tabs": {
+      "type": "component",
+      "repeatable": true,
+      "component": "shared.file-tab",
+      "required": false
+    }
+  }
+}

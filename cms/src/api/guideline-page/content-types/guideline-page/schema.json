@@ -1,0 +1,55 @@
+{
+  "kind": "collectionType",
+  "collectionName": "guideline_pages",
+  "info": {
+    "singularName": "guideline-page",
+    "pluralName": "guideline-pages",
+    "displayName": "Guideline page",
+    "description": "Страница раздела гайдлайнов: /guidelines/[brand]/[slug]. Содержимое собирается блоками в Dynamic Zone — тем же набором, что и в редакторе на /admin."
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "brand": {
+      "type": "enumeration",
+      "enum": [
+        "ecosystem",
+        "retail",
+        "business",
+        "invest",
+        "private"
+      ],
+      "required": true
+    },
+    "slug": {
+      "type": "string",
+      "required": true,
+      "regex": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+    },
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "text",
+      "required": false
+    },
+    "content": {
+      "type": "dynamiczone",
+      "components": [
+        "sections.text-block",
+        "sections.media",
+        "sections.color-palette",
+        "sections.action-buttons",
+        "sections.fontface-viewer",
+        "sections.divider",
+        "sections.app-screenshots",
+        "sections.file-manager",
+        "sections.file-list"
+      ],
+      "required": false
+    }
+  }
+}

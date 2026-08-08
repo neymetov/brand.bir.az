@@ -1,0 +1,20 @@
+{
+  "collectionName": "components_shared_file_entries",
+  "info": {
+    "displayName": "File entry",
+    "description": "Один скачиваемый файл внутри папки файлового менеджера. name хранится отдельно от самого файла: админ может подписать его понятнее, чем называется загруженный файл."
+  },
+  "options": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": false
+    },
+    "file": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["files", "images", "videos", "audios"]
+    }
+  }
+}

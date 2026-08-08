@@ -1,0 +1,18 @@
+{
+  "collectionName": "components_shared_color_formats",
+  "info": {
+    "displayName": "Color format",
+    "description": "Пара «подпись формата — значение»: HEX/FF0039, PMS/244 C, CMYK/00/41/01/00. Набор форматов НЕ фиксирован — админ заводит любые."
+  },
+  "options": {},
+  "attributes": {
+    "label": {
+      "type": "string",
+      "required": false
+    },
+    "value": {
+      "type": "string",
+      "required": false
+    }
+  }
+}

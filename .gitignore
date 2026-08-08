@@ -9,3 +9,12 @@ dist
 *.log
 .DS_Store
 .idea
+
+# Strapi
+cms/.tmp
+cms/.strapi
+cms/dist
+cms/build
+cms/.cache
+cms/public/uploads/*
+!cms/public/uploads/.gitkeep

@@ -1,0 +1,24 @@
+{
+  "collectionName": "components_sections_file_list",
+  "info": {
+    "displayName": "File list",
+    "description": "Плоский список скачиваемых файлов — та же файловая часть, что у file-manager, но без рубрик и папок. Соответствует блоку FileList."
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": false
+    },
+    "description": {
+      "type": "text",
+      "required": false
+    },
+    "files": {
+      "type": "component",
+      "repeatable": true,
+      "component": "shared.file-entry",
+      "required": false
+    }
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "collectionName": "components_shared_file_folders",
+  "info": {
+    "displayName": "File folder",
+    "description": "Папка первого уровня внутри рубрики файлового менеджера: свои файлы плюс вложенные папки одного уровня."
+  },
+  "options": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": false
+    },
+    "folders": {
+      "type": "component",
+      "repeatable": true,
+      "component": "shared.file-subfolder",
+      "required": false
+    },
+    "files": {
+      "type": "component",
+      "repeatable": true,
+      "component": "shared.file-entry",
+      "required": false
+    }
+  }
+}

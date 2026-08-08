@@ -1,0 +1,20 @@
+{
+  "collectionName": "components_sections_fontface_viewers",
+  "info": {
+    "displayName": "Fontface viewer",
+    "description": "Витрина шрифта: строка параметров (кегль, интерлиньяж, трекинг) и образец, набранный этим шрифтом. Соответствует блоку FontfaceViewer."
+  },
+  "options": {},
+  "attributes": {
+    "sample": {
+      "type": "string",
+      "required": false
+    },
+    "specimens": {
+      "type": "component",
+      "repeatable": true,
+      "component": "shared.font-specimen",
+      "required": false
+    }
+  }
+}
