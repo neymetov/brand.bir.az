@@ -11,13 +11,13 @@ export function BrandDropdownMark({ entry }: { readonly entry: DropdownEntry }) 
     ? '/icons/dashboard/bir-sign.svg'
     : `/icons/dashboard/brand-marks/${entry.mark}.svg`;
 
-  const isFintech = entry.kind === 'fintech';
+  const isThemed = entry.kind === 'themed';
 
   return (
     <span
       className={styles.mark}
-      data-brand={isFintech ? entry.dataBrand : undefined}
-      style={{ background: isFintech ? 'var(--bb-brand-default)' : entry.background }}
+      data-brand={isThemed ? entry.id : undefined}
+      style={{ background: isThemed ? 'var(--bb-brand-default)' : entry.background }}
     >
       {/* eslint-disable-next-line @next/next/no-img-element -- build-time статичный ассет */}
       <img className={styles.glyph} src={markSrc} alt="" />

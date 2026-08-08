@@ -1,5 +1,5 @@
 import type { DashboardIconName } from '@/components/icons/Icon';
-import type { FintechBrand } from '@/lib/brands';
+import { brands, type BrandId } from '@/lib/brands';
 
 // Данные сайдбара — из Figma-макета дашборда (node 230:7792/230:6974), НЕ из
 // сгенерированных ранее заглушек guidelines/[brand]. Показывает более
@@ -81,13 +81,15 @@ const genericBrandGroups: readonly SidebarGroup[] = [
   },
 ];
 
-export const sidebarDirectory: Record<FintechBrand, readonly SidebarGroup[]> = {
-  retail: retailGroups,
-  business: genericBrandGroups,
-  invest: genericBrandGroups,
-  private: genericBrandGroups,
-  ecosystem: genericBrandGroups,
-};
+// Разделы есть у КАЖДОГО бренда: страница должна открываться, даже если она
+// пока пустая (решение пользователя, 2026-08-09). Пока дизайн не дал свои
+// списки, все бренды кроме Retail получают одинаковый набор-плейсхолдер.
+//
+// Собирается из реестра, а не перечислением: добавленный бренд сразу получает
+// навигацию, и забыть про него нельзя.
+export const sidebarDirectory = Object.fromEntries(
+  brands.map((entry) => [entry.id, entry.id === 'retail' ? retailGroups : genericBrandGroups]),
+) as Record<BrandId, readonly SidebarGroup[]>;
 
 /**
  * Соседи текущего раздела по рубрике — для блока рекомендаций.
@@ -105,7 +107,7 @@ export const sidebarDirectory: Record<FintechBrand, readonly SidebarGroup[]> = {
  * («первые шесть») был бы выдуманным правилом — реальный порядок и отбор
  * рекомендаций не определён (docs/OPEN_QUESTIONS.md #52).
  */
-export function relatedSections(brand: FintechBrand, currentSlug: string): readonly SidebarItem[] {
+export function relatedSections(brand: BrandId, currentSlug: string): readonly SidebarItem[] {
   const hasCurrent = (group: SidebarGroup) => group.items.some((item) => item.slug === currentSlug);
   const currentGroup = sidebarDirectory[brand].find(hasCurrent);
 

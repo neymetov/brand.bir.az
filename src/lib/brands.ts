@@ -1,45 +1,159 @@
-// §3.2 — реальные бренд-ключи. Fintech-бренды имеют полную тему
-// (--bb-brand-default/hover/pressed/disabled + семантика text/bg/border),
-// партнёрские — только плоские --bb-partner-* акцентные токены, без каскада.
-// Списки поддерживаемых брендов — per-component, не единый список на все 5/9
-// (см. §3.2) — эти массивы описывают домен бренда в целом, не то, какие
-// бренды доступны у конкретного компонента.
-export type FintechBrand = 'ecosystem' | 'retail' | 'business' | 'invest' | 'private';
-export type PartnerBrand = 'birbonus' | 'birmarket' | 'm10' | 'million';
-export type BrandKey = FintechBrand | PartnerBrand;
+// Единый реестр брендов. Отсюда берут данные сайдбар, дропдаун, маршруты,
+// разводные страницы, редактор и enum брендов в Strapi.
+//
+// Добавить бренд = добавить одну запись сюда (плюс SVG-знак в
+// public/icons/dashboard/brand-marks/ и, если нужно, свой список разделов
+// в sidebar.data.ts). Раньше списки жили в двух файлах с разным составом:
+// дропдаун показывал 10 брендов, а маршруты знали 5, и партнёрские страницы
+// отдавали 404 (docs/OPEN_QUESTIONS.md №99).
 
-// /guidelines/[brand] и /tone-of-voice/[brand] — только готовые бренды.
-// birmarket/m10/million отложены на дизайн-стороне (§3.1).
-export const publishedGuidelineBrands: FintechBrand[] = [
-  'ecosystem',
-  'retail',
-  'business',
-  'invest',
-  'private',
-];
+/**
+ * Как бренд получает цвет.
+ *
+ * `themed` — полная тема через каскад `data-brand` (`--bb-brand-default` и
+ * семантика text/bg/border). `partner` — только плоский акцентный токен, без
+ * каскада. `external` — Kapital Bank, материнский банк вне системы токенов
+ * BirDS: единственное место, где цвет задан сырым хексом осознанно (§3.2).
+ */
+export type BrandTheme = 'themed' | 'partner' | 'external';
 
-export const defaultBrand: FintechBrand = 'retail';
+interface BrandEntry {
+  readonly id: string;
+  /** Подпись в дропдауне — как в макете, строчными (Figma node 230:6974). */
+  readonly label: string;
+  /** Полное имя в шапке сайдбара и заголовках. */
+  readonly displayName: string;
+  /** Вторая строка в шапке сайдбара (Figma node 287:4898). */
+  readonly direction: string;
+  readonly theme: BrandTheme;
+  /** Файл в public/icons/dashboard/brand-marks/, кроме bir-sign (в корне). */
+  readonly mark: string;
+  /** Заливка знака для partner/external — у них нет каскада токенов. */
+  readonly background?: string;
+}
 
-// Отображаемые названия — из макета дашборда (Figma node 230:7792) Retail
-// подписан как "Birbank", не "Retail". Остальные — экстраполяция по той же
-// схеме именования, не подтверждены дизайном.
-export const brandDisplayName: Record<FintechBrand, string> = {
-  retail: 'Birbank',
-  business: 'Birbank Business',
-  invest: 'Birbank Invest',
-  private: 'Birbank Private',
-  ecosystem: 'Bir',
-};
+// Порядок — как в макете дропдауна (Figma node 230:6974).
+export const brands = [
+  {
+    id: 'kapital-bank',
+    label: 'Kapital Bank',
+    displayName: 'Kapital Bank',
+    direction: 'Parent Bank',
+    theme: 'external',
+    mark: 'kapital-bank',
+    background: '#b5202e',
+  },
+  {
+    id: 'ecosystem',
+    label: 'bir',
+    displayName: 'Bir',
+    direction: 'Ecosystem',
+    theme: 'themed',
+    mark: 'ecosystem',
+  },
+  {
+    id: 'birmarket',
+    label: 'birmarket',
+    displayName: 'Birmarket',
+    direction: 'Partner Brand',
+    theme: 'partner',
+    mark: 'birmarket',
+    background: 'var(--bb-partner-birmarket-neon-pink)',
+  },
+  {
+    id: 'birbonus',
+    label: 'birbonus',
+    displayName: 'Birbonus',
+    direction: 'Partner Brand',
+    theme: 'partner',
+    mark: 'birbonus',
+    background: 'var(--bb-bg-primary)',
+  },
+  {
+    id: 'retail',
+    label: 'birbank',
+    displayName: 'Birbank',
+    direction: 'Fintech Vertical',
+    theme: 'themed',
+    mark: 'bir-sign',
+  },
+  {
+    id: 'business',
+    label: 'birbank biznes',
+    displayName: 'Birbank Business',
+    direction: 'Fintech Vertical',
+    theme: 'themed',
+    mark: 'bir-sign',
+  },
+  {
+    id: 'invest',
+    label: 'birbank invest',
+    displayName: 'Birbank Invest',
+    direction: 'Fintech Vertical',
+    theme: 'themed',
+    mark: 'bir-sign',
+  },
+  {
+    id: 'private',
+    label: 'birbank private',
+    displayName: 'Birbank Private',
+    direction: 'Fintech Vertical',
+    theme: 'themed',
+    mark: 'bir-sign',
+  },
+  {
+    id: 'm10',
+    label: 'm10',
+    displayName: 'm10',
+    direction: 'Partner Brand',
+    theme: 'partner',
+    mark: 'm10',
+    background: 'var(--bb-partner-m10-bright-cyan)',
+  },
+  {
+    id: 'million',
+    label: 'Million',
+    displayName: 'Million',
+    direction: 'Partner Brand',
+    theme: 'partner',
+    mark: 'million',
+    background: 'var(--bb-partner-million-accent-red)',
+  },
+] as const satisfies readonly BrandEntry[];
 
-// Вторая строка в шапке сайдбара (Figma node 287:4898). Дизайном подтверждён
-// только Retail — «Fintech Vertical»; остальные fintech-бренды получают ту же
-// подпись по типу (они и есть fintech-вертикали), а ecosystem — «Ecosystem»,
-// потому что Bir это родитель экосистемы, а не вертикаль внутри неё.
-// Экстраполяция, как и у brandDisplayName выше — см. docs/OPEN_QUESTIONS.md #60.
-export const brandDirection: Record<FintechBrand, string> = {
-  retail: 'Fintech Vertical',
-  business: 'Fintech Vertical',
-  invest: 'Fintech Vertical',
-  private: 'Fintech Vertical',
-  ecosystem: 'Ecosystem',
-};
+export type BrandId = (typeof brands)[number]['id'];
+
+/** Бренды с полным каскадом токенов — только им можно ставить data-brand. */
+export type ThemedBrand = Extract<(typeof brands)[number], { theme: 'themed' }>['id'];
+
+const byId = new Map(brands.map((entry) => [entry.id, entry]));
+
+export function brandById(id: BrandId) {
+  return byId.get(id)!;
+}
+
+export function isBrandId(value: string): value is BrandId {
+  return byId.has(value as BrandId);
+}
+
+export function isThemedBrand(id: BrandId): boolean {
+  return brandById(id).theme === 'themed';
+}
+
+/** Все бренды имеют раздел гайдлайнов — даже если он пока пустой. */
+export const publishedGuidelineBrands: BrandId[] = brands.map((entry) => entry.id);
+
+export const defaultBrand: BrandId = 'retail';
+
+export const brandDisplayName = Object.fromEntries(
+  brands.map((entry) => [entry.id, entry.displayName]),
+) as Record<BrandId, string>;
+
+export const brandDirection = Object.fromEntries(
+  brands.map((entry) => [entry.id, entry.direction]),
+) as Record<BrandId, string>;
+
+// Совместимость со старыми именами типов: `FintechBrand` раньше означал
+// «бренд, у которого есть страницы». Теперь страницы есть у всех.
+export type FintechBrand = BrandId;
+export type BrandKey = BrandId;

@@ -1,7 +1,9 @@
 'use client';
 
 import { useState } from 'react';
-import { brandDisplayName, brandDirection, type FintechBrand } from '@/lib/brands';
+import {
+  brandById, brandDisplayName, brandDirection, type BrandId,
+} from '@/lib/brands';
 import { Icon } from '@/components/icons/Icon';
 import { BrandDropdownMark } from './BrandDropdownMark';
 import { brandDropdownEntries } from './brandDropdown.data';
@@ -14,12 +16,18 @@ import styles from './BrandMenuHeader.module.scss';
 // Partner/external строки показаны (полнота списка из макета важна), но
 // неактивны — см. docs/OPEN_QUESTIONS.md #15.
 interface BrandMenuHeaderProps {
-  readonly brand: FintechBrand;
-  readonly onSelectBrand: (brand: FintechBrand) => void;
+  readonly brand: BrandId;
+  readonly onSelectBrand: (brand: BrandId) => void;
 }
 
 export function BrandMenuHeader({ brand, onSelectBrand }: BrandMenuHeaderProps) {
   const [open, setOpen] = useState(false);
+
+  const current = brandById(brand);
+  const themed = current.theme === 'themed';
+  const markSrc = current.mark === 'bir-sign'
+    ? '/icons/dashboard/bir-sign.svg'
+    : `/icons/dashboard/brand-marks/${current.mark}.svg`;
 
   return (
     <div className={styles.wrapper}>
@@ -31,9 +39,16 @@ export function BrandMenuHeader({ brand, onSelectBrand }: BrandMenuHeaderProps) 
         aria-label="Switch brand"
       >
         <span className={styles.title}>
-          <span className={styles.markSlot} data-brand={brand} style={{ background: 'var(--bb-brand-default)' }}>
-            {/* eslint-disable-next-line @next/next/no-img-element -- build-time статичный ассет */}
-            <img className={styles.markGlyph} src="/icons/dashboard/bir-sign.svg" alt="" />
+          {/* Знак берётся из реестра, а не захардкожен на bir-sign: у
+              партнёрских брендов свой глиф и своя заливка — каскада
+              --bb-brand-* у них нет, и на чёрном фоне они читались как Bir. */}
+          <span
+            className={styles.markSlot}
+            data-brand={themed ? brand : undefined}
+            style={{ background: themed ? 'var(--bb-brand-default)' : current.background }}
+          >
+            {/* eslint-disable-next-line @next/next/no-img-element -- статичный ассет */}
+            <img className={styles.markGlyph} src={markSrc} alt="" />
           </span>
           {/* Две строки: название бренда и его направление. Раньше была одна
               строка названия — см. Figma node 287:4898. */}
@@ -51,21 +66,20 @@ export function BrandMenuHeader({ brand, onSelectBrand }: BrandMenuHeaderProps) 
 
       {open ? (
         <ul className={styles.list}>
+          {/* Кликабельны ВСЕ бренды: у каждого есть свой раздел гайдлайнов,
+              даже если он пока пустой. Раньше partner/external показывались
+              неактивными — им некуда было вести (№15, снято 2026-08-09). */}
           {brandDropdownEntries.map((entry) => {
-            const isFintech = entry.kind === 'fintech';
-            const isActive = isFintech && entry.dataBrand === brand;
-            const disabled = !isFintech;
+            const isActive = entry.id === brand;
 
             return (
               <li key={entry.id}>
                 <button
                   type="button"
                   className={[styles.listItem, isActive ? styles.listItemActive : ''].join(' ')}
-                  disabled={disabled}
-                  aria-disabled={disabled}
+                  aria-current={isActive ? 'true' : undefined}
                   onClick={() => {
-                    if (!isFintech) return;
-                    onSelectBrand(entry.dataBrand);
+                    onSelectBrand(entry.id);
                     setOpen(false);
                   }}
                 >

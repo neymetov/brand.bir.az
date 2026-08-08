@@ -7,7 +7,7 @@ import { MenuItem } from '@/components/dashboard/shared/MenuItem';
 import { BrandDropdownMark } from '@/components/dashboard/Sidebar/BrandDropdownMark';
 import { brandDropdownEntries } from '@/components/dashboard/Sidebar/brandDropdown.data';
 import { sidebarDirectory } from '@/components/dashboard/Sidebar/sidebar.data';
-import { brandDisplayName, type FintechBrand } from '@/lib/brands';
+import { brandById, brandDisplayName, type BrandId } from '@/lib/brands';
 import styles from './MobileNav.module.scss';
 
 // Мобильная навигация (Figma node 289:5851): плавающая панель из трёх кнопок
@@ -21,8 +21,8 @@ import styles from './MobileNav.module.scss';
 type Sheet = 'brands' | 'sections';
 
 interface MobileNavProps {
-  readonly brand: FintechBrand;
-  readonly onSelectBrand: (brand: FintechBrand) => void;
+  readonly brand: BrandId;
+  readonly onSelectBrand: (brand: BrandId) => void;
   readonly onLogout: () => void;
 }
 
@@ -30,6 +30,11 @@ export function MobileNav({ brand, onSelectBrand, onLogout }: MobileNavProps) {
   const [sheet, setSheet] = useState<Sheet | null>(null);
   const barRef = useRef<HTMLDivElement>(null);
   const currentPath = usePathname();
+
+  const brandEntry = brandById(brand);
+  const brandMarkSrc = brandEntry.mark === 'bir-sign'
+    ? '/icons/dashboard/bir-sign.svg'
+    : `/icons/dashboard/brand-marks/${brandEntry.mark}.svg`;
 
   const groups = sidebarDirectory[brand];
   const currentItem = groups
@@ -69,31 +74,23 @@ export function MobileNav({ brand, onSelectBrand, onLogout }: MobileNavProps) {
       {sheet === 'brands' ? (
         <div className={styles.sheet} id="mobile-nav-brands">
           <ul className={styles.brandList}>
-            {brandDropdownEntries.map((entry) => {
-              const isFintech = entry.kind === 'fintech';
-
-              return (
-                <li key={entry.id}>
-                  <button
-                    type="button"
-                    className={styles.brandRow}
-                    // Партнёрские бренды показаны для полноты списка, но у них
-                    // нет своей навигации — как и в сайдбаре (№15).
-                    disabled={!isFintech}
-                    aria-disabled={!isFintech}
-                    aria-current={isFintech && entry.dataBrand === brand ? 'true' : undefined}
-                    onClick={() => {
-                      if (!isFintech) return;
-                      onSelectBrand(entry.dataBrand);
-                      setSheet(null);
-                    }}
-                  >
-                    <BrandDropdownMark entry={entry} />
-                    <span>{entry.label}</span>
-                  </button>
-                </li>
-              );
-            })}
+            {/* Кликабельны все бренды — как и в сайдбаре. */}
+            {brandDropdownEntries.map((entry) => (
+              <li key={entry.id}>
+                <button
+                  type="button"
+                  className={styles.brandRow}
+                  aria-current={entry.id === brand ? 'true' : undefined}
+                  onClick={() => {
+                    onSelectBrand(entry.id);
+                    setSheet(null);
+                  }}
+                >
+                  <BrandDropdownMark entry={entry} />
+                  <span>{entry.label}</span>
+                </button>
+              </li>
+            ))}
           </ul>
         </div>
       ) : null}
@@ -132,9 +129,14 @@ export function MobileNav({ brand, onSelectBrand, onLogout }: MobileNavProps) {
           aria-expanded={sheet === 'brands'}
           aria-controls="mobile-nav-brands"
         >
-          <span className={styles.brandMark} data-brand={brand}>
+          {/* Знак из реестра — у партнёрских брендов свой глиф и заливка. */}
+          <span
+            className={styles.brandMark}
+            data-brand={brandEntry.theme === 'themed' ? brand : undefined}
+            style={brandEntry.theme === 'themed' ? undefined : { background: brandEntry.background }}
+          >
             {/* eslint-disable-next-line @next/next/no-img-element -- статичный ассет */}
-            <img className={styles.brandGlyph} src="/icons/dashboard/bir-sign.svg" alt="" />
+            <img className={styles.brandGlyph} src={brandMarkSrc} alt="" />
           </span>
           <span className={styles.tabLabelStrong}>{brandDisplayName[brand]}</span>
         </button>
