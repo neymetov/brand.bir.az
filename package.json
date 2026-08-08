@@ -3,10 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "engines": {
-    "node": "20.x"
+    "node": "22.x"
   },
   "scripts": {
     "dev": "env-cmd -f .env.dev next dev",
+    "build": "next build",
     "build:dev": "env-cmd -f .env.dev next build",
     "build:qa": "env-cmd -f .env.qa next build",
     "build:preprod": "env-cmd -f .env.preprod next build",
