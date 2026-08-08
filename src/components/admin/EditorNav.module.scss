@@ -36,3 +36,32 @@
     background: var(--bb-bg-secondary-hover);
   }
 }
+
+// Что именно правится: по адресу /admin/retail/typography это не читается
+// с одного взгляда.
+.target {
+  flex: 1 1 auto;
+  margin-left: var(--bb-spacing-m);
+  color: var(--bb-text-secondary);
+  font-family: var(--bb-fontfamily-label);
+  font-size: var(--bb-fontsize-label-l3);
+  line-height: var(--bb-lineheight-label-l3);
+}
+
+.actions {
+  display: flex;
+  gap: var(--bb-spacing-m);
+  align-items: center;
+}
+
+.error {
+  color: var(--bb-text-error);
+  font-family: var(--bb-fontfamily-paragraph);
+  font-size: var(--bb-fontsize-paragraph-p4);
+  line-height: var(--bb-lineheight-paragraph-p4);
+}
+
+.exit:disabled {
+  opacity: 0.6;
+  cursor: default;
+}

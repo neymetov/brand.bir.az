@@ -1,0 +1,86 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--bb-spacing-xl);
+  min-height: 100vh;
+  padding: var(--bb-spacing-xl);
+  background: var(--bb-bg-primary);
+}
+
+.title {
+  margin: 0;
+  color: var(--bb-text-primary);
+  font-family: var(--bb-fontfamily-heading);
+  font-size: var(--bb-fontsize-heading-h1);
+  font-weight: 500;
+  line-height: var(--bb-lineheight-heading-h1);
+  letter-spacing: -0.02em;
+}
+
+.hint {
+  margin: 0;
+  color: var(--bb-text-secondary);
+  font-family: var(--bb-fontfamily-paragraph);
+  font-size: var(--bb-fontsize-paragraph-p3);
+  line-height: var(--bb-lineheight-paragraph-p3);
+}
+
+.brand {
+  display: flex;
+  flex-direction: column;
+  gap: var(--bb-spacing-l);
+  padding: var(--bb-spacing-xl);
+  border-radius: var(--bb-radius-20);
+  background: var(--bb-bg-white-solid);
+}
+
+.brandName {
+  margin: 0;
+  color: var(--bb-text-primary);
+  font-family: var(--bb-fontfamily-heading);
+  font-size: var(--bb-fontsize-heading-h5);
+  font-weight: 500;
+  line-height: var(--bb-lineheight-heading-h5);
+}
+
+.group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--bb-spacing-s);
+}
+
+.groupName {
+  margin: 0;
+  color: var(--bb-text-tertiary);
+  font-family: var(--bb-fontfamily-caption);
+  font-size: var(--bb-fontsize-caption-c1);
+  font-weight: 400;
+  line-height: var(--bb-lineheight-caption-c1);
+}
+
+.list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--bb-spacing-s);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.item {
+  display: block;
+  padding: var(--bb-spacing-s) var(--bb-spacing-m);
+  border: 1px solid var(--bb-border-quaternary);
+  border-radius: var(--bb-radius-8);
+  color: var(--bb-text-secondary);
+  font-family: var(--bb-fontfamily-label);
+  font-size: var(--bb-fontsize-label-l4);
+  line-height: var(--bb-lineheight-label-l4);
+  text-decoration: none;
+  transition: background-color 0.15s ease, color 0.15s ease;
+
+  &:hover {
+    background: var(--bb-bg-secondary);
+    color: var(--bb-text-primary);
+  }
+}

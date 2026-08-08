@@ -2,6 +2,7 @@
 
 import { Editor, Frame, Element } from '@craftjs/core';
 import { craftResolver } from '@/lib/craft/registry';
+import type { EditorTarget } from './BlockEditorClient';
 import { EditorNav } from './EditorNav';
 import { Toolbox } from './Toolbox';
 import { SettingsPanel } from './SettingsPanel';
@@ -20,13 +21,15 @@ import styles from './BlockEditor.module.scss';
 // craft.js не может восстановить узел и падает с "Invariant failed".
 const resolver = { ...craftResolver, EditorCanvas };
 
-export function BlockEditor() {
+export function BlockEditor({
+  brand, slug, title, initialTree,
+}: EditorTarget) {
   return (
     <Editor resolver={resolver}>
       {/* Панель вне сетки из трёх колонок: она тянется на всю ширину, а
           колонки под ней — тулбокс, холст, настройки. */}
       <div className={styles.shell}>
-        <EditorNav />
+        <EditorNav brand={brand} slug={slug} title={title} />
 
         <div className={styles.layout}>
           <aside className={styles.side}>
@@ -34,7 +37,9 @@ export function BlockEditor() {
           </aside>
 
           <div className={styles.canvasArea}>
-            <Frame>
+            {/* data — сохранённый черновик из CMS. Когда его нет, Frame
+                поднимает пустой холст из детей. */}
+            <Frame data={initialTree ? JSON.stringify(initialTree) : undefined}>
               <Element is={EditorCanvas} canvas />
             </Frame>
           </div>

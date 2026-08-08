@@ -17,13 +17,28 @@ export function isStrapiConfigured(): boolean {
   return Boolean(process.env.STRAPI_API_URL && process.env.STRAPI_API_TOKEN);
 }
 
+/** Настроено ли сохранение — у записи свой токен, его может не быть. */
+export function isStrapiWritable(): boolean {
+  return Boolean(process.env.STRAPI_API_URL && process.env.STRAPI_WRITE_TOKEN);
+}
+
 /**
  * Запрос к REST API Strapi. `path` — от корня api, например
  * `/upload/files?pagination[pageSize]=50`.
+ *
+ * `mode: 'write'` берёт отдельный токен с правом записи. Разделение не
+ * формальность: читающий токен раздаётся шире (им пользуется весь сайт), и
+ * его утечка не должна давать возможность менять контент.
  */
-export async function strapiFetch<T>(path: string, init?: RequestInit): Promise<T> {
+export async function strapiFetch<T>(
+  path: string,
+  init?: RequestInit,
+  mode: 'read' | 'write' = 'read',
+): Promise<T> {
   const baseUrl = process.env.STRAPI_API_URL;
-  const token = process.env.STRAPI_API_TOKEN;
+  const token = mode === 'write'
+    ? process.env.STRAPI_WRITE_TOKEN
+    : process.env.STRAPI_API_TOKEN;
 
   if (!baseUrl || !token) throw new StrapiNotConfiguredError();
 
