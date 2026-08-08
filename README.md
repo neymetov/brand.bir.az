@@ -8,18 +8,56 @@
 Открытые вопросы, требующие ответа перед реализацией отдельных разделов:
 [`docs/OPEN_QUESTIONS.md`](docs/OPEN_QUESTIONS.md).
 
+## Запуск локально
+
+Полный стенд — сайт, CMS и база — поднимается двумя командами.
+
+```bash
+docker compose up -d      # PostgreSQL + Strapi в контейнерах
+npm run dev               # сайт (env-cmd -f .env.dev next dev)
+```
+
+| Что | Адрес | Вход |
+| --- | --- | --- |
+| Сайт | http://localhost:3000 | пароль `viewer` или `admin` из `.env.dev` |
+| Редактор блоков | http://localhost:3000/admin | только под паролем `admin` |
+| Админка Strapi | http://localhost:1338/admin | учётка администратора CMS |
+
+Порты 1338 и 5433, а не стандартные 1337/5432: последние занимает CMS
+соседнего проекта (`birbank private`), и оба стенда должны работать
+одновременно.
+
+### Что можно проверить
+
+1. **Читатель.** Вход `viewer`-паролем → дашборд → выбор бренда в сайдбаре →
+   разводная с карточками → раздел.
+2. **Редактор.** Вход `admin`-паролем ведёт сразу в `/admin` — список
+   разделов. Открыть любой, перетащить блоки, заполнить, «Save and exit».
+   Сохраняется **черновик**.
+3. **Публикация.** Черновик не виден читателю, пока страницу не опубликуют
+   в админке Strapi (Content Manager → Guideline page → Publish).
+4. **Медиатека.** Файлы загружаются только в Strapi (Media Library); в
+   редакторе они появляются в пикере изображений и файлов.
+
+### Ограничения локального стенда
+
+- Стенд доступен только с этой машины — поделиться ссылкой с коллегами
+  нельзя. Для этого нужен внешний хост (`docs/OPEN_QUESTIONS.md` №95–97).
+- Загрузки лежат в томе контейнера. `docker compose down -v` удалит и
+  медиатеку, и всю базу вместе с контентом.
+
 ## Статус
 
-Каркас + рабочий дашборд (`src/app/[locale]/page.tsx`, реализация Figma node
-`230:7792`, 2026-08-05) — собирается, линтится, типизируется и провалидирован
-визуально (Playwright-скриншот сверен с макетом). Остальные разделы
-(`/guidelines/[brand]`, `/tone-of-voice/[brand]`, `/components`, `/changelog`,
-`/admin`) — по-прежнему заготовки, ждут либо контента, либо ответа на
-открытый вопрос из `docs/OPEN_QUESTIONS.md`.
+Работают: дашборд, разводная страница бренда, страницы разделов, мобильная
+навигация, экран логина, редактор блоков на `/admin` с чтением и сохранением
+в Strapi. Девять редактируемых блоков. Локализации нет — сайт только на
+английском (`docs/OPEN_QUESTIONS.md` №56).
 
-**Проверено `npm run build` (env-cmd -f .env.dev next build):** компиляция,
-ESLint (airbnb + airbnb-typescript + jsx-a11y + risxss + xss + no-unsanitized),
-`tsc --noEmit`, генерация 51 статической страницы — всё чисто.
+Заготовками остаются `/tone-of-voice/[brand]`, `/components`, `/changelog` —
+они ждут либо контента, либо ответа на открытый вопрос.
+
+**Проверки:** `npm test` (165 тестов), `npm run build`, `tsc --noEmit`,
+`npm run lint`, `npm run lint:styles` — чисто.
 
 ## Структура
 
@@ -31,10 +69,9 @@ src/
     layout.tsx                 ЕДИНСТВЕННОЕ место с <html>/<body> во всём дереве
     login/                     форма логина (вне [locale])
     api/auth/                  login/logout — сверка bcrypt-хэшей, iron-session cookie
-    [locale]/                  az | en | ru
-      layout.tsx               NextIntlClientProvider (без html/body — см. выше)
-      page.tsx                 ДАШБОРД — реализован (DashboardShell)
-      guidelines/[brand]/      ecosystem|retail|business|invest|private — заготовка
+    page.tsx                   ДАШБОРД (DashboardShell)
+    guidelines/[brand]/        разводная страница бренда
+    guidelines/[brand]/[slug]/ страница раздела — контент из Strapi
       guidelines/foundations/
       tone-of-voice/[brand]/
       components/              каталог
@@ -53,10 +90,10 @@ src/
                                 в исходной директории (см. OPEN_QUESTIONS №6)
   lib/
     auth/session.ts            iron-session (sealData/unsealData, edge-safe)
-    i18n/request.ts            next-intl: missing key → throw, не fallback
-    craft/registry.ts          единый реестр Strapi↔craft.js — пуст, ждёт §7.1
+    strapi/                    серверный клиент CMS, чтение/запись страниц
+    craft/registry.ts          единый реестр Strapi↔craft.js (9 блоков)
+    craft/strapiMapping.ts     Dynamic Zone ↔ дерево craft.js
     brands.ts                  BrandKey/FintechBrand/PartnerBrand + brandDisplayName (§3.2)
-  messages/{az,en,ru}.json
   styles/
     tokens/                    _colors.scss, _primitives.scss (реальные) +
                                 _radius.scss, _spacing.scss, _typography.scss
@@ -64,25 +101,23 @@ src/
                                 дашборда — см. tokens/README.md, только режим
                                 Desktop, брейкпоинты не подтверждены)
     globals.scss
-  middleware.ts                auth (role admin/viewer) + next-intl routing
-                                (редирект '/' → '/az' и т.п.), в этом порядке
+  middleware.ts                auth: роли admin/viewer, контент за паролем
+cms/                           Strapi 5 (TypeScript + PostgreSQL)
+strapi-schemas/                схемы компонентов и контент-типа для CMS
 ```
 
 ## Известные ограничения дашборда (см. `docs/OPEN_QUESTIONS.md` за деталями)
 
 - Иконки — статичные SVG, скачанные из Figma (№10), не из `@birds/ui/icons`.
-- Переключение бренда в сайдбаре не завязано на реальный роут состояния (№12).
-- Сайдбар ссылается на `/guidelines/[brand]/[slug]` — сегмента `[slug]` ещё
-  нет в дереве роутов, поэтому эти переходы 404-ят (ожидаемо, не регресс).
-- `<html lang>` захардкожен на `az` в корневом layout (за пределами
-  `[locale]`) — см. TODO в `src/app/layout.tsx`.
-- Брейкпоинты Mobile/Tablet/Desktop+ не реализованы в токенах (№9) —
-  дашборд адаптирован только под Desktop-макет (1440px).
+- Режим Mobile у токенов отступов включён, Tablet и Desktop+ — нет:
+  подтверждающих макетов не было (№50).
+- Сетка разводной страницы не адаптирована под телефон (№51).
+- Публикация страницы — ручное действие в админке Strapi (№91).
+- Медиа-провайдер S3 не настроен: загрузки лежат в контейнере (№97).
 
 ## Дальше
 
-1. Разобрать `docs/OPEN_QUESTIONS.md` — часть разделов (`/admin`,
-   `/changelog`, вложенные guideline-топики) не сдвинутся дальше заглушки
-   без ответов.
+1. Разобрать `docs/OPEN_QUESTIONS.md` — часть разделов (`/changelog`,
+   `/components`, `/tone-of-voice`) не сдвинутся дальше заглушки без ответов.
 2. Свериться с реальным `birds-tokens`/`@birds/ui`, когда будет доступ к
    монорепо (пути импортов, брейкпоинты, недостающие модули токенов).
