@@ -1,5 +1,5 @@
 // Панель редактора (Figma node 300:7376): белая полоса во всю ширину рабочей
-// области, логотип слева, выход справа.
+// области, логотип слева, действия справа.
 .nav {
   display: flex;
   align-items: center;
@@ -9,32 +9,23 @@
   background: var(--bb-bg-white-solid);
 }
 
+// Логотип — ссылка на список страниц. Своей рамки и фона у неё нет: в макете
+// это просто логотип, и превращать его в кнопку незачем.
+.home {
+  display: block;
+  border-radius: var(--bb-radius-8);
+  text-decoration: none;
+
+  &:hover {
+    background: var(--bb-bg-secondary);
+  }
+}
+
 .logo {
   display: block;
   // Коробка логотипа в макете 48px высотой при глифе 36 — отступ сверху и
   // снизу задаётся ею, а не собственным паддингом кнопки.
   margin: var(--bb-spacing-xs) var(--bb-spacing-xs) var(--bb-spacing-xs) 5px;
-}
-
-.exit {
-  display: flex;
-  gap: var(--bb-spacing-s);
-  align-items: center;
-  padding: var(--bb-spacing-m);
-  border: none;
-  border-radius: var(--bb-radius-12);
-  background: var(--bb-bg-secondary);
-  color: var(--bb-text-secondary);
-  font-family: var(--bb-fontfamily-label);
-  font-size: var(--bb-fontsize-label-l3);
-  font-weight: 500;
-  line-height: var(--bb-lineheight-label-l3);
-  cursor: pointer;
-  transition: background-color 0.15s ease;
-
-  &:hover {
-    background: var(--bb-bg-secondary-hover);
-  }
 }
 
 // Что именно правится: по адресу /admin/retail/typography это не читается
@@ -61,13 +52,47 @@
   line-height: var(--bb-lineheight-paragraph-p4);
 }
 
-.exit:disabled {
-  opacity: 0.6;
-  cursor: default;
+// Со страницы после сохранения никуда не уходим, поэтому об успехе говорим
+// прямо здесь — иначе нажатие выглядит как ничего не сделавшее.
+.done {
+  color: var(--bb-text-secondary);
+  font-family: var(--bb-fontfamily-paragraph);
+  font-size: var(--bb-fontsize-paragraph-p4);
+  line-height: var(--bb-lineheight-paragraph-p4);
+  white-space: nowrap;
 }
 
-// Сохранить черновик — вторичное действие: тише основного, но рядом с ним.
-.draft {
+// Основное действие — публикация.
+.primary {
+  display: flex;
+  gap: var(--bb-spacing-s);
+  align-items: center;
+  padding: var(--bb-spacing-m);
+  border: none;
+  border-radius: var(--bb-radius-12);
+  background: var(--bb-bg-secondary);
+  color: var(--bb-text-secondary);
+  font-family: var(--bb-fontfamily-label);
+  font-size: var(--bb-fontsize-label-l3);
+  font-weight: 500;
+  line-height: var(--bb-lineheight-label-l3);
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: default;
+  }
+
+  &:hover:not(:disabled) {
+    background: var(--bb-bg-secondary-hover);
+  }
+}
+
+// Черновик и предпросмотр — вторичные действия: тише основного, но рядом с
+// ним. Один класс на кнопку и на ссылку: разница в теге, не в роли.
+.secondary {
   padding: var(--bb-spacing-m);
   border: 1px solid var(--bb-border-quaternary);
   border-radius: var(--bb-radius-12);
@@ -77,6 +102,7 @@
   font-size: var(--bb-fontsize-label-l3);
   font-weight: 500;
   line-height: var(--bb-lineheight-label-l3);
+  text-decoration: none;
   white-space: nowrap;
   cursor: pointer;
   transition: background-color 0.15s ease;
