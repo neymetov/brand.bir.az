@@ -1,6 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
 import bcrypt from 'bcryptjs';
-import { createSessionCookieValue, SESSION_COOKIE, type Role } from '@/lib/auth/session';
+import {
+  createSessionCookieValue,
+  SESSION_COOKIE,
+  sessionCookieOptions,
+  type Role,
+} from '@/lib/auth/session';
 import { recordFailure, recordSuccess, retryAfterSeconds } from '@/lib/auth/loginAttempts';
 
 // §4: viewer-пароль — общий доступ, admin-пароль — более строгий, даёт доступ
@@ -61,11 +66,6 @@ export async function POST(request: NextRequest) {
 
   const cookieValue = await createSessionCookieValue(role);
   const response = NextResponse.json({ role });
-  response.cookies.set(SESSION_COOKIE, cookieValue, {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: 'lax',
-    path: '/',
-  });
+  response.cookies.set(SESSION_COOKIE, cookieValue, sessionCookieOptions());
   return response;
 }

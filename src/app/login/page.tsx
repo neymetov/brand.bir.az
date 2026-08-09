@@ -48,7 +48,13 @@ function LoginForm() {
   };
 
   return (
-    <form className={styles.form} onSubmit={handleSubmit}>
+    // Пароль общий, и сохранять его в браузере не должны (требование
+    // пользователя, 2026-08-10). Полной управы у сайта тут нет: `autocomplete`
+    // для полей пароля браузеры намеренно игнорируют — Chrome, Firefox и Safari
+    // перестали слушаться `off` как раз потому, что сайты им злоупотребляли.
+    // Ниже — всё, что реально действует: подсказки браузеру и менеджерам
+    // паролей. Гарантией это не является, см. OPEN_QUESTIONS №116.
+    <form className={styles.form} onSubmit={handleSubmit} autoComplete="off">
       <div className={styles.field}>
         {/* Видимой подписи у поля в макете нет — плейсхолдер её заменяет
             визуально, но не для скринридера, поэтому aria-label обязателен. */}
@@ -60,7 +66,16 @@ function LoginForm() {
           onChange={(event) => setPassword(event.target.value)}
           placeholder="Password"
           aria-label="Password"
-          autoComplete="current-password"
+          // Не `current-password`: то значение прямо просит браузер подставить
+          // сохранённый пароль. `new-password` — единственное, что Chrome и
+          // Safari сегодня уважают: подстановки сохранённого не будет.
+          autoComplete="new-password"
+          // Подсказки популярным менеджерам паролей, каждый со своим атрибутом:
+          // 1Password, LastPass, Bitwarden, Dashlane.
+          data-1p-ignore=""
+          data-lpignore="true"
+          data-bwignore="true"
+          data-form-type="other"
           required
         />
         {/* Иконка показывает не текущее состояние, а результат нажатия:

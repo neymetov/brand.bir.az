@@ -1,5 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getSession } from '@/lib/auth/session';
+import {
+  getSession,
+  needsRefresh,
+  refreshSessionCookieValue,
+  SESSION_COOKIE,
+  sessionCookieOptions,
+} from '@/lib/auth/session';
 
 // §4: /admin/* требует роль admin, всё остальное — минимум viewer. admin
 // даёт доступ и туда, и туда. /admin здесь — собственный роут ЭТОГО
@@ -45,7 +51,20 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL('/', request.url));
   }
 
-  return NextResponse.next();
+  const response = NextResponse.next();
+
+  // Продление простоя живёт здесь, а не в каждом роуте: миддлварь — то
+  // единственное место, через которое проходит любой запрос, и только так
+  // «час без запросов» считается от реальной активности, а не от входа.
+  if (needsRefresh(session)) {
+    response.cookies.set(
+      SESSION_COOKIE,
+      await refreshSessionCookieValue(session),
+      sessionCookieOptions(),
+    );
+  }
+
+  return response;
 }
 
 // Исключено только то, без чего не отрисуется сам экран логина: сборка Next.js
