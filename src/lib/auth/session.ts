@@ -11,6 +11,18 @@ export type Role = 'viewer' | 'admin';
 
 export const SESSION_COOKIE = 'bb_session';
 
+// Умолчание iron-session — 14 дней. Это слишком долго: отозвать одно
+// запечатанное значение нельзя, и утёкшая кука работала бы две недели. Отобрать
+// доступ можно только сменой SESSION_SECRET, а она выкидывает сразу всех.
+// Двое суток — компромисс: заходящий каждый день вводит пароль примерно раз в
+// два дня, а окно у украденной куки сокращается в семь раз.
+//
+// Срок вшит в само значение при запечатывании, поэтому одного числа хватает и
+// на выпуск, и на проверку. У cookie при этом намеренно нет maxAge: она
+// сессионная и умирает вместе с закрытым браузером — то есть на деле живёт
+// не дольше этого срока, а обычно меньше.
+export const SESSION_TTL_SECONDS = 2 * 24 * 60 * 60;
+
 interface SessionPayload {
   role: Role;
 }
@@ -26,6 +38,7 @@ function getSessionPassword(): string {
 export async function createSessionCookieValue(role: Role): Promise<string> {
   return sealData({ role } satisfies SessionPayload, {
     password: getSessionPassword(),
+    ttl: SESSION_TTL_SECONDS,
   });
 }
 
@@ -39,10 +52,13 @@ export async function getSession(
   try {
     const data = await unsealData<SessionPayload>(raw, {
       password: getSessionPassword(),
+      ttl: SESSION_TTL_SECONDS,
     });
+    // На просроченном значении unsealData не бросает, а возвращает пустой
+    // объект — поэтому проверка роли здесь и есть проверка срока.
     return data.role ? { role: data.role } : null;
   } catch {
-    // просроченная/подделанная кука — трактуем как разлогин
+    // подделанная кука — трактуем как разлогин
     return null;
   }
 }

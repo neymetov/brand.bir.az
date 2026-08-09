@@ -4,9 +4,15 @@ import {
   describe,
   expect,
   it,
+  vi,
 } from 'vitest';
 import { NextRequest } from 'next/server';
-import { createSessionCookieValue, getSession, SESSION_COOKIE } from './session';
+import {
+  createSessionCookieValue,
+  getSession,
+  SESSION_COOKIE,
+  SESSION_TTL_SECONDS,
+} from './session';
 
 // AUTH-007, AUTH-008 из _qa/qa-analysis.md.
 
@@ -54,6 +60,41 @@ describe('getSession (AUTH-007)', () => {
     const valid = await createSessionCookieValue('viewer');
     const tampered = `${valid.slice(0, -1)}${valid.at(-1) === 'a' ? 'b' : 'a'}`;
     await expect(getSession(requestWithCookie(tampered))).resolves.toBeNull();
+  });
+});
+
+describe('срок жизни сессии', () => {
+  beforeEach(() => {
+    process.env.SESSION_SECRET = SECRET;
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
+  it('короче умолчания iron-session в 14 дней', () => {
+    // Отозвать одно запечатанное значение нельзя: сменить можно только
+    // SESSION_SECRET, а это выкидывает сразу всех. Значит срок — единственное,
+    // что ограничивает окно у украденной куки.
+    expect(SESSION_TTL_SECONDS).toBeLessThan(14 * 24 * 60 * 60);
+  });
+
+  it('за час до конца срока сессия ещё жива', async () => {
+    const value = await createSessionCookieValue('viewer');
+
+    vi.useFakeTimers();
+    vi.setSystemTime(Date.now() + (SESSION_TTL_SECONDS - 3600) * 1000);
+    await expect(getSession(requestWithCookie(value))).resolves.toEqual({ role: 'viewer' });
+  });
+
+  it('после срока перестаёт приниматься', async () => {
+    const value = await createSessionCookieValue('admin');
+
+    // Запас в пять минут: iron прощает расхождение часов (60 с по умолчанию),
+    // поэтому ровно на границе значение ещё принимается.
+    vi.useFakeTimers();
+    vi.setSystemTime(Date.now() + (SESSION_TTL_SECONDS + 300) * 1000);
+    await expect(getSession(requestWithCookie(value))).resolves.toBeNull();
   });
 });
 
