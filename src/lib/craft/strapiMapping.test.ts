@@ -51,7 +51,8 @@ describe('Strapi → craft.js', () => {
     const node = tree[tree[ROOT_ID]!.nodes[0]!]!;
     const images = node.props.images as { id: number; src: string }[];
 
-    expect(images[0]).toMatchObject({ id: 3, src: '/uploads/a.png' });
+    // src указывает на наш прокси: прямой адрес в CMS открывался бы без пароля.
+    expect(images[0]).toMatchObject({ id: 3, src: '/api/media/file/3' });
   });
 
   it('разворачивает медиа и на глубине — во вложенных компонентах', () => {
@@ -67,7 +68,7 @@ describe('Strapi → craft.js', () => {
     const node = tree[tree[ROOT_ID]!.nodes[0]!]!;
     const tabs = node.props.tabs as { folders: { files: { file: { id: number } }[] }[] }[];
 
-    expect(tabs[0]!.folders[0]!.files[0]!.file).toMatchObject({ id: 9, src: '/uploads/a.pdf' });
+    expect(tabs[0]!.folders[0]!.files[0]!.file).toMatchObject({ id: 9, src: '/api/media/file/9' });
   });
 
   it('неизвестный компонент пропускается, а не роняет редактор', () => {
@@ -141,7 +142,7 @@ describe('craft.js → Strapi', () => {
     const zone = craftToDynamicZone(craftTree({
       a: {
         resolvedName: 'media',
-        props: { images: [{ id: 3, src: '/uploads/a.png', url: '/uploads/a.png' }] },
+        props: { images: [{ id: 3, src: '/api/media/file/3', url: '/api/media/file/3' }] },
       },
     }));
 

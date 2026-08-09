@@ -70,8 +70,12 @@ function fromStrapiValue(value: unknown): unknown {
   if (Array.isArray(value)) return value.map(fromStrapiValue);
 
   if (isMedia(value)) {
+    // Наружу отдаётся путь к своему прокси, а не адрес в CMS/бакете: файлы
+    // приватные (решение пользователя, 2026-08-09), и прямой адрес открывался
+    // бы без пароля. `id` сохраняется — по нему прокси и достаёт файл.
+    const proxied = `/api/media/file/${value.id}`;
     return {
-      id: value.id, src: value.url, url: value.url, name: value.name,
+      id: value.id, src: proxied, url: proxied, name: value.name,
     };
   }
 

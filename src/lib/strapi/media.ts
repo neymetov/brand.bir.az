@@ -20,6 +20,7 @@ interface StrapiUploadFile {
 export interface MediaLibraryItem {
   readonly id: number;
   readonly name: string;
+  /** Адрес НА НАШЕМ домене: прямой путь в CMS наружу не отдаётся. */
   readonly url: string;
   /** Уменьшенная версия для сетки пикера, если Strapi её сгенерировал. */
   readonly thumbnailUrl: string;
@@ -37,14 +38,39 @@ function absoluteUrl(url: string): string {
   return `${base}${url}`;
 }
 
+/**
+ * Файлы приватные (решение пользователя, 2026-08-09), поэтому наружу уходит
+ * только путь к своему прокси. Прямой адрес в CMS/бакете остаётся на сервере:
+ * он открывается без пароля, а с приватным бакетом ещё и протухает.
+ */
+export function mediaProxyUrl(id: number): string {
+  return `/api/media/file/${id}`;
+}
+
 function toLibraryItem(file: StrapiUploadFile): MediaLibraryItem {
   return {
     id: file.id,
     name: file.name,
-    url: absoluteUrl(file.url),
-    thumbnailUrl: absoluteUrl(file.formats?.thumbnail?.url ?? file.url),
+    url: mediaProxyUrl(file.id),
+    // Отдельной ссылки на превью нет: прокси отдаёт тот же файл, а браузер
+    // масштабирует. Гонять два маршрута ради сетки пикера незачем.
+    thumbnailUrl: mediaProxyUrl(file.id),
     alt: file.alternativeText ?? '',
   };
+}
+
+/** Файл по id — нужен прокси, чтобы забрать содержимое из хранилища. */
+export interface MediaSource {
+  readonly sourceUrl: string;
+  readonly mime: string;
+  readonly name: string;
+}
+
+export async function getFileById(id: number): Promise<MediaSource | null> {
+  const file = await strapiFetch<StrapiUploadFile | null>(`/upload/files/${id}`);
+  if (!file) return null;
+
+  return { sourceUrl: absoluteUrl(file.url), mime: file.mime, name: file.name };
 }
 
 /**
