@@ -15,8 +15,15 @@ import { getSession } from '@/lib/auth/session';
 //
 // Список точечный, а не «пропускать всё из public/»: за паролем прячется
 // именно содержимое (гайдлайны, макеты, шрифты, PDF), и открывать его целиком
-// ради одной картинки нельзя.
-const loginAssets = new Set(['/images/login-background.jpg']);
+// ради одной картинки нельзя. Здесь ровно то, что видно до входа: фон, логотип
+// и два глаза у поля пароля. Добавлять сюда что-то ещё можно, только если оно
+// действительно рисуется на экране логина.
+const loginAssets = new Set([
+  '/images/login-background.jpg',
+  '/icons/dashboard/logo-bir.svg',
+  '/icons/dashboard/view.svg',
+  '/icons/dashboard/view-off.svg',
+]);
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
@@ -41,6 +48,12 @@ export async function middleware(request: NextRequest) {
   return NextResponse.next();
 }
 
+// Исключено только то, без чего не отрисуется сам экран логина: сборка Next.js
+// (`_next/*`) и иконка вкладки. `icons/` отсюда убран сознательно — под ним
+// лежат марки брендов и глифы дизайн-системы, то есть тоже содержимое, а
+// исключение в matcher отдавало их вообще без проверки сессии (проверено
+// запросом без куки: 200). Нужные экрану логина файлы теперь проходят через
+// loginAssets поимённо.
 export const config = {
-  matcher: ['/((?!_next/static|_next/image|favicon.ico|icons/).*)'],
+  matcher: ['/((?!_next/static|_next/image|favicon.ico).*)'],
 };
