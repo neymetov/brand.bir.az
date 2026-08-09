@@ -17,15 +17,17 @@
 }
 
 .thumb {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: block;
+  width: 100%;
+  // Обложка квадратная (800×800 в исходнике) — cover страхует от искажения,
+  // если однажды подложат картинку другой пропорции.
+  object-fit: cover;
   // Квадрат, а не фиксированная высота: в макете обложка 1:1, и карточка
   // должна одинаково выглядеть и в колонке сетки, и в полосе карусели.
   aspect-ratio: 1 / 1;
   border-radius: var(--bb-radius-12);
+  // Фон виден, пока картинка грузится.
   background: var(--bb-bg-primary);
-  color: var(--bb-text-tertiary);
 }
 
 .title {

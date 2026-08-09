@@ -1,7 +1,7 @@
 import Link from 'next/link';
-import { Icon } from '@/components/icons/Icon';
 import type { SidebarItem } from '@/components/dashboard/Sidebar/sidebar.data';
-import type { FintechBrand } from '@/lib/brands';
+import type { BrandId } from '@/lib/brands';
+import { sectionCover } from './sectionCover';
 import styles from './SectionCard.module.scss';
 
 // Карточка раздела. Одна на весь сайт: её показывает и разводная страница
@@ -16,17 +16,16 @@ export function SectionCard({
   brand,
   item,
 }: {
-  readonly brand: FintechBrand;
+  readonly brand: BrandId;
   readonly item: SidebarItem;
 }) {
   return (
     <Link className={styles.card} href={`/guidelines/${brand}/${item.slug}`}>
-      {/* Обложек разделов пока нет — на их месте плейсхолдер с иконкой
-          раздела, той же, что в сайдбаре. Так карточка узнаётся, даже пока
-          картинки не залиты в CMS. */}
-      <span className={styles.thumb}>
-        <Icon name={item.icon} size={32} />
-      </span>
+      {/* Обложка подбирается по иконке раздела (см. sectionCover): у иконок
+          без своей картинки — общая standart, поэтому новый раздел не
+          остаётся с пустым местом. */}
+      {/* eslint-disable-next-line @next/next/no-img-element -- статичный ассет */}
+      <img className={styles.thumb} src={sectionCover(item.icon)} alt="" loading="lazy" />
       <span className={styles.title}>{item.label}</span>
     </Link>
   );
