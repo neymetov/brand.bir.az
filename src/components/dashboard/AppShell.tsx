@@ -7,6 +7,7 @@ import type { SidebarGroup } from './Sidebar/sidebar.data';
 import type { SidebarNotification } from './Sidebar/BrandNotification';
 import { Sidebar } from './Sidebar/Sidebar';
 import { MobileNav } from './MobileNav/MobileNav';
+import { ImageGuard } from './ImageGuard';
 import styles from './AppShell.module.scss';
 
 // Оболочка раздела документации: зафиксированный слева sidebar и область
@@ -50,6 +51,8 @@ export function AppShell({
 
   return (
     <div className={styles.shell}>
+      {/* Только читательская часть: в редакторе контекстное меню админу нужно. */}
+      <ImageGuard />
       {/* Два представления одной навигации: боковое меню на широком экране и
           плавающая панель на узком (Figma node 289:5851). Какое из них видно,
           решает CSS — переключение по ширине через JS дало бы разъезд разметки

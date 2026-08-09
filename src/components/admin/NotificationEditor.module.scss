@@ -115,8 +115,8 @@
   line-height: var(--bb-lineheight-paragraph-p4);
 }
 
+// Довесок к .note (ставится вторым классом): перебор по длине.
 .noteOver {
-  composes: note;
   color: var(--bb-text-error);
 }
 

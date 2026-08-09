@@ -23,7 +23,7 @@ export default async function AdminIndexPage() {
 
       {/* Уведомление одно на весь сайт, поэтому стоит над списком брендов, а
           не внутри одного из них. */}
-      <Link className={styles.globalAction} href="/admin/notification">
+      <Link className={`${styles.editNav} ${styles.globalAction}`} href="/admin/notification">
         Уведомление в сайдбаре
       </Link>
 

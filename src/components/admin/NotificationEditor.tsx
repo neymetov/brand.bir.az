@@ -106,7 +106,7 @@ export function NotificationEditor({ initial, maxLength }: NotificationEditorPro
               rows={3}
               onChange={(event) => setMessage(event.target.value)}
             />
-            <span className={tooLong ? styles.noteOver : styles.note}>
+            <span className={tooLong ? `${styles.note} ${styles.noteOver}` : styles.note}>
               {`${trimmed.length} из ${maxLength} символов`}
             </span>
           </label>

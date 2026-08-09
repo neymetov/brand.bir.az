@@ -1,17 +1,18 @@
-import { DashboardShell } from '@/components/dashboard/DashboardShell';
+import { redirect } from 'next/navigation';
 import { defaultBrand } from '@/lib/brands';
-import { getNavigation } from '@/lib/strapi/navigation';
-import { getNotification } from '@/lib/strapi/notification';
 
-// Дашборд — реализация Figma node 230:7792 (см. переписку с пользователем,
-// 2026-08-05). Бренд пока захардкожен на defaultBrand — переключение
-// бренда сайдбара ещё не завязано на роут/URL, см.
-// docs/OPEN_QUESTIONS.md #12.
-export default async function DashboardPage() {
-  const [groups, notification] = await Promise.all([
-    getNavigation(defaultBrand),
-    getNotification(),
-  ]);
-
-  return <DashboardShell brand={defaultBrand} groups={groups} notification={notification} />;
+// Своего содержимого у корня нет (решение пользователя, 2026-08-10): на сайте
+// всегда открыт какой-то бренд и его разделы. Раньше здесь был отдельный
+// экран-дашборд с плейсхолдерным контентом (Figma node 230:7792) — он
+// показывал набор блоков, которых нет ни в одной реальной странице, и жил
+// своей вёрсткой.
+//
+// Отсюда переход, а не рендер разводной прямо здесь: у бренда должен быть свой
+// адрес. Иначе на "/" не видно, какой бренд открыт, ссылку нельзя переслать, а
+// переключатель брендов в сайдбаре всё равно уводит на /guidelines/<бренд> —
+// то есть корень был бы единственным местом, живущим по другим правилам.
+//
+// Когда для корня придумают что-то своё, редирект сменится на страницу.
+export default function HomePage() {
+  redirect(`/guidelines/${defaultBrand}`);
 }

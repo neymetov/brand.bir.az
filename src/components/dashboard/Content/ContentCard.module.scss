@@ -1,0 +1,24 @@
+// Белая карточка с содержимым страницы. Раньше эти правила лежали в
+// Drawer.module.scss и ContentDrawer.module.scss — оба компонента удалены
+// вместе с экраном-дашбордом (2026-08-10), а вёрстка осталась: её использует
+// страница раздела.
+.card {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--bb-spacing-l);
+  width: 100%;
+  // 32px, а не 24px (xl) как в Figma — решение пользователя, 2026-08.
+  padding: var(--bb-spacing-2xl);
+  border-radius: var(--bb-radius-20);
+  background: var(--bb-bg-white-solid);
+}
+
+// Колонка содержимого. Типографика заголовков и текста принадлежит блокам,
+// здесь только раскладка.
+.column {
+  display: flex;
+  flex-direction: column;
+  gap: var(--bb-spacing-3xl);
+  flex: 1 1 auto;
+  min-width: 0;
+}

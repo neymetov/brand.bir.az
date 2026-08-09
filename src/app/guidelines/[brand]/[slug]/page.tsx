@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation';
 import { TextBlock } from '@/components/blocks/TextBlock/TextBlock';
 import { renderPage, type PageAnchor } from '@/components/blocks/renderBlocks';
-import { ContentCard } from '@/components/dashboard/Drawer/ContentCard';
+import { ContentCard } from '@/components/dashboard/Content/ContentCard';
 import { isStrapiConfigured } from '@/lib/strapi/client';
 import { getPage } from '@/lib/strapi/pages';
 import { getNavigation } from '@/lib/strapi/navigation';
