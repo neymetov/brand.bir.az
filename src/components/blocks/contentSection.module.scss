@@ -1,0 +1,11 @@
+// Отступы секции контента. Живут здесь, а не в ContentDrawer, потому что
+// секции теперь создаются в двух местах: на дашборде — из плейсхолдера, на
+// странице раздела — из блоков CMS (renderPage). Одно определение на оба.
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--bb-spacing-xl);
+
+  // Компенсирует sticky-заголовок при переходе по якорю из anchor-list.
+  scroll-margin-top: var(--bb-spacing-xl);
+}

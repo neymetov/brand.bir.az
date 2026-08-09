@@ -5,8 +5,8 @@ import { ActionButtons } from '@/components/blocks/ActionButtons/ActionButtons';
 import { FontfaceViewer } from '@/components/blocks/FontfaceViewer/FontfaceViewer';
 import { Divider } from '@/components/blocks/Divider/Divider';
 import { AppScreenshots } from '@/components/blocks/AppScreenshots/AppScreenshots';
+import styles from '@/components/blocks/contentSection.module.scss';
 import type { ContentSection } from './content.data';
-import styles from './ContentDrawer.module.scss';
 
 // Сюда будут поступать изменения из craft.js (снимок Strapi Dynamic Zone →
 // узлы craft.js → это дерево, см. §3.5). Сам ничего не верстает: каждая
@@ -15,9 +15,12 @@ import styles from './ContentDrawer.module.scss';
 //
 // Остаётся здесь только обёртка <section id> — она нужна anchor-list для
 // якорей и не является частью какого-либо блока.
+//
+// Колонку (.contentDrawer) рисует ContentCard: она общая с страницей раздела,
+// и держать её в двух местах значит однажды получить две разные колонки.
 export function ContentDrawer({ sections }: { readonly sections: readonly ContentSection[] }) {
   return (
-    <div className={styles.contentDrawer}>
+    <>
       {sections.map((section) => (
         <section key={section.id} id={section.id} className={styles.section}>
           <TextBlock
@@ -47,6 +50,6 @@ export function ContentDrawer({ sections }: { readonly sections: readonly Conten
           {section.divider ? <Divider {...section.divider} /> : null}
         </section>
       ))}
-    </div>
+    </>
   );
 }

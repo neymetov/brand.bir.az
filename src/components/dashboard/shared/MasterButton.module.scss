@@ -12,6 +12,10 @@
   line-height: var(--bb-lineheight-label-l3);
   font-weight: 500;
   color: var(--bb-text-secondary);
+  // У <button> подчёркивания нет по умолчанию, а у <a> есть: с появлением
+  // MasterButtonLink «Check it» в сайдбаре стал подчёркнутым. Снимаем здесь,
+  // а не у ссылки — вид у обоих должен быть один.
+  text-decoration: none;
   cursor: pointer;
   transition: background-color 0.15s ease;
 }

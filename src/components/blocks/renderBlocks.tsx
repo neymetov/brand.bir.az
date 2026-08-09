@@ -10,6 +10,7 @@ import { Divider } from './Divider/Divider';
 import { AppScreenshots } from './AppScreenshots/AppScreenshots';
 import { FileManager } from './FileManager/FileManager';
 import { FileList } from './FileList/FileList';
+import styles from './contentSection.module.scss';
 
 // Рендер контента страницы из Dynamic Zone.
 //
@@ -31,10 +32,55 @@ const PRESENTATIONAL: Record<BlockKey, ComponentType<any>> = {
   fileList: FileList,
 };
 
-export function renderBlocks(content: readonly DynamicZoneItem[]) {
-  const tree = dynamicZoneToCraft(content);
+/** Пункт правой навигации: якорь и подпись. */
+export interface PageAnchor {
+  readonly id: string;
+  readonly label: string;
+}
 
-  return (tree[ROOT_ID]?.nodes ?? []).map((nodeId) => {
+/**
+ * Якорь из заголовка блока. Транслитерации нет: заголовки на сайте
+ * английские, а всё нелатинское схлопнется в дефисы — тогда спасает
+ * порядковый номер ниже.
+ */
+function anchorId(title: string, taken: Set<string>): string {
+  const base = title
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    // Два прохода вместо одного чередования: `^-+|-+$` заставляет движок
+    // перебирать варианты и на длинной строке считается квадратично.
+    .replace(/^-+/, '')
+    .replace(/-+$/, '') || 'section';
+
+  // Два блока с одинаковым заголовком — обычное дело («Colors» дважды).
+  // Без разведения id ссылка вела бы всегда на первый.
+  let id = base;
+  let n = 2;
+  while (taken.has(id)) {
+    id = `${base}-${n}`;
+    n += 1;
+  }
+  taken.add(id);
+  return id;
+}
+
+/**
+ * Контент страницы из Dynamic Zone: сами блоки и якоря к ним.
+ *
+ * Якорь получает каждый блок верхнего уровня с непустым заголовком — так же,
+ * как на дашборде, где список собирается из заголовков секций. Блок без
+ * заголовка в правой навигации перечислять нечем, поэтому он рендерится как
+ * есть, без обёртки.
+ */
+export function renderPage(content: readonly DynamicZoneItem[]): {
+  readonly blocks: React.ReactNode[];
+  readonly anchors: readonly PageAnchor[];
+} {
+  const tree = dynamicZoneToCraft(content);
+  const anchors: PageAnchor[] = [];
+  const taken = new Set<string>();
+
+  const blocks = (tree[ROOT_ID]?.nodes ?? []).map((nodeId) => {
     const node = tree[nodeId];
     if (!node) return null;
 
@@ -42,11 +88,24 @@ export function renderBlocks(content: readonly DynamicZoneItem[]) {
     const Block = PRESENTATIONAL[key];
     if (!Block) return null;
 
+    // eslint-disable-next-line react/jsx-props-no-spreading -- props приходят из CMS
+    const element = <Block {...node.props} />;
+
+    const rawTitle = (node.props as { title?: unknown }).title;
+    const title = typeof rawTitle === 'string' ? rawTitle.trim() : '';
+    if (!title) return <div key={nodeId}>{element}</div>;
+
+    const id = anchorId(title, taken);
+    anchors.push({ id, label: title });
+
     return (
-      // eslint-disable-next-line react/jsx-props-no-spreading -- props приходят из CMS
-      <Block key={nodeId} {...node.props} />
+      <section key={nodeId} id={id} className={styles.section}>
+        {element}
+      </section>
     );
   });
+
+  return { blocks, anchors };
 }
 
 /** Ключи реестра и презентационные компоненты не должны расходиться. */

@@ -4,7 +4,7 @@ import { useEffect, useState, type MouseEvent } from 'react';
 import { MenuItem } from '@/components/dashboard/shared/MenuItem';
 import styles from './AnchorList.module.scss';
 
-interface AnchorLink {
+export interface AnchorLink {
   readonly id: string;
   readonly label: string;
 }

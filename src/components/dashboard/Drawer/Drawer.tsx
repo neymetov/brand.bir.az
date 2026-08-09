@@ -1,16 +1,14 @@
 import { ContentDrawer } from './ContentDrawer';
-import { AnchorList } from './AnchorList';
+import { ContentCard } from './ContentCard';
 import { contentSections, anchorLinks } from './content.data';
-import styles from './Drawer.module.scss';
 
-// Белая карточка справа от сайдбара: content-drawer (редактируемый craft.js
-// контент) + anchor-list (правая навигация-якорь). Контент сейчас берётся
-// из плейсхолдера content.data.ts — реальные данные придут из Strapi.
+// Дашборд: та же белая карточка с якорями, что и у страницы раздела (см.
+// ContentCard). Контент здесь пока из плейсхолдера content.data.ts — у
+// раздела он уже приходит из Strapi.
 export function Drawer() {
   return (
-    <section className={styles.drawer}>
+    <ContentCard anchors={anchorLinks}>
       <ContentDrawer sections={contentSections} />
-      <AnchorList links={anchorLinks} />
-    </section>
+    </ContentCard>
   );
 }
