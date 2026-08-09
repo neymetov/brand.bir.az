@@ -4,9 +4,10 @@ import path from 'node:path';
 // Только Vitest, без Testing Library и jsdom.
 //
 // Покрываемые правила — это чистые функции и обработчики маршрутов; из UI
-// проверяется единственная вещь, renderRichText, и её достаточно отрендерить
-// в строку через react-dom/server. Тащить jsdom и рендерер компонентов ради
-// одного модуля значило бы утяжелить установку без выигрыша.
+// проверяется разметка, которую достаточно отрендерить в строку через
+// react-dom/server (renderRichText, карточка уведомления). Тащить jsdom и
+// рендерер компонентов ради этого значило бы утяжелить установку без выигрыша:
+// событий и состояния такие проверки не касаются.
 export default defineConfig({
   // В tsconfig стоит `jsx: "preserve"` — его разбирает сам Next, а esbuild в
   // этом режиме выдаёт классический React.createElement, не импортируя React.
@@ -14,7 +15,9 @@ export default defineConfig({
   esbuild: { jsx: 'automatic' },
   test: {
     environment: 'node',
-    include: ['src/**/*.test.ts'],
+    // .tsx — для проверок, где разметку удобнее записать самим JSX, чем
+    // вручную через createElement.
+    include: ['src/**/*.test.ts', 'src/**/*.test.tsx'],
   },
   resolve: {
     alias: {

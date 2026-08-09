@@ -30,14 +30,21 @@
 | `components/sections/*.json` | `src/components/sections/` |
 | `components/shared/*.json` | `src/components/shared/` |
 | `api/guideline-page/**` | `src/api/guideline-page/` |
+| `api/brand-navigation/**` | `src/api/brand-navigation/` |
+| `api/sidebar-notification/**` | `src/api/sidebar-notification/` |
 
 Порядок важен: `sections.*` ссылаются на `shared.*`, а `guideline-page`
 ссылается на все `sections.*`. Strapi проверяет ссылки при старте.
 
 ### 2. Поднять Strapi и убедиться, что типы применились
 
-В админке должны появиться 9 компонентов в группе **sections**, 8 в **shared**
-и коллекция **Guideline page** с Dynamic Zone из тех же 9 блоков.
+В админке должны появиться 9 компонентов в группе **sections**, 8 в **shared**,
+коллекция **Guideline page** с Dynamic Zone из тех же 9 блоков, коллекция
+**Brand navigation** и одиночный тип **Sidebar notification**.
+
+Контент-типам нужны только схемы: контроллер, роут и сервис — это три строки
+шаблонного кода на каждый (`factories.createCoreController` и соседи), без них
+Strapi не поднимет REST-маршрут. Пример — в `api/brand-navigation/`.
 
 ### 3. Настроить медиа-провайдер (S3)
 
@@ -99,6 +106,7 @@ S3_PUBLIC_URL=…       # если медиа отдаётся напрямую,
 | --- | --- | --- |
 | `api/guideline-page/**` | `api::guideline-page.guideline-page` | страница `/guidelines/[brand]/[slug]` |
 | `api/brand-navigation/**` | `api::brand-navigation.brand-navigation` | рубрики и разделы бренда |
+| `api/sidebar-notification/**` | `api::sidebar-notification.sidebar-notification` | карточка апдейта внизу сайдбара, одна на весь сайт |
 | `components/shared/nav-group.json` | `shared.nav-group` | вложен в `brand-navigation` |
 | `components/shared/nav-item.json` | `shared.nav-item` | вложен в `nav-group` |
 | `components/sections/text-block.json` | `sections.text-block` | `TextBlock` |

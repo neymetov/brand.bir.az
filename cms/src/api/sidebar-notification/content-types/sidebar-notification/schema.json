@@ -1,0 +1,37 @@
+{
+  "kind": "singleType",
+  "collectionName": "sidebar_notifications",
+  "info": {
+    "singularName": "sidebar-notification",
+    "pluralName": "sidebar-notifications",
+    "displayName": "Sidebar notification",
+    "description": "Карточка апдейта внизу сайдбара. Одна на весь сайт: видна в любом бренде, ведёт на разводную выбранного. Пока записи нет, сайт показывает текст по умолчанию про текущий бренд."
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "brand": {
+      "type": "enumeration",
+      "enum": [
+        "kapital-bank",
+        "ecosystem",
+        "birmarket",
+        "birbonus",
+        "retail",
+        "business",
+        "invest",
+        "private",
+        "m10",
+        "million"
+      ],
+      "required": true
+    },
+    "message": {
+      "type": "string",
+      "required": true,
+      "maxLength": 120
+    }
+  }
+}

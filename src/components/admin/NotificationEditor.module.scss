@@ -1,0 +1,162 @@
+// Экран правки уведомления в сайдбаре. Шапка и кнопки повторяют экран правки
+// рубрик: это соседние экраны редактора, и разъезжаться им незачем.
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--bb-spacing-l);
+  min-height: 100vh;
+  padding: var(--bb-spacing-xl);
+  background: var(--bb-bg-primary);
+}
+
+.head {
+  display: flex;
+  gap: var(--bb-spacing-l);
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: var(--bb-spacing-l);
+  border-radius: var(--bb-radius-20);
+  background: var(--bb-bg-white-solid);
+}
+
+.title {
+  margin: 0;
+  color: var(--bb-text-primary);
+  font-family: var(--bb-fontfamily-heading);
+  font-size: var(--bb-fontsize-heading-h5);
+  font-weight: 500;
+  line-height: var(--bb-lineheight-heading-h5);
+}
+
+.hint {
+  margin: var(--bb-spacing-xs) 0 0;
+  color: var(--bb-text-secondary);
+  font-family: var(--bb-fontfamily-paragraph);
+  font-size: var(--bb-fontsize-paragraph-p4);
+  line-height: var(--bb-lineheight-paragraph-p4);
+}
+
+.actions {
+  display: flex;
+  flex-shrink: 0;
+  gap: var(--bb-spacing-s);
+  align-items: center;
+}
+
+.error {
+  color: var(--bb-text-error);
+  font-family: var(--bb-fontfamily-paragraph);
+  font-size: var(--bb-fontsize-paragraph-p4);
+  line-height: var(--bb-lineheight-paragraph-p4);
+}
+
+.cancel,
+.save {
+  padding: var(--bb-spacing-m);
+  border: 1px solid var(--bb-border-quaternary);
+  border-radius: var(--bb-radius-12);
+  background: transparent;
+  color: var(--bb-text-secondary);
+  font-family: var(--bb-fontfamily-label);
+  font-size: var(--bb-fontsize-label-l4);
+  line-height: var(--bb-lineheight-label-l4);
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.save {
+  border: none;
+  background: var(--bb-brand-default);
+  color: var(--bb-text-white);
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: default;
+  }
+}
+
+// Форма и предпросмотр рядом: правка короткая, и результат должен быть виден
+// без прокрутки.
+.body {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--bb-spacing-l);
+  align-items: flex-start;
+}
+
+.form {
+  display: flex;
+  flex: 1 1 320px;
+  flex-direction: column;
+  gap: var(--bb-spacing-l);
+  padding: var(--bb-spacing-l);
+  border-radius: var(--bb-radius-20);
+  background: var(--bb-bg-white-solid);
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--bb-spacing-xs);
+}
+
+.label {
+  color: var(--bb-text-primary);
+  font-family: var(--bb-fontfamily-label);
+  font-size: var(--bb-fontsize-label-l4);
+  line-height: var(--bb-lineheight-label-l4);
+}
+
+.note {
+  color: var(--bb-text-secondary);
+  font-family: var(--bb-fontfamily-caption);
+  font-size: var(--bb-fontsize-paragraph-p4);
+  line-height: var(--bb-lineheight-paragraph-p4);
+}
+
+.noteOver {
+  composes: note;
+  color: var(--bb-text-error);
+}
+
+.select,
+.textarea {
+  min-width: 0;
+  padding: var(--bb-spacing-s);
+  border: 1px solid var(--bb-border-quaternary);
+  border-radius: var(--bb-radius-8);
+  background: var(--bb-bg-white-solid);
+  color: var(--bb-text-primary);
+  font-family: var(--bb-fontfamily-label);
+  font-size: var(--bb-fontsize-label-l4);
+  line-height: var(--bb-lineheight-label-l4);
+}
+
+.textarea {
+  font-family: var(--bb-fontfamily-paragraph);
+  resize: vertical;
+}
+
+.preview {
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  gap: var(--bb-spacing-s);
+}
+
+.previewLabel {
+  color: var(--bb-text-secondary);
+  font-family: var(--bb-fontfamily-caption);
+  font-size: var(--bb-fontsize-paragraph-p4);
+  line-height: var(--bb-lineheight-paragraph-p4);
+}
+
+// Ширина и фон — как у нижней части сайдбара: карточка там растягивается на
+// всю его ширину, и на другой ширине перенос строк будет другим.
+.previewCard {
+  width: 260px;
+  padding: var(--bb-spacing-m);
+  border-radius: var(--bb-radius-20);
+  background: var(--bb-bg-primary);
+}

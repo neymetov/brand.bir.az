@@ -4,6 +4,7 @@ import type { ReactNode } from 'react';
 import { useRouter } from 'next/navigation';
 import type { BrandId } from '@/lib/brands';
 import type { SidebarGroup } from './Sidebar/sidebar.data';
+import type { SidebarNotification } from './Sidebar/BrandNotification';
 import { Sidebar } from './Sidebar/Sidebar';
 import { MobileNav } from './MobileNav/MobileNav';
 import styles from './AppShell.module.scss';
@@ -22,10 +23,17 @@ interface AppShellProps {
    * запросить её не может.
    */
   readonly groups: readonly SidebarGroup[];
+  /**
+   * Объявление внизу сайдбара — из CMS, одно на весь сайт. Тянется тем же
+   * серверным компонентом, что и навигация, и по той же причине.
+   */
+  readonly notification?: SidebarNotification | null;
   readonly children: ReactNode;
 }
 
-export function AppShell({ brand, groups, children }: AppShellProps) {
+export function AppShell({
+  brand, groups, notification, children,
+}: AppShellProps) {
   const router = useRouter();
 
   const handleLogout = async () => {
@@ -49,6 +57,7 @@ export function AppShell({ brand, groups, children }: AppShellProps) {
       <Sidebar
         brand={brand}
         groups={groups}
+        notification={notification}
         onSelectBrand={handleSelectBrand}
         onLogout={handleLogout}
       />

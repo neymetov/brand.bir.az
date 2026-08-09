@@ -23,6 +23,7 @@ interface StrapiAttribute {
 
 interface StrapiSchema {
   readonly attributes: Record<string, StrapiAttribute>;
+  readonly info?: { readonly singularName?: string };
 }
 
 function readJson<T>(file: string): T {
@@ -188,16 +189,32 @@ describe('Dynamic Zone страницы гайдлайна', () => {
       new Set(registry.map((entry) => entry.uid)),
     );
   });
+});
 
-  it('бренды совпадают с реестром брендов', () => {
-    // Реестр — единственный источник: из него же строятся дропдаун, маршруты
-    // и разделы. Если в CMS список короче, редактор не сможет завести
-    // страницу для бренда, который есть в интерфейсе.
-    const source = readFileSync(path.join(ROOT, 'src/lib/brands.ts'), 'utf-8');
-    const list = source.split('export const brands = [')[1] ?? '';
-    const ids = [...list.matchAll(/^ {4}id: '([\w-]+)',$/gm)].map((match) => match[1] ?? '');
+describe('перечисления брендов в CMS', () => {
+  // Реестр — единственный источник: из него же строятся дропдаун, маршруты и
+  // разделы. Если в CMS список короче, редактор не сможет выбрать бренд,
+  // который есть в интерфейсе.
+  const source = readFileSync(path.join(ROOT, 'src/lib/brands.ts'), 'utf-8');
+  const list = source.split('export const brands = [')[1] ?? '';
+  const ids = [...list.matchAll(/^ {4}id: '([\w-]+)',$/gm)].map((match) => match[1] ?? '');
 
+  // Проверяются ВСЕ контент-типы с полем brand, а не один guideline-page:
+  // раньше проверка знала про него поимённо, и такие же перечисления в
+  // brand-navigation и sidebar-notification оставались без присмотра.
+  const withBrandEnum = contentTypes().filter(
+    (schema) => schema.attributes.brand?.enum !== undefined,
+  );
+
+  it('такие контент-типы вообще есть', () => {
     expect(ids.length).toBeGreaterThan(0);
-    expect(new Set(page.attributes.brand?.enum ?? [])).toEqual(new Set(ids));
+    expect(withBrandEnum.length).toBeGreaterThan(0);
   });
+
+  it.each(withBrandEnum.map((schema) => [schema.info?.singularName ?? '?', schema] as const))(
+    '%s: список брендов совпадает с реестром',
+    (_name, schema) => {
+      expect(new Set(schema.attributes.brand?.enum ?? [])).toEqual(new Set(ids));
+    },
+  );
 });

@@ -21,6 +21,12 @@ export default async function AdminIndexPage() {
       <h1 className={styles.title}>Страницы</h1>
       <p className={styles.hint}>Выберите раздел, чтобы собрать его содержимое.</p>
 
+      {/* Уведомление одно на весь сайт, поэтому стоит над списком брендов, а
+          не внутри одного из них. */}
+      <Link className={styles.globalAction} href="/admin/notification">
+        Уведомление в сайдбаре
+      </Link>
+
       {navigation.map(({ brand, groups }) => (
         <section className={styles.brand} key={brand}>
           <header className={styles.brandHead}>

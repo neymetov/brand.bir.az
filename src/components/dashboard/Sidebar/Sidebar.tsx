@@ -2,11 +2,15 @@
 
 import { useState } from 'react';
 import { usePathname } from 'next/navigation';
-import { brandDisplayName, type BrandId } from '@/lib/brands';
+import type { BrandId } from '@/lib/brands';
 import { MenuItem } from '@/components/dashboard/shared/MenuItem';
 import { MasterButton } from '@/components/dashboard/shared/MasterButton';
 import { BrandMenuHeader } from './BrandMenuHeader';
-import { BrandNotification } from './BrandNotification';
+import {
+  BrandNotification,
+  defaultNotification,
+  type SidebarNotification,
+} from './BrandNotification';
 import { GroupLabel } from './GroupLabel';
 import type { SidebarGroup } from './sidebar.data';
 import styles from './Sidebar.module.scss';
@@ -22,12 +26,18 @@ interface SidebarProps {
   readonly brand: BrandId;
   /** Рубрики бренда — приходят сверху: навигация редактируется и живёт в CMS. */
   readonly groups: readonly SidebarGroup[];
+  /**
+   * Объявление внизу сайдбара — тоже из CMS. Его бренд не связан с текущим:
+   * объявление одно на весь сайт. `null` — в CMS ещё не заводили, тогда
+   * показываем текст по умолчанию про бренд, который открыт сейчас.
+   */
+  readonly notification?: SidebarNotification | null;
   readonly onSelectBrand?: (brand: BrandId) => void;
   readonly onLogout?: () => void;
 }
 
 export function Sidebar({
-  brand, groups, onSelectBrand, onLogout,
+  brand, groups, notification, onSelectBrand, onLogout,
 }: SidebarProps) {
   const [closedGroups, setClosedGroups] = useState<Record<string, boolean>>({});
   // Активный пункт определяется по адресу, а не по клику: иначе подсветка
@@ -85,10 +95,9 @@ export function Sidebar({
       </nav>
 
       <div className={styles.footer}>
-        <BrandNotification
-          brand={brand}
-          message={`We've updated the data in the ${brandDisplayName[brand]} section.`}
-        />
+        {/* eslint-disable-next-line react/jsx-props-no-spreading --
+            карточка целиком приходит одним объектом из CMS */}
+        <BrandNotification {...(notification ?? defaultNotification(brand))} />
         <MasterButton variant="ghost" icon="arrow-left-03-round" iconPosition="leading" onClick={onLogout}>
           Log out
         </MasterButton>
