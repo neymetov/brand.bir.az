@@ -17,8 +17,13 @@ import styles from './RichTextEditor.module.scss';
 // вложенные <b>), отсекается дважды: DOMPurify на выходе редактора и белый
 // список тегов при рендере (см. lib/richText.tsx).
 
+// `div` в списке обязателен, хотя сам блок его не рисует. contentEditable по
+// Enter строит именно <div> (проверено в Chrome: `one<div>two</div>`), а
+// DOMPurify выбрасывает неразрешённый тег, СОХРАНЯЯ его содержимое — три
+// абзаца превращались в одну слипшуюся строку. При рендере div всё равно
+// становится <p> (см. TAG_ALIASES в lib/richText.tsx).
 const SANITIZE_CONFIG = {
-  ALLOWED_TAGS: ['p', 'br', 'strong', 'b', 'em', 'i', 'u', 's', 'code', 'a', 'ul', 'ol', 'li'],
+  ALLOWED_TAGS: ['p', 'div', 'br', 'strong', 'b', 'em', 'i', 'u', 's', 'code', 'a', 'ul', 'ol', 'li'],
   ALLOWED_ATTR: ['href'],
 };
 
@@ -30,6 +35,17 @@ interface RichTextEditorProps {
 
 export function RichTextEditor({ value, onChange, id }: RichTextEditorProps) {
   const editorRef = useRef<HTMLDivElement>(null);
+  // Что мы сами в последний раз отдали наружу. Нужно, чтобы отличить
+  // «значение поменяли снаружи» от эха собственной правки — см. эффект ниже.
+  const lastEmitted = useRef<string | null>(null);
+
+  // По Enter contentEditable в Chrome создаёт <div>, а не абзац. Просим
+  // абзац: тогда текст хранится так же, как его рисует блок, и не зависит от
+  // того, попал ли div в белый список. Команда действует на весь документ,
+  // поэтому вызывается один раз.
+  useEffect(() => {
+    document.execCommand('defaultParagraphSeparator', false, 'p');
+  }, []);
 
   // Содержимое задаётся напрямую в DOM, а не через React: если рендерить
   // value как children, React переписывал бы узлы на каждый ввод и курсор
@@ -38,6 +54,14 @@ export function RichTextEditor({ value, onChange, id }: RichTextEditorProps) {
   useEffect(() => {
     const editor = editorRef.current;
     if (!editor) return;
+
+    // Значение вернулось эхом нашего же onChange — DOM трогать нельзя.
+    // Раньше этой проверки не было, и любое расхождение между разметкой
+    // браузера и результатом DOMPurify заставляло переписать innerHTML прямо
+    // во время набора: каретка улетала в начало, и текст набирался задом
+    // наперёд («ретья строкаВторая строкаТПервая строка»).
+    if (value === lastEmitted.current) return;
+
     // Санитизация и на входе тоже: value может прийти из CMS, минуя наш
     // редактор, и тогда чужая разметка оказалась бы в DOM панели настроек.
     const safe = DOMPurify.sanitize(value, SANITIZE_CONFIG);
@@ -52,7 +76,9 @@ export function RichTextEditor({ value, onChange, id }: RichTextEditorProps) {
   const emitChange = () => {
     const editor = editorRef.current;
     if (!editor) return;
-    onChange(DOMPurify.sanitize(editor.innerHTML, SANITIZE_CONFIG));
+    const html = DOMPurify.sanitize(editor.innerHTML, SANITIZE_CONFIG);
+    lastEmitted.current = html;
+    onChange(html);
   };
 
   const exec = (command: string, argument?: string) => {

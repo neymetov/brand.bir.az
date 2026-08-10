@@ -150,3 +150,32 @@ describe('richTextToPlain (SEC-006)', () => {
     expect(richTextToPlain('просто текст')).toBe('просто текст');
   });
 });
+
+describe('переносы строк', () => {
+  it('одиночный перенос в обычном тексте становится <br>, а не пробелом', () => {
+    // HTML схлопывает перенос в пробел — без <br> строки слипались бы.
+    const html = renderToStaticMarkup(renderRichText('Первая строка\nВторая строка'));
+
+    expect(html).toBe('<p>Первая строка<br/>Вторая строка</p>');
+  });
+
+  it('пустая строка по-прежнему делит текст на абзацы', () => {
+    const html = renderToStaticMarkup(renderRichText('Абзац один\n\nАбзац два'));
+
+    expect(html).toBe('<p>Абзац один</p><p>Абзац два</p>');
+  });
+
+  it('перенос и абзац вместе', () => {
+    const html = renderToStaticMarkup(renderRichText('a\nb\n\nc'));
+
+    expect(html).toBe('<p>a<br/>b</p><p>c</p>');
+  });
+
+  it('<div> из contentEditable рендерится абзацем, а не слипается', () => {
+    // Enter в contentEditable создаёт <div>; блок обязан показать их
+    // отдельными абзацами.
+    const html = renderToStaticMarkup(renderRichText('one<div>two</div><div>three</div>'));
+
+    expect(html).toBe('one<p>two</p><p>three</p>');
+  });
+});

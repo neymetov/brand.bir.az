@@ -119,6 +119,22 @@ export function looksLikeHtml(value: string): boolean {
 }
 
 /**
+ * Одиночные переносы внутри абзаца — это <br>, а не пробел.
+ *
+ * HTML схлопывает любой перенос строки в пробел, поэтому в обычном тексте
+ * (вставка из письма, импорт, контент старого формата) разбиение на строки
+ * пропадало: пустая строка давала абзац, а одиночный Enter — ничего.
+ */
+function withLineBreaks(paragraph: string): ReactNode[] {
+  return paragraph.split('\n').flatMap((line, index) => (
+    // Строки внутри абзаца не переставляются — индекс устойчивее содержимого.
+    /* eslint-disable react/no-array-index-key */
+    index === 0 ? [line] : [<br key={`br-${index}`} />, line]
+    /* eslint-enable react/no-array-index-key */
+  ));
+}
+
+/**
  * Превращает сохранённый текст в React-дерево.
  *
  * Поддерживает оба формата: разметку из редактора и обычный текст, который
@@ -136,7 +152,7 @@ export function renderRichText(value?: string): ReactNode {
       // Абзацы обычного текста не переупорядочиваются и могут повторяться —
       // индекс здесь устойчивее ключа из содержимого.
       // eslint-disable-next-line react/no-array-index-key
-      .map((paragraph, index) => <p key={index}>{paragraph}</p>);
+      .map((paragraph, index) => <p key={index}>{withLineBreaks(paragraph)}</p>);
   }
 
   return parse(value, options);
