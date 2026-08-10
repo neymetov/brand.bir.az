@@ -26,6 +26,7 @@ import {
 // действительно рисуется на экране логина.
 const loginAssets = new Set([
   '/images/login-background.jpg',
+  '/images/login-background.mp4',
   '/icons/dashboard/logo-bir.svg',
   '/icons/dashboard/view.svg',
   '/icons/dashboard/view-off.svg',

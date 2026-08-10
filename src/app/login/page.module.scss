@@ -1,19 +1,49 @@
-// Экран логина (Figma node 282:3272): фотография на весь экран, белая
-// карточка формы прижата к левому краю.
+// Экран логина (Figma node 282:3272): фон на весь экран, белая карточка формы
+// прижата к левому краю.
 
 .page {
+  position: relative;
   display: flex;
   align-items: center;
   // 100dvh, а не 100vh: на мобильных Safari/Chrome строка адреса съедает часть
   // 100vh, и нижний край карточки уезжал бы под неё.
   min-height: 100dvh;
   padding: var(--bb-spacing-0) var(--bb-spacing-4xl);
+  // Картинка остаётся подложкой под видео: она видна, пока ролик грузится, и
+  // остаётся насовсем, если он не запустится (экономия трафика в мобильных
+  // браузерах, отказ автовоспроизведения, ошибка сети). Экран логина не должен
+  // зависеть от того, доехали ли 21 МБ видео.
   background-image: url('/images/login-background.jpg');
   background-position: center;
   background-size: cover;
+  overflow: hidden;
+}
+
+// Видео лежит отдельным слоем, а не фоном: background-video в CSS не бывает.
+.video {
+  position: absolute;
+  // inset вместо top/left/width/height: размеры задаёт object-fit, а растянуть
+  // видео по слою нужно ровно так же, как это делает background-size: cover.
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  // Ролик — оформление, а не содержание: он не должен перехватывать клики и
+  // контекстное меню у формы над ним.
+  pointer-events: none;
+}
+
+// Уважаем системную настройку «меньше движения»: для части людей движущийся
+// фон — это не украшение, а тошнота и мигрень. Тогда остаётся картинка.
+@media (prefers-reduced-motion: reduce) {
+  .video {
+    display: none;
+  }
 }
 
 .card {
+  // Над видеослоем: без этого карточка оказалась бы под ним.
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: var(--bb-spacing-2xl);

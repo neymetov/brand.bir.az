@@ -108,6 +108,26 @@ function LoginForm() {
 export default function LoginPage() {
   return (
     <main className={styles.page}>
+      {/* Фоновый ролик. autoPlay работает только у беззвучного видео — без
+          muted браузеры автовоспроизведение запрещают; звуковой дорожки в
+          файле и нет. playsInline обязателен для iOS: иначе Safari открывает
+          видео на весь экран поверх формы.
+          poster — та же картинка, что лежит фоном: первый кадр появляется
+          мгновенно, не дожидаясь загрузки.
+          aria-hidden и отсутствие controls: это оформление, а не содержание,
+          и в озвучке скринридера ему делать нечего. */}
+      <video
+        className={styles.video}
+        src="/images/login-background.mp4"
+        poster="/images/login-background.jpg"
+        autoPlay
+        muted
+        loop
+        playsInline
+        aria-hidden="true"
+        tabIndex={-1}
+      />
+
       <div className={styles.card}>
         {/* Логотип отдаём картинкой, а не CSS-маской как остальные иконки:
             маска красит глиф в один цвет, а логотип — брендовый ассет и

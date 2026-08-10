@@ -51,6 +51,7 @@ describe('гейт без сессии (MW-001)', () => {
 
   it.each([
     '/images/login-background.jpg',
+    '/images/login-background.mp4',
     '/icons/dashboard/logo-bir.svg',
     '/icons/dashboard/view.svg',
     '/icons/dashboard/view-off.svg',
@@ -97,6 +98,7 @@ describe('matcher доводит запрос до гейта', () => {
 describe('контент за паролем (MW-003)', () => {
   it.each([
     '/images/some-guideline-asset.png',
+    '/images/brand-reel.mp4',
     '/fonts/secret.woff2',
     '/downloads/brandbook.pdf',
   ])('%s без сессии уходит на /login, а не отдаётся', async (pathname) => {
