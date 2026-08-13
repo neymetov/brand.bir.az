@@ -17,6 +17,15 @@ export function isStrapiConfigured(): boolean {
   return Boolean(process.env.STRAPI_API_URL && process.env.STRAPI_API_TOKEN);
 }
 
+/**
+ * Что показать админу, когда сохранять некуда. Текст, а не код вроде
+ * `strapi_not_writable`: редактор выводит это сообщение как есть, и админ
+ * видел бы непонятную строку. Ровно так выглядит свежий деплой, пока CMS не
+ * подключена, — то есть это первое, что встретит человек.
+ */
+export const STRAPI_NOT_WRITABLE = 'CMS не подключена — сохранять некуда. '
+  + 'Нужны переменные STRAPI_API_URL и STRAPI_WRITE_TOKEN.';
+
 /** Настроено ли сохранение — у записи свой токен, его может не быть. */
 export function isStrapiWritable(): boolean {
   return Boolean(process.env.STRAPI_API_URL && process.env.STRAPI_WRITE_TOKEN);

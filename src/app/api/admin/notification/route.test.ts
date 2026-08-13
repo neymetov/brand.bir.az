@@ -10,6 +10,7 @@ import {
 import { NextRequest } from 'next/server';
 import { createSessionCookieValue, SESSION_COOKIE, type Role } from '@/lib/auth/session';
 import { MESSAGE_MAX_LENGTH } from '@/lib/strapi/notification';
+import { STRAPI_NOT_WRITABLE } from '@/lib/strapi/client';
 import { POST } from './route';
 
 // Сохранение уведомления. Сам вызов CMS подменён: проверяется роут, а не Strapi.
@@ -112,6 +113,18 @@ describe('CMS недоступна', () => {
     const response = await POST(await post({ brand: 'retail', message: 'Hi' }, 'admin'));
 
     expect(response.status).toBe(503);
+  });
+
+  it('в этом случае админ видит человеческий текст, а не код ошибки', async () => {
+    // Ровно так выглядит свежий деплой, пока CMS не подключена: редактор
+    // выводит error как есть, и `strapi_not_writable` ему ни о чём не сказал бы.
+    delete process.env.STRAPI_WRITE_TOKEN;
+    const response = await POST(await post({ brand: 'retail', message: 'Hi' }, 'admin'));
+    const { error } = (await response.json()) as { error: string };
+
+    expect(error).toBe(STRAPI_NOT_WRITABLE);
+    expect(error).toMatch(/CMS не подключена/);
+    expect(error).not.toMatch(/^[a-z_]+$/);
   });
 
   it('ошибка сохранения доходит до редактора, а не теряется', async () => {

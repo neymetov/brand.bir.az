@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getSession } from '@/lib/auth/session';
-import { isStrapiWritable } from '@/lib/strapi/client';
+import { isStrapiWritable, STRAPI_NOT_WRITABLE } from '@/lib/strapi/client';
 import { MESSAGE_MAX_LENGTH, saveNotification } from '@/lib/strapi/notification';
 import { isBrandId } from '@/lib/brands';
 
@@ -13,7 +13,7 @@ export async function POST(request: NextRequest) {
   }
 
   if (!isStrapiWritable()) {
-    return NextResponse.json({ error: 'strapi_not_writable' }, { status: 503 });
+    return NextResponse.json({ error: STRAPI_NOT_WRITABLE }, { status: 503 });
   }
 
   const { brand, message } = (await request.json()) as {
